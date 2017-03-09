@@ -150,6 +150,18 @@ struct loader_layer_list {
     struct loader_layer_properties *list;
 };
 
+struct loader_metalayer_properties {
+    VkLayerProperties info;
+    uint32_t layer_count;
+    char (*layer_names)[VK_MAX_EXTENSION_NAME_SIZE];
+};
+
+struct loader_metalayer_list {
+    size_t capacity;
+    uint32_t count;
+    struct loader_metalayer_properties *list;
+};
+
 struct loader_dispatch_hash_list {
     size_t capacity;
     uint32_t count;

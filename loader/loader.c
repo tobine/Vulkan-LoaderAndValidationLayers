@@ -1815,6 +1815,15 @@ void loader_init_std_validation_props(struct loader_layer_properties *props) {
     props->info.specVersion = VK_MAKE_VERSION(1, 0, VK_HEADER_VERSION);
 }
 
+void loader_init_metalayer_props(struct loader_metalayer_properties *input, struct loader_layer_properties *props) {
+    memset(props, 0, sizeof(struct loader_layer_properties));
+    props->type = VK_LAYER_TYPE_META_EXPLICT;
+    strncpy(props->info.description, input->info.description, sizeof(props->info.description));
+    props->info.implementationVersion = input->info.implementationVersion;
+    strncpy(props->info.layerName, input->info.layerName, sizeof(props->info.layerName));
+    props->info.specVersion = input->info.specVersion;
+}
+
 // Searches through the existing instance layer lists looking for
 // the set of required layer names. If found then it adds a meta property to the
 // layer list.
@@ -1823,22 +1832,21 @@ void loader_init_std_validation_props(struct loader_layer_properties *props) {
 // @param layer_count  number of layers in layer_names
 // @param layer_names  array of required layer names
 // @param layer_instance_list
-static void loader_add_layer_property_meta(const struct loader_instance *inst, uint32_t layer_count,
-                                           const char layer_names[][VK_MAX_EXTENSION_NAME_SIZE],
+static void loader_add_layer_property_meta(const struct loader_instance *inst, struct loader_metalayer_properties *metalayer,
                                            struct loader_layer_list *layer_instance_list) {
     uint32_t i;
     bool found;
     struct loader_layer_list *layer_list;
 
-    if (0 == layer_count || (!layer_instance_list)) return;
-    if (layer_instance_list && (layer_count > layer_instance_list->count)) return;
+    if (0 == metalayer->layer_count || (!layer_instance_list)) return;
+    if (layer_instance_list && (metalayer->layer_count > layer_instance_list->count)) return;
 
     layer_list = layer_instance_list;
 
     found = true;
     if (layer_list == NULL) return;
-    for (i = 0; i < layer_count; i++) {
-        if (loader_find_layer_name_list(layer_names[i], layer_list)) continue;
+    for (i = 0; i < metalayer->layer_count; i++) {
+        if (loader_find_layer_name_list(metalayer->layer_names[i], layer_list)) continue;
         found = false;
         break;
     }
@@ -1850,7 +1858,7 @@ static void loader_add_layer_property_meta(const struct loader_instance *inst, u
             // Error already triggered in loader_get_next_layer_property.
             return;
         }
-        loader_init_std_validation_props(props);
+        loader_init_metalayer_props(metalayer, props);
     }
 }
 
@@ -2158,8 +2166,8 @@ static void loader_read_json_layer(const struct loader_instance *inst, struct lo
 }
 
 static inline bool is_valid_layer_json_version(const layer_json_version *layer_json) {
-    // Supported versions are: 1.0.0, 1.0.1, and 1.1.0.
-    if ((layer_json->major == 1 && layer_json->minor == 1 && layer_json->patch == 0) ||
+    // Supported versions are: 1.0.0, 1.0.1, 1.1.0, and 1.1.1.
+    if ((layer_json->major == 1 && layer_json->minor == 1 && layer_json->patch < 2) ||
         (layer_json->major == 1 && layer_json->minor == 0 && layer_json->patch < 2)) {
         return true;
     }
@@ -2174,6 +2182,194 @@ static inline bool layer_json_supports_layers_tag(const layer_json_version *laye
     return false;
 }
 
+static inline bool layer_json_supports_metalayer_tag(const layer_json_version *layer_json) {
+    // Supperted versions started in 1.1.1, so anything newer
+    if (layer_json-> major > 1 || layer_json->minor > 1 || (layer_json->minor == 0 && layer_json->patch > 0)) {
+        return true;
+    }
+    return false;
+}
+
+// Note that the output of this function must be freed with cJSON_Free() (unless it's null)
+static char *loader_read_json_string(const struct loader_instance *inst, cJSON *node, const char *key) {
+    char *str = NULL;
+    cJSON *item = cJSON_GetObjectItem(node, key);
+    if (item == NULL) {
+        loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0, "Didn't find required metalayer value \"%s\" in manifest JSON file; "
+                   "skipping this metalayer", key);
+    } else {
+        str = cJSON_Print(item);
+        if (str == NULL) {
+            loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0, "A problem occured while accessing metalayer value \"%s\" in "
+                       "manifest JSON file, skipping this layer", key);
+        }
+    }
+    return str;
+}
+
+static bool loader_read_json_string_list(const struct loader_instance *inst, cJSON *node, const char *key, char **buffer, int *buffer_count) {
+    bool failure = false;
+    cJSON *item = cJSON_GetObjectItem(node, key);
+    if (item == NULL) {
+        loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0, "Didn't find required metalayer value \"%s\" in manifest JSON file; "
+                   "skipping this metalayer", key);
+    }
+    int count = cJSON_GetArraySize(item);
+    if (count == 0) {
+        loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0, "Found empty list in metalayer value \"%s\" which cannot be empty; "
+                   "skipping this metalayer", key);
+        failure = true;
+        goto out;
+    }
+
+    // Output the desired buffer size
+    if (buffer == NULL) {
+        goto out;
+    }
+
+    // Write the strings into the provided buffer
+    if (count > *buffer_count) {
+        count = *buffer_count;
+    }
+    for(int i = 0; i < count; ++i) {
+        cJSON *index = cJSON_GetArrayItem(item, i);
+        if (index == NULL) {
+            loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0, "Could not read index %i in list \"%s\"; skipping this metalayer",
+                       i, key);
+            failure = true;
+            count = i - 1;
+            break;
+        }
+        buffer[i] = cJSON_Print(index);
+        if (buffer[i] == NULL) {
+            loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0, "Could not read index %i in list \"%s\" as a string; skipping "
+                       "this metalayer", i, key);
+            failure = true;
+            count = i - 1;
+            break;
+        }
+    }
+
+out:
+    *buffer_count = count;
+    return failure;
+}
+
+static void loader_read_json_metalayer(const struct loader_instance *inst, struct loader_metalayer_list *metalayer_list,
+    cJSON *metalayer_node, cJSON *item, cJSON *disable_environment, char *filename) {
+    char **components = NULL;
+    int component_count = 0;
+
+    // Load in the required metalayer fields
+    char *name = loader_read_json_string(inst, metalayer_node, "name");
+    char *type = loader_read_json_string(inst, metalayer_node, "type");
+    char *api_version = loader_read_json_string(inst, metalayer_node, "api_version");
+    char *description = loader_read_json_string(inst, metalayer_node, "description");
+    char *implementation_version = loader_read_json_string(inst, metalayer_node, "implementation_version");
+    if (name == NULL || type == NULL || api_version == NULL || description == NULL || implementation_version == NULL) {
+        goto out;
+    }
+
+    // Load in the components
+    int count = 0;
+    bool failed_list = loader_read_json_string_list(inst, metalayer_node, "component_layers", NULL, &count);
+    if (failed_list) {
+        goto out;
+    }
+    components = loader_stack_alloc(sizeof(char *) * count);
+    if (components == NULL) {
+        goto out;
+    }
+    component_count = count;
+    failed_list = loader_read_json_string_list(inst, metalayer_node, "component_layers", components, &component_count);
+    if (failed_list) {
+        goto out;
+    }
+
+    // Make sure that layer names and descriptions are not too long
+    if (strlen(name) - 2 >= VK_MAX_EXTENSION_NAME_SIZE) {
+        loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0, "Metalayer name is longer than the maximum allowable length (the "
+                   "maximum is %d characters); skipping this metalayer", VK_MAX_EXTENSION_NAME_SIZE);
+        goto out;
+    }
+    if (strlen(description) - 2 >= VK_MAX_DESCRIPTION_SIZE) {
+        loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0, "Metalayer description for %s is longer than the maximum allowable "
+                   "length (the maximum is %d characters); skipping this metalayer", name, VK_MAX_DESCRIPTION_SIZE);
+        goto out;
+    }
+    for (int i = 0; i < component_count; ++i) {
+        if (strlen(components[i]) - 2 >= VK_MAX_EXTENSION_NAME_SIZE) {
+            loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0, "Layer name is too long to be valid, therefore metalayer %s is "
+                       "also invalid; skipping this metalayer", name);
+            goto out;
+        }
+    }
+
+    // Create the metalayer properties
+    struct loader_metalayer_properties props;
+    size_t name_len = strlen(name) - 2;
+    strncpy(props.info.layerName, name + 1, name_len);
+    props.info.layerName[name_len] = '\0';
+    props.info.specVersion = loader_make_version(api_version);
+    props.info.implementationVersion = atoi(implementation_version + 1);
+    size_t desc_len = strlen(description) - 2;
+    strncpy(props.info.description, description + 1, desc_len);
+    props.info.description[desc_len] = '\0';
+
+    // Allocate buffer for layer names
+    // TODO: Fix memory leak by freeing this
+    props.layer_names = loader_instance_heap_alloc(inst, sizeof(char[VK_MAX_EXTENSION_NAME_SIZE]) * component_count,
+                                                   VK_SYSTEM_ALLOCATION_SCOPE_COMMAND);
+    if (props.layer_names == NULL) {
+        goto out;
+    }
+
+    // Copy layer names
+    props.layer_count = component_count;
+    for (int i = 0; i < component_count; ++i) {
+        size_t item_length = strlen(components[i]) - 2;
+        strncpy(props.layer_names[i], components[i] + 1, item_length);
+        props.layer_names[i][item_length] = '\0'; 
+    }
+
+    // Add the metalayer to the list
+    if (metalayer_list->capacity <= metalayer_list->count + 1) {
+        struct loader_metalayer_properties *new_buffer =
+            loader_instance_heap_realloc(inst, metalayer_list->list, metalayer_list->capacity * sizeof(struct loader_metalayer_properties *),
+                                         2 * metalayer_list->capacity * sizeof(struct loader_metalayer_properties *),
+                                         VK_SYSTEM_ALLOCATION_SCOPE_COMMAND);
+        if (new_buffer == NULL) {
+            goto out;
+        }
+        metalayer_list->list = new_buffer;
+        metalayer_list->capacity *= 2;
+    }
+    metalayer_list->list[metalayer_list->count++] = props;
+
+out:
+    if (name != NULL) {
+        cJSON_Free(name);
+    }
+    if (type != NULL) {
+        cJSON_Free(type);
+    }
+    if (api_version != NULL) {
+        cJSON_Free(api_version);
+    }
+    if (description != NULL) {
+        cJSON_Free(description);
+    }
+    if (implementation_version != NULL) {
+        cJSON_Free(implementation_version);
+    }
+    if (components != NULL) {
+        for(int i = 0; i < component_count; ++i) {
+            cJSON_Free(components[i]);
+        }
+    }
+}
+
+
 // Given a cJSON struct (json) of the top level JSON object from layer manifest
 // file, add entry to the layer_list. Fill out the layer_properties in this list
 // entry from the input cJSON object.
@@ -2184,7 +2380,7 @@ static inline bool layer_json_supports_layers_tag(const layer_json_version *laye
 // If the json input object does not have all the required fields no entry
 // is added to the list.
 static void loader_add_layer_properties(const struct loader_instance *inst, struct loader_layer_list *layer_instance_list,
-                                        cJSON *json, bool is_implicit, char *filename) {
+                                        struct loader_metalayer_list *metalayer_list, cJSON *json, bool is_implicit, char *filename) {
     // The following Fields in layer manifest file that are required:
     //   - “file_format_version”
     //   - If more than one "layer" object are used, then the "layers" array is
@@ -2227,6 +2423,7 @@ static void loader_add_layer_properties(const struct loader_instance *inst, stru
 
     // If "layers" is present, read in the array of layer objects
     layers_node = cJSON_GetObjectItem(json, "layers");
+    layer_node = cJSON_GetObjectItem(json, "layer");
     if (layers_node != NULL) {
         int numItems = cJSON_GetArraySize(layers_node);
         if (!layer_json_supports_layers_tag(&json_version)) {
@@ -2244,21 +2441,14 @@ static void loader_add_layer_properties(const struct loader_instance *inst, stru
                            "\'layers\' array element %d object in manifest "
                            "JSON file %s.  Skipping this file",
                            curLayer, filename);
-                return;
+                goto out;
             }
             loader_read_json_layer(inst, layer_instance_list, layer_node, json_version, item, disable_environment, is_implicit,
                                    filename);
         }
-    } else {
+    } else if (layer_node != NULL) {
         // Otherwise, try to read in individual layers
-        layer_node = cJSON_GetObjectItem(json, "layer");
-        if (layer_node == NULL) {
-            loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0,
-                       "loader_add_layer_properties: Can not find \'layer\' "
-                       "object in manifest JSON file %s.  Skipping this file.",
-                       filename);
-            return;
-        }
+        
         // Loop through all "layer" objects in the file to get a count of them
         // first.
         uint16_t layer_count = 0;
@@ -2285,6 +2475,32 @@ static void loader_add_layer_properties(const struct loader_instance *inst, stru
             } while (layer_node != NULL);
         }
     }
+
+    // If "metalayers" is present, read in the array of metalayer objects
+    cJSON *metalayers_node = cJSON_GetObjectItem(json, "metalayers");
+    cJSON *metalayer_node = cJSON_GetObjectItem(json, "metalayer");
+    if (metalayers_node != NULL) {
+        if (layer_json_supports_metalayer_tag(&json_version)) {
+            loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0, "loader_add_properties: \"metalayers\" tag not supported until "
+                       "file version 1.1.1, but %s is reporting version %s", filename, file_vers);
+        }
+
+        for (int i = 0; i < cJSON_GetArraySize(metalayers_node); ++i) {
+            loader_read_json_metalayer(inst, metalayer_list, cJSON_GetArrayItem(metalayers_node, i), item, disable_environment,
+                                       filename);
+        }
+
+    } else if (metalayer_node != NULL) {
+        // Otherwise, try to read in individual metalayers
+        if (layer_json_supports_metalayer_tag(&json_version)) {
+            loader_log(inst, VK_DEBUG_REPORT_WARNING_BIT_EXT, 0, "loader_add_properties: \"metalayer\" tag not supported until "
+                       "file version 1.1.1, but %s is reporting version %s", filename, file_vers);
+        }
+
+        loader_read_json_metalayer(inst, metalayer_list, metalayer_node, item, disable_environment, filename);
+    }
+
+out:
     return;
 }
 
@@ -2970,6 +3186,8 @@ void loader_layer_scan(const struct loader_instance *inst, struct loader_layer_l
 
     loader_platform_thread_lock_mutex(&loader_json_lock);
     lockedMutex = true;
+    struct loader_metalayer_list metalayers;
+    loader_init_generic_list(inst, (struct loader_generic_list *) &metalayers, sizeof(struct loader_metalayer_properties));
     for (implicit = 0; implicit < 2; implicit++) {
         for (uint32_t i = 0; i < manifest_files[implicit].count; i++) {
             file_str = manifest_files[implicit].filename_list[i];
@@ -2983,14 +3201,26 @@ void loader_layer_scan(const struct loader_instance *inst, struct loader_layer_l
                 continue;
             }
 
-            loader_add_layer_properties(inst, instance_layers, json, (implicit == 1), file_str);
+            loader_add_layer_properties(inst, instance_layers, &metalayers, json, (implicit == 1), file_str);
             cJSON_Delete(json);
         }
     }
 
+    for (uint32_t i = 0; i < metalayers.count; ++i) {
+        loader_add_layer_property_meta(inst, &metalayers.list[i], instance_layers);
+    }
+
     // add a meta layer for validation if the validation layers are all present
-    loader_add_layer_property_meta(inst, sizeof(std_validation_names) / sizeof(std_validation_names[0]), std_validation_names,
-                                   instance_layers);
+    struct loader_metalayer_properties std_validation_props;
+    strncpy(std_validation_props.info.description, "LunarG Standard Validation Layer", VK_MAX_EXTENSION_NAME_SIZE);
+    std_validation_props.info.implementationVersion = 1;
+    strncpy(std_validation_props.info.layerName, std_validation_str, VK_MAX_EXTENSION_NAME_SIZE);
+    std_validation_props.info.specVersion = VK_MAKE_VERSION(1, 0, VK_HEADER_VERSION);
+    std_validation_props.layer_count = sizeof(std_validation_names) / sizeof(std_validation_names[0]);
+    std_validation_props.layer_names = std_validation_names;
+    loader_add_layer_property_meta(inst, &std_validation_props, instance_layers);
+
+    loader_destroy_generic_list(inst, (struct loader_generic_list*) &metalayers);
 
 out:
 
@@ -3028,6 +3258,9 @@ void loader_implicit_layer_scan(const struct loader_instance *inst, struct loade
 
     loader_platform_thread_lock_mutex(&loader_json_lock);
 
+    struct loader_metalayer_list metalayers;
+    loader_init_generic_list(inst, (struct loader_generic_list *) &metalayers,
+                             sizeof(struct loader_metalayer_properties));
     for (i = 0; i < manifest_files.count; i++) {
         file_str = manifest_files.filename_list[i];
         if (file_str == NULL) {
@@ -3042,16 +3275,24 @@ void loader_implicit_layer_scan(const struct loader_instance *inst, struct loade
             continue;
         }
 
-        loader_add_layer_properties(inst, instance_layers, json, true, file_str);
+        loader_add_layer_properties(inst, instance_layers, &metalayers, json, true, file_str);
 
         loader_instance_heap_free(inst, file_str);
         cJSON_Delete(json);
     }
+    loader_destroy_generic_list(inst,
+                                (struct loader_generic_list*) &metalayers);
     loader_instance_heap_free(inst, manifest_files.filename_list);
 
     // add a meta layer for validation if the validation layers are all present
-    loader_add_layer_property_meta(inst, sizeof(std_validation_names) / sizeof(std_validation_names[0]), std_validation_names,
-                                   instance_layers);
+    struct loader_metalayer_properties std_validation_props;
+    strncpy(std_validation_props.info.description, "LunarG Standard Validation Layer", VK_MAX_EXTENSION_NAME_SIZE);
+    std_validation_props.info.implementationVersion = 1;
+    strncpy(std_validation_props.info.layerName, std_validation_str, VK_MAX_EXTENSION_NAME_SIZE);
+    std_validation_props.info.specVersion = VK_MAKE_VERSION(1, 0, VK_HEADER_VERSION);
+    std_validation_props.layer_count = sizeof(std_validation_names) / sizeof(std_validation_names[0]);
+    std_validation_props.layer_names = std_validation_names;
+    loader_add_layer_property_meta(inst, &std_validation_props, instance_layers);
 
     loader_platform_thread_unlock_mutex(&loader_json_lock);
 }
