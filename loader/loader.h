@@ -434,7 +434,7 @@ void loader_find_layer_name_add_list(const struct loader_instance *inst, const c
                                      const struct loader_layer_list *search_list, struct loader_layer_list *found_list);
 void loader_scanned_icd_clear(const struct loader_instance *inst, struct loader_icd_tramp_list *icd_tramp_list);
 VkResult loader_icd_scan(const struct loader_instance *inst, struct loader_icd_tramp_list *icd_tramp_list);
-void loader_layer_scan(const struct loader_instance *inst, struct loader_layer_list *instance_layers);
+void loader_layer_scan(const struct loader_instance *inst, struct loader_layer_list *instance_layers, struct loader_metalayer_list *metalayers);
 void loader_implicit_layer_scan(const struct loader_instance *inst, struct loader_layer_list *instance_layers);
 VkResult loader_get_icd_loader_instance_extensions(const struct loader_instance *inst, struct loader_icd_tramp_list *icd_tramp_list,
                                                    struct loader_extension_list *inst_exts);

@@ -101,6 +101,7 @@ LOADER_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateInstanceExtensionPropert
                                                                                     VkExtensionProperties *pProperties) {
     struct loader_extension_list *global_ext_list = NULL;
     struct loader_layer_list instance_layers;
+    struct loader_metalayer_list metalayers;
     struct loader_extension_list local_ext_list;
     struct loader_icd_tramp_list icd_tramp_list;
     uint32_t copy_size;
@@ -109,6 +110,7 @@ LOADER_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateInstanceExtensionPropert
     tls_instance = NULL;
     memset(&local_ext_list, 0, sizeof(local_ext_list));
     memset(&instance_layers, 0, sizeof(instance_layers));
+    memset(&metalayers, 0, sizeof(metalayers));
     loader_platform_thread_once(&once_init, loader_initialize);
 
     // Get layer libraries if needed
@@ -121,7 +123,7 @@ LOADER_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateInstanceExtensionPropert
             goto out;
         }
 
-        loader_layer_scan(NULL, &instance_layers);
+        loader_layer_scan(NULL, &instance_layers, &metalayers);
         if (strcmp(pLayerName, std_validation_str) == 0) {
             struct loader_layer_list local_list;
             memset(&local_list, 0, sizeof(local_list));
@@ -201,6 +203,7 @@ LOADER_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateInstanceLayerProperties(
                                                                                 VkLayerProperties *pProperties) {
     VkResult result = VK_SUCCESS;
     struct loader_layer_list instance_layer_list;
+    struct loader_metalayer_list metalayers;
     tls_instance = NULL;
 
     loader_platform_thread_once(&once_init, loader_initialize);
@@ -209,7 +212,8 @@ LOADER_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateInstanceLayerProperties(
 
     // Get layer libraries
     memset(&instance_layer_list, 0, sizeof(instance_layer_list));
-    loader_layer_scan(NULL, &instance_layer_list);
+    memset(&metalayers, 0, sizeof(metalayers));
+    loader_layer_scan(NULL, &instance_layer_list, &metalayers);
 
     if (pProperties == NULL) {
         *pPropertyCount = instance_layer_list.count;
@@ -294,8 +298,10 @@ LOADER_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkCreateInstance(const VkInstanceCr
     // Due to implicit layers need to get layer list even if
     // enabledLayerCount == 0 and VK_INSTANCE_LAYERS is unset. For now always
     // get layer list via loader_layer_scan().
+    struct loader_metalayer_list metalayers;
     memset(&ptr_instance->instance_layer_list, 0, sizeof(ptr_instance->instance_layer_list));
-    loader_layer_scan(ptr_instance, &ptr_instance->instance_layer_list);
+    memset(&metalayers, 0, sizeof(metalayers));
+    loader_layer_scan(ptr_instance, &ptr_instance->instance_layer_list, &metalayers);
 
     // Validate the app requested layers to be enabled
     if (pCreateInfo->enabledLayerCount > 0) {
@@ -307,12 +313,13 @@ LOADER_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkCreateInstance(const VkInstanceCr
     }
 
     // Convert any meta layers to the actual layers makes a copy of layer name
-    VkResult layerErr =
-        loader_expand_layer_names(ptr_instance, std_validation_str, sizeof(std_validation_names) / sizeof(std_validation_names[0]),
-                                  std_validation_names, &ici.enabledLayerCount, &ici.ppEnabledLayerNames);
-    if (VK_SUCCESS != layerErr) {
-        res = layerErr;
-        goto out;
+    for (uint32_t i = 0; i < metalayers.count; ++i) {
+        VkResult layer_err = loader_expand_layer_names(ptr_instance, metalayers.list[i].info.layerName,
+            metalayers.list[i].layer_count, metalayers.list[i].layer_names, &ici.enabledLayerCount, &ici.ppEnabledLayerNames);
+        if (VK_SUCCESS != layer_err) {
+            res = layer_err;
+            goto out;
+        }
     }
 
     // Scan/discover all ICD libraries

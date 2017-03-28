@@ -1718,10 +1718,17 @@ VkResult loader_copy_layer_properties(const struct loader_instance *inst, struct
     return VK_SUCCESS;
 }
 
-static bool loader_find_layer_name_list(const char *name, const struct loader_layer_list *layer_list) {
-    if (!layer_list) return false;
-    for (uint32_t j = 0; j < layer_list->count; j++)
-        if (!strcmp(name, layer_list->list[j].info.layerName)) return true;
+static bool loader_find_layer_list(const char *name, uint32_t spec_version, const struct loader_layer_list *layer_list) {
+    if (!layer_list) {
+        return false;
+    }
+    uint32_t major = VK_VERSION_MAJOR(spec_version);
+    uint32_t minor = VK_VERSION_MINOR(spec_version);
+    for (uint32_t j = 0; j < layer_list->count; j++) {
+        if (!strcmp(name, layer_list->list[j].info.layerName) && (major == VK_VERSION_MAJOR(layer_list->list[j].info.specVersion)) && (minor == VK_VERSION_MINOR(layer_list->list[j].info.specVersion))) {
+            return true;
+        }
+    }
     return false;
 }
 
@@ -1846,7 +1853,9 @@ static void loader_add_layer_property_meta(const struct loader_instance *inst, s
     found = true;
     if (layer_list == NULL) return;
     for (i = 0; i < metalayer->layer_count; i++) {
-        if (loader_find_layer_name_list(metalayer->layer_names[i], layer_list)) continue;
+        if (loader_find_layer_list(metalayer->layer_names[i], metalayer->info.specVersion, layer_list)) {
+            continue;
+        }
         found = false;
         break;
     }
@@ -2333,9 +2342,17 @@ static void loader_read_json_metalayer(const struct loader_instance *inst, struc
     }
 
     // Add the metalayer to the list
-    if (metalayer_list->capacity <= metalayer_list->count + 1) {
+    if (metalayer_list->capacity == 0) {
         struct loader_metalayer_properties *new_buffer =
-            loader_instance_heap_realloc(inst, metalayer_list->list, metalayer_list->capacity * sizeof(struct loader_metalayer_properties *),
+            loader_instance_heap_alloc(inst, 64 * sizeof(struct loader_metalayer_properties), VK_SYSTEM_ALLOCATION_SCOPE_COMMAND);
+        if (new_buffer == NULL) {
+            goto out;
+        }
+        metalayer_list->list = new_buffer;
+        metalayer_list->capacity = 64;
+    } else if (metalayer_list->capacity <= metalayer_list->count + 1) {
+        struct loader_metalayer_properties *new_buffer =
+            loader_instance_heap_realloc(inst, metalayer_list->list, metalayer_list->capacity * sizeof(struct loader_metalayer_properties),
                                          2 * metalayer_list->capacity * sizeof(struct loader_metalayer_properties *),
                                          VK_SYSTEM_ALLOCATION_SCOPE_COMMAND);
         if (new_buffer == NULL) {
@@ -3153,7 +3170,7 @@ out:
     return res;
 }
 
-void loader_layer_scan(const struct loader_instance *inst, struct loader_layer_list *instance_layers) {
+void loader_layer_scan(const struct loader_instance *inst, struct loader_layer_list *instance_layers, struct loader_metalayer_list *metalayers) {
     char *file_str;
     struct loader_manifest_files manifest_files[2];  // [0] = explicit, [1] = implicit
     cJSON *json;
@@ -3186,8 +3203,6 @@ void loader_layer_scan(const struct loader_instance *inst, struct loader_layer_l
 
     loader_platform_thread_lock_mutex(&loader_json_lock);
     lockedMutex = true;
-    struct loader_metalayer_list metalayers;
-    loader_init_generic_list(inst, (struct loader_generic_list *) &metalayers, sizeof(struct loader_metalayer_properties));
     for (implicit = 0; implicit < 2; implicit++) {
         for (uint32_t i = 0; i < manifest_files[implicit].count; i++) {
             file_str = manifest_files[implicit].filename_list[i];
@@ -3201,13 +3216,13 @@ void loader_layer_scan(const struct loader_instance *inst, struct loader_layer_l
                 continue;
             }
 
-            loader_add_layer_properties(inst, instance_layers, &metalayers, json, (implicit == 1), file_str);
+            loader_add_layer_properties(inst, instance_layers, metalayers, json, (implicit == 1), file_str);
             cJSON_Delete(json);
         }
     }
 
-    for (uint32_t i = 0; i < metalayers.count; ++i) {
-        loader_add_layer_property_meta(inst, &metalayers.list[i], instance_layers);
+    for (uint32_t i = 0; i < metalayers->count; ++i) {
+        loader_add_layer_property_meta(inst, &metalayers->list[i], instance_layers);
     }
 
     // add a meta layer for validation if the validation layers are all present
@@ -3220,7 +3235,7 @@ void loader_layer_scan(const struct loader_instance *inst, struct loader_layer_l
     std_validation_props.layer_names = std_validation_names;
     loader_add_layer_property_meta(inst, &std_validation_props, instance_layers);
 
-    loader_destroy_generic_list(inst, (struct loader_generic_list*) &metalayers);
+    //loader_destroy_generic_list(inst, (struct loader_generic_list*) &metalayers);
 
 out:
 
