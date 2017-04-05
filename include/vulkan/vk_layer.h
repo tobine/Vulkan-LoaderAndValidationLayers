@@ -67,8 +67,15 @@ typedef struct VkNegotiateLayerInterface {
 // Version negotiation functions
 typedef VkResult (VKAPI_PTR *PFN_vkNegotiateLoaderLayerInterfaceVersion)(VkNegotiateLayerInterface *pVersionStruct);
 
+// For variable parameter calls, we can't used stdcall.
+#ifdef _WIN32
+#define VULKAN_VCALL_TYPE   __cdecl
+#else
+#define VULKAN_VCALL_TYPE
+#endif
+
 // Function prototype for unknown physical device extension command
-typedef VkResult(VKAPI_PTR *PFN_PhysDevExt)(VkPhysicalDevice phys_device, ...);
+typedef VkResult(VULKAN_VCALL_TYPE *PFN_PhysDevExt)(VkPhysicalDevice phys_device, ...);
 
 // ------------------------------------------------------------------------------------------------
 // CreateInstance and CreateDevice support structures
