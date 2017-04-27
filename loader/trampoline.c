@@ -196,6 +196,7 @@ out:
 
     loader_destroy_generic_list(NULL, (struct loader_generic_list *)&local_ext_list);
     loader_delete_layer_properties(NULL, &instance_layers);
+    loader_delete_metalayer_properties(NULL, &metalayers);
     return res;
 }
 
@@ -235,6 +236,7 @@ LOADER_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateInstanceLayerProperties(
 out:
 
     loader_delete_layer_properties(NULL, &instance_layer_list);
+    loader_delete_metalayer_properties(NULL, &metalayers);
     return result;
 }
 
@@ -408,6 +410,7 @@ out:
             loader_delete_shadow_inst_layer_names(ptr_instance, pCreateInfo, &ici);
         }
 
+        loader_delete_metalayer_properties(ptr_instance, &metalayers);
         if (loaderLocked) {
             loader_platform_thread_unlock_mutex(&loader_lock);
         }

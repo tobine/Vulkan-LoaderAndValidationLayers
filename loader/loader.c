@@ -641,6 +641,22 @@ void loader_delete_layer_properties(const struct loader_instance *inst, struct l
     }
 }
 
+void loader_delete_metalayer_properties(const struct loader_instance *inst, struct loader_metalayer_list *metalayers) {
+    if (!metalayers) {
+        return;
+    }
+
+    for (uint32_t i = 0; i < metalayers->count; ++i) {
+        loader_instance_heap_free(inst, metalayers->list[i].layer_names);
+    }
+    metalayers->count = 0;
+    
+    if (metalayers->capacity > 0) {
+        metalayers->capacity = 0;
+        loader_instance_heap_free(inst, metalayers->list);
+    }
+}
+
 static VkResult loader_add_instance_extensions(const struct loader_instance *inst,
                                                const PFN_vkEnumerateInstanceExtensionProperties fp_get_props, const char *lib_name,
                                                struct loader_extension_list *ext_list) {
@@ -2326,7 +2342,8 @@ static void loader_read_json_metalayer(const struct loader_instance *inst, struc
     props.info.description[desc_len] = '\0';
 
     // Allocate buffer for layer names
-    // TODO: Fix memory leak by freeing this
+    // This memory does not get freed as part of loader_read_json_metalayer. The standard way to free it is to call
+    // loader_delete_metalayer_properties on the list of metalayers that was generated in loader_layer_scan
     props.layer_names = loader_instance_heap_alloc(inst, sizeof(char[VK_MAX_EXTENSION_NAME_SIZE]) * component_count,
                                                    VK_SYSTEM_ALLOCATION_SCOPE_COMMAND);
     if (props.layer_names == NULL) {
