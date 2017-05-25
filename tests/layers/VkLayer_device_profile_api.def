@@ -22,7 +22,6 @@
 LIBRARY VkLayer_device_profile_api
 EXPORTS
 vkGetInstanceProcAddr
-vkGetDeviceProcAddr
 vkEnumerateInstanceLayerProperties
 vkEnumerateInstanceExtensionProperties
 vkNegotiateLoaderLayerInterfaceVersion
