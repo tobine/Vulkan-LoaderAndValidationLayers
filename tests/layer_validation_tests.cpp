@@ -3010,7 +3010,6 @@ TEST_F(VkLayerTest, BindMemoryToDestroyedObject) {
 
 TEST_F(VkLayerTest, ExceedMemoryAllocationCount) {
     VkResult err = VK_SUCCESS;
-    VkDeviceMemory mems[33];
     uint32_t instance_layer_count = 0;
 
     instance_layer_names.push_back("VK_LAYER_LUNARG_device_profile_api");
