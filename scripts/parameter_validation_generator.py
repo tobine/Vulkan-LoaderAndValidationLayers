@@ -144,7 +144,7 @@ class ParamCheckerOutputGenerator(OutputGenerator):
         # Header version
         self.headerVersion = None
         # Internal state - accumulators for different inner block text
-        self.sections = dict([(section, []) for section in self.ALL_SECTIONS])
+        self.validation = []                              # Text comprising the main per-api parameter validation routines
         self.structNames = []                             # List of Vulkan struct typenames
         self.stypes = []                                  # Values from the VkStructureType enumeration
         self.structTypes = dict()                         # Map of Vulkan struct typename to required VkStructureType
@@ -157,12 +157,15 @@ class ParamCheckerOutputGenerator(OutputGenerator):
         self.flagBits = dict()                            # Map of flag bits typename to list of values
         self.newFlags = set()                             # Map of flags typenames /defined in the current feature/
         self.required_extensions = []                     # List of required extensions for the current extension
+        self.extension_type = ''                          # Type of active feature (extension), device or instance
+        self.extension_names = dict()                     # Dictionary of extension names to extension name defines
+
         # Named tuples to store struct and command data
         self.StructType = namedtuple('StructType', ['name', 'value'])
         self.CommandParam = namedtuple('CommandParam', ['type', 'name', 'ispointer', 'isstaticarray', 'isbool', 'israngedenum',
                                                         'isconst', 'isoptional', 'iscount', 'noautovalidity', 'len', 'extstructs',
                                                         'condition', 'cdecl'])
-        self.CommandData = namedtuple('CommandData', ['name', 'params', 'cdecl'])
+        self.CommandData = namedtuple('CommandData', ['name', 'params', 'cdecl', 'extension_type'])
         self.StructMemberData = namedtuple('StructMemberData', ['name', 'members'])
     #
     def incIndent(self, indent):
@@ -212,6 +215,17 @@ class ParamCheckerOutputGenerator(OutputGenerator):
         # C-specific
         self.newline()
 
+        # Search validation source for extension tags and replace them with the correct extension names
+        commands_text = '\n'.join(self.validation)
+        for extension, extension_name in self.extension_names.items():
+            ext_target = "REPLACE_EXT_%s_REPLACE_EXT" % extension
+            name_target = "REPLACE_NAME_%s_REPLACE_NAME" % extension
+            bool_name = extension_name.lower()
+            bool_name = re.sub('_extension_name', '', bool_name)
+            commands_text = commands_text.replace(ext_target, bool_name)
+            commands_text = commands_text.replace(name_target, extension_name)
+        write(commands_text, file=self.outFile)
+        self.newline()
         # Output declarations and record intercepted procedures
         write('// Declarations', file=self.outFile)
         write('\n'.join(self.declarations), file=self.outFile)
@@ -236,7 +250,6 @@ class ParamCheckerOutputGenerator(OutputGenerator):
         # end function prototypes separately for this feature. They're only
         # printed in endFeature().
         self.headerVersion = None
-        self.sections = dict([(section, []) for section in self.ALL_SECTIONS])
         self.structNames = []
         self.stypes = []
         self.structTypes = dict()
@@ -246,20 +259,29 @@ class ParamCheckerOutputGenerator(OutputGenerator):
         # Save list of required extensions for this extension
         self.required_extensions = []
         if self.featureName != "VK_VERSION_1_0":
+            # Save Name Define to get correct enable name later
+            nameElem = interface[0][1]
+            name = nameElem.get('name')
+            self.extension_names[self.featureName] = name
+            # This extension is the first dependency for this command
             self.required_extensions.append(self.featureName)
+        # Add any defined extension dependencies to the dependency list for this command
         required_extensions = interface.get('requires')
         if required_extensions is not None:
             self.required_extensions.extend(required_extensions.split(','))
+        # And note if this is an Instance or Device extension
+        self.extension_type = interface.get('type')
     def endFeature(self):
         # C-specific
         # Actually write the interface to the output file.
         if (self.emit):
-            self.newline()
             # If type declarations are needed by other features based on
             # this one, it may be necessary to suppress the ExtraProtect,
             # or move it below the 'for section...' loop.
+            ifdef = ''
             if (self.featureExtraProtect != None):
-                write('#ifdef', self.featureExtraProtect, file=self.outFile)
+                ifdef = '#ifdef %s\n' % self.featureExtraProtect
+                self.validation.append(ifdef)
             # Generate the struct member checking code from the captured data
             self.processStructMemberData()
             # Generate the command parameter checking code from the captured data
@@ -278,24 +300,12 @@ class ParamCheckerOutputGenerator(OutputGenerator):
                         decl += '|' + bit
                     decl += ';'
                     write(decl, file=self.outFile)
-            self.newline()
-            # Write the parameter validation code to the file
-            if (self.sections['command']):
-                if (self.genOpts.protectProto):
-                    write(self.genOpts.protectProto,
-                          self.genOpts.protectProtoStr, file=self.outFile)
-                write('\n'.join(self.sections['command']), end=u'', file=self.outFile)
+            endif = '\n'
             if (self.featureExtraProtect != None):
-                write('#endif /*', self.featureExtraProtect, '*/', file=self.outFile)
-            else:
-                self.newline()
+                endif = '#endif // %s\n' % self.featureExtraProtect
+            self.validation.append(endif)
         # Finish processing in superclass
         OutputGenerator.endFeature(self)
-    #
-    # Append a definition to the specified section
-    def appendSection(self, section, text):
-        # self.sections[section].append('SECTION: ' + section + '\n')
-        self.sections[section].append(text)
     #
     # Type generation
     def genType(self, typeinfo, name):
@@ -473,7 +483,7 @@ class ParamCheckerOutputGenerator(OutputGenerator):
                                                     extstructs=None,
                                                     condition=None,
                                                     cdecl=cdecl))
-            self.commands.append(self.CommandData(name=name, params=paramsInfo, cdecl=self.makeCDecls(cmdinfo.elem)[0]))
+            self.commands.append(self.CommandData(name=name, params=paramsInfo, cdecl=self.makeCDecls(cmdinfo.elem)[0], extension_type=self.extension_type))
     #
     # Check if the parameter passed in is a pointer
     def paramIsPointer(self, param):
@@ -1024,14 +1034,14 @@ class ParamCheckerOutputGenerator(OutputGenerator):
             # Skip first parameter if it is a dispatch handle (everything except vkCreateInstance)
             startIndex = 0 if command.name == 'vkCreateInstance' else 1
             lines, unused = self.genFuncBody(command.name, command.params[startIndex:], '', '', None)
-            if self.required_extensions:
-                def_line = 'std::vector<std::string> required_extensions = {'
+            # Cannot validate extension dependencies for device extension APIs a physical device as their dispatchable object
+            if self.required_extensions and self.extension_type == 'device' and command.params[0].type != 'VkPhysicalDevice':
+                # The actual extension names are not all available yet, so we'll tag these now and replace them just before
+                # writing the validation routines out to a file
+                ext_test = ''
                 for ext in self.required_extensions:
-                    def_line += '"%s", ' % ext
-                def_line = def_line[:-2] + '};'
-                ext_call = 'skipCall |= ValidateRequiredExtensions(layer_data, "%s", required_extensions);\n' % command.name
-                lines.insert(0, ext_call)
-                lines.insert(0, def_line)
+                    ext_test = 'if (!layer_data->extensions.REPLACE_EXT_%s_REPLACE_EXT) skipCall |= OutputExtensionError(layer_data, "%s", REPLACE_NAME_%s_REPLACE_NAME);\n' % (ext, command.name, ext)
+                    lines.insert(0, ext_test)
             if lines:
                 cmdDef = self.getCmdDef(command) + '\n'
                 cmdDef += '{\n'
@@ -1055,4 +1065,4 @@ class ParamCheckerOutputGenerator(OutputGenerator):
                 cmdDef += '\n'
                 cmdDef += indent + 'return skipCall;\n'
                 cmdDef += '}\n'
-                self.appendSection('command', cmdDef)
+                self.validation.append(cmdDef)
