@@ -25,6 +25,7 @@ from unique_objects_generator import UniqueObjectsGeneratorOptions, UniqueObject
 from dispatch_table_helper_generator import DispatchTableHelperOutputGenerator, DispatchTableHelperOutputGeneratorOptions
 from helper_file_generator import HelperFileOutputGenerator, HelperFileOutputGeneratorOptions
 from loader_extension_generator import LoaderExtensionOutputGenerator, LoaderExtensionGeneratorOptions
+from generic_layer import GenericGeneratorOptions, GenericOutputGenerator
 
 # Simple timer functions
 startTime = None
@@ -399,6 +400,50 @@ def makeGenOpts(extensions = [], removeExtensions = [], protect = True, director
             apientryp         = 'VKAPI_PTR *',
             alignFuncParam    = 48,
             helper_file_type  = 'extension_helper_header')
+        ]
+
+    # Options for generic layer header
+    genOpts['generic_layer.h'] = [
+          GenericOutputGenerator,
+          GenericGeneratorOptions(
+            filename          = 'generic_layer.h',
+            directory         = directory,
+            apiname           = 'vulkan',
+            profile           = None,
+            versions          = allVersions,
+            emitversions      = allVersions,
+            defaultExtensions = 'vulkan',
+            addExtensions     = addExtensions,
+            removeExtensions  = removeExtensions,
+            prefixText        = prefixStrings + vkPrefixStrings,
+            protectFeature    = False,
+            apicall           = 'VKAPI_ATTR ',
+            apientry          = 'VKAPI_CALL ',
+            apientryp         = 'VKAPI_PTR *',
+            alignFuncParam    = 48,
+            helper_file_type  = 'generic_layer_header')
+        ]
+
+    # Options for generic layer cpp
+    genOpts['generic_layer.cpp'] = [
+          GenericOutputGenerator,
+          GenericGeneratorOptions(
+            filename          = 'generic_layer.cpp',
+            directory         = directory,
+            apiname           = 'vulkan',
+            profile           = None,
+            versions          = allVersions,
+            emitversions      = allVersions,
+            defaultExtensions = 'vulkan',
+            addExtensions     = addExtensions,
+            removeExtensions  = removeExtensions,
+            prefixText        = prefixStrings + vkPrefixStrings,
+            protectFeature    = False,
+            apicall           = 'VKAPI_ATTR ',
+            apientry          = 'VKAPI_CALL ',
+            apientryp         = 'VKAPI_PTR *',
+            alignFuncParam    = 48,
+            helper_file_type  = 'generic_layer_source')
         ]
 
 
