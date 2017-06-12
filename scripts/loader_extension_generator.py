@@ -109,7 +109,6 @@ class LoaderExtensionOutputGenerator(OutputGenerator):
     # Called once at the beginning of each run
     def beginFile(self, genOpts):
         OutputGenerator.beginFile(self, genOpts)
-
         # User-supplied prefix text, if any (list of strings)
         if (genOpts.prefixText):
             for s in genOpts.prefixText:
