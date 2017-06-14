@@ -20,18 +20,10 @@
  *
 */
 
+#include "vulkaid_layer_data.h"
 #include "vulkaid_state_structs.h"
-//#include "vk_safe_struct.h"
 
 namespace vkaid {
-//// Define state wrapper classes
-//class CommandBufferState {
-//public:
-//    CommandBufferState(const VkCommandBufferAllocateInfo*, VkCommandBuffer);
-//private:
-//    VkCommandBuffer command_buffer;
-//    unique_ptr<safe_VkCommandBufferAllocateInfo> create_info;
-//};
 
 namespace state_tracker {
 

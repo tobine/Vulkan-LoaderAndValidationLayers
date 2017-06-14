@@ -20,10 +20,7 @@
  *
 */
 
-#include "vk_dispatch_table_helper.h"
-#include "vk_extension_helper.h"
 #include "vk_safe_struct.h"
-#include <vector>
 #include <unordered_map>
 #include <memory>
 
@@ -31,15 +28,10 @@ namespace vkaid {
 using std::unordered_map;
 using std::unique_ptr;
 
-struct instance_layer_data {
-    VkLayerInstanceDispatchTable dispatch_table = {};
-    VkInstance instance = VK_NULL_HANDLE;
-    InstanceExtensions extensions = {};
-    // TODO : Extend struct w/ further custom data
+struct instance_state_struct {
+    // TODO : Define custom instance state here
 };
 
-// Device-level state containers. Pre-declare here and define in cpp file where used
-//class CommandBufferState;
 // Define state wrapper classes
 class CommandBufferState {
 public:
@@ -49,29 +41,9 @@ private:
     unique_ptr<safe_VkCommandBufferAllocateInfo> create_info;
 };
 
-struct device_layer_data {
-    VkLayerDispatchTable dispatch_table = {};
-    instance_layer_data *instance_data = nullptr;
-    // Physical Device Data
-    VkPhysicalDevice physical_device = VK_NULL_HANDLE;
-    VkPhysicalDeviceProperties physical_device_properties = {};
-    std::vector<VkQueueFamilyProperties> queue_family_properties;
-    VkPhysicalDeviceFeatures enabled_features = {};
-    VkPhysicalDeviceMemoryProperties physical_device_mem_properties = {};
-    // Device-specific State
-    VkDevice device = VK_NULL_HANDLE;
-    DeviceExtensions extensions = {};
+struct device_state_struct {
     unordered_map<VkCommandBuffer, unique_ptr<CommandBufferState>> command_buffer_map;
-    // TODO : Extend struct w/ further custom data
-
-    // declare constructor and destructor to prevent default destructor which
-    //  breaks when using unique_ptr w/ incomplete type
-//    device_layer_data();
-//    ~device_layer_data();
 };
-
-static unordered_map<void *, device_layer_data *> device_layer_data_map;
-static unordered_map<void *, instance_layer_data *> instance_layer_data_map;
 
 }
 

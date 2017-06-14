@@ -20,8 +20,18 @@
 #include "vulkaid_dispatch.h"
 // Include vulkaid modules here
 #include "vulkaid_state_tracker.h"
+#include <memory>
 
 namespace vkaid {
+
+void PostCallCreateDevice(device_layer_data* device_data, const VkDeviceCreateInfo* pCreateInfo,
+                          const VkAllocationCallbacks* pAllocator, VkDevice* pDevice) {
+    device_data->state_ptr = static_cast<void*>(new device_state_struct());
+}
+
+void PostCallDestroyDevice(device_layer_data* device_data, const VkAllocationCallbacks* pAllocator) {
+    delete static_cast<device_state_struct*>(device_data->state_ptr);
+}
 
 void PostCallAllocateCommandBuffers(
     device_layer_data*                          device_data,

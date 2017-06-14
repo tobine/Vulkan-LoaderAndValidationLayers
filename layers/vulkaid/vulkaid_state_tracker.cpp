@@ -20,7 +20,7 @@
 #include "vulkaid_state_tracker.h"
 #include <utility>
 
-// TODO : Figure out why this is needed for core_validation and here and get rid of it
+// Including cpp due to limitation of visual studio parallel build. Really need to put this in lib
 #include "vk_safe_struct.cpp"
 
 namespace vkaid {
@@ -39,8 +39,10 @@ void AllocateCommandBuffers(
     const VkCommandBufferAllocateInfo*          pAllocateInfo,
     VkCommandBuffer*                            pCommandBuffers)
 {
+    device_state_struct* device_state = static_cast<device_state_struct*>(device_data->state_ptr);
     for (uint32_t i=0; i<pAllocateInfo->commandBufferCount; ++i) {
-        device_data->command_buffer_map[pCommandBuffers[i]] = unique_ptr<CommandBufferState>(new CommandBufferState(&pAllocateInfo[i], pCommandBuffers[i]));
+        device_state->command_buffer_map[pCommandBuffers[i]] =
+            unique_ptr<CommandBufferState>(new CommandBufferState(&pAllocateInfo[i], pCommandBuffers[i]));
     }
 }
 

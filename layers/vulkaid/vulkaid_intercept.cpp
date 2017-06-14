@@ -19,7 +19,6 @@
 
 #include "vulkaid_intercept.h"
 #include "vulkaid_dispatch.h"
-//#include "vulkaid_state_structs.h"
 #include "vk_dispatch_table_helper.h"
 #include "vk_layer_extension_utils.h"
 #include "vk_extension_helper.h"
@@ -206,7 +205,6 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateDevice(
         return result;
     }
 
-//    auto test_data = new device_layer_data;
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(*pDevice), device_layer_data_map);
 
     device_data->instance_data = instance_data;
@@ -231,7 +229,8 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateDevice(
     // Store physical device properties and physical device mem limits into device layer_data structs
     instance_data->dispatch_table.GetPhysicalDeviceMemoryProperties(physicalDevice, &device_data->physical_device_mem_properties);
     instance_data->dispatch_table.GetPhysicalDeviceProperties(physicalDevice, &device_data->physical_device_properties);
-
+    // Call dispatch layer for device-level setup
+    PostCallCreateDevice(device_data, pCreateInfo, pAllocator, pDevice);
     return result;
 }
 

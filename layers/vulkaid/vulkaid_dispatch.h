@@ -17,14 +17,19 @@
 ** limitations under the License.
 */
 
-#include "vulkaid_state_structs.h"
+#include "vulkaid_layer_data.h"
 
 namespace vkaid {
+
+void PostCallCreateDevice(device_layer_data* device_data, const VkDeviceCreateInfo* pCreateInfo,
+                          const VkAllocationCallbacks* pAllocator, VkDevice* pDevice);
+
+void PostCallDestroyDevice(device_layer_data* device_data, const VkAllocationCallbacks* pAllocator);
 
 void PostCallAllocateCommandBuffers(
     device_layer_data*                          device_data,
     const VkCommandBufferAllocateInfo*          pAllocateInfo,
     VkCommandBuffer*                            pCommandBuffers);
 
-}
-#endif
+}  // namespace vkaid
+#endif  // #define __vkaid_dispatch_h_ 1
