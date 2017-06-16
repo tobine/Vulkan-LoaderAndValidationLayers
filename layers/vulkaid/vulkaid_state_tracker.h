@@ -32,6 +32,10 @@ void AllocateCommandBuffers(
     const VkCommandBufferAllocateInfo*          pAllocateInfo,
     VkCommandBuffer*                            pCommandBuffers);
 
+void AddCommand(device_layer_data* device_data, VkCommandBuffer commandBuffer, COMMAND_TYPE ctype);
+
+void DisplayCommandBuffers(device_layer_data* device_data);
+
 } // close namespace state_tracker
 } // close namespace vkaid
 #endif

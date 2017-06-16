@@ -1209,7 +1209,7 @@ VKAPI_ATTR void VKAPI_CALL CmdBindPipeline(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdBindPipeline();
     device_data->dispatch_table.CmdBindPipeline(commandBuffer,pipelineBindPoint,pipeline);
-    //PostCallvkCmdBindPipeline();
+    PostCallCmdBindPipeline(device_data, commandBuffer, pipelineBindPoint, pipeline);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdSetViewport(
@@ -1221,7 +1221,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetViewport(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetViewport();
     device_data->dispatch_table.CmdSetViewport(commandBuffer,firstViewport,viewportCount,pViewports);
-    //PostCallvkCmdSetViewport();
+    PostCallCmdSetViewport(device_data, commandBuffer, firstViewport, viewportCount, pViewports);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdSetScissor(
@@ -1233,7 +1233,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetScissor(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetScissor();
     device_data->dispatch_table.CmdSetScissor(commandBuffer,firstScissor,scissorCount,pScissors);
-    //PostCallvkCmdSetScissor();
+    PostCallCmdSetScissor(device_data, commandBuffer, firstScissor, scissorCount, pScissors);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdSetLineWidth(
@@ -1243,7 +1243,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetLineWidth(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetLineWidth();
     device_data->dispatch_table.CmdSetLineWidth(commandBuffer,lineWidth);
-    //PostCallvkCmdSetLineWidth();
+    PostCallCmdSetLineWidth(device_data, commandBuffer, lineWidth);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdSetDepthBias(
@@ -1255,7 +1255,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetDepthBias(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetDepthBias();
     device_data->dispatch_table.CmdSetDepthBias(commandBuffer,depthBiasConstantFactor,depthBiasClamp,depthBiasSlopeFactor);
-    //PostCallvkCmdSetDepthBias();
+    PostCallCmdSetDepthBias(device_data, commandBuffer, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdSetBlendConstants(
@@ -1265,7 +1265,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetBlendConstants(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetBlendConstants();
     device_data->dispatch_table.CmdSetBlendConstants(commandBuffer,blendConstants);
-    //PostCallvkCmdSetBlendConstants();
+    PostCallCmdSetBlendConstants(device_data, commandBuffer, blendConstants);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdSetDepthBounds(
@@ -1276,7 +1276,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetDepthBounds(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetDepthBounds();
     device_data->dispatch_table.CmdSetDepthBounds(commandBuffer,minDepthBounds,maxDepthBounds);
-    //PostCallvkCmdSetDepthBounds();
+    PostCallCmdSetDepthBounds(device_data, commandBuffer, minDepthBounds, maxDepthBounds);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdSetStencilCompareMask(
@@ -1287,7 +1287,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetStencilCompareMask(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetStencilCompareMask();
     device_data->dispatch_table.CmdSetStencilCompareMask(commandBuffer,faceMask,compareMask);
-    //PostCallvkCmdSetStencilCompareMask();
+    PostCallCmdSetStencilCompareMask(device_data, commandBuffer, faceMask, compareMask);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdSetStencilWriteMask(
@@ -1298,7 +1298,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetStencilWriteMask(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetStencilWriteMask();
     device_data->dispatch_table.CmdSetStencilWriteMask(commandBuffer,faceMask,writeMask);
-    //PostCallvkCmdSetStencilWriteMask();
+    PostCallCmdSetStencilWriteMask(device_data, commandBuffer, faceMask, writeMask);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdSetStencilReference(
@@ -1309,7 +1309,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetStencilReference(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetStencilReference();
     device_data->dispatch_table.CmdSetStencilReference(commandBuffer,faceMask,reference);
-    //PostCallvkCmdSetStencilReference();
+    PostCallCmdSetStencilReference(device_data, commandBuffer, faceMask, reference);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdBindDescriptorSets(
@@ -1325,7 +1325,8 @@ VKAPI_ATTR void VKAPI_CALL CmdBindDescriptorSets(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdBindDescriptorSets();
     device_data->dispatch_table.CmdBindDescriptorSets(commandBuffer,pipelineBindPoint,layout,firstSet,descriptorSetCount,pDescriptorSets,dynamicOffsetCount,pDynamicOffsets);
-    //PostCallvkCmdBindDescriptorSets();
+    PostCallCmdBindDescriptorSets(device_data, commandBuffer, pipelineBindPoint, layout, firstSet, descriptorSetCount,
+                                  pDescriptorSets, dynamicOffsetCount, pDynamicOffsets);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdBindIndexBuffer(
@@ -1337,7 +1338,7 @@ VKAPI_ATTR void VKAPI_CALL CmdBindIndexBuffer(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdBindIndexBuffer();
     device_data->dispatch_table.CmdBindIndexBuffer(commandBuffer,buffer,offset,indexType);
-    //PostCallvkCmdBindIndexBuffer();
+    PostCallCmdBindIndexBuffer(device_data, commandBuffer, buffer, offset, indexType);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdBindVertexBuffers(
@@ -1350,7 +1351,7 @@ VKAPI_ATTR void VKAPI_CALL CmdBindVertexBuffers(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdBindVertexBuffers();
     device_data->dispatch_table.CmdBindVertexBuffers(commandBuffer,firstBinding,bindingCount,pBuffers,pOffsets);
-    //PostCallvkCmdBindVertexBuffers();
+    PostCallCmdBindVertexBuffers(device_data, commandBuffer, firstBinding, bindingCount, pBuffers, pOffsets);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdDraw(
@@ -1363,7 +1364,7 @@ VKAPI_ATTR void VKAPI_CALL CmdDraw(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallCmdDraw(device_data, commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
     device_data->dispatch_table.CmdDraw(commandBuffer,vertexCount,instanceCount,firstVertex,firstInstance);
-    //PostCallvkCmdDraw();
+    PostCallCmdDraw(device_data, commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdDrawIndexed(
@@ -1377,7 +1378,7 @@ VKAPI_ATTR void VKAPI_CALL CmdDrawIndexed(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdDrawIndexed();
     device_data->dispatch_table.CmdDrawIndexed(commandBuffer,indexCount,instanceCount,firstIndex,vertexOffset,firstInstance);
-    //PostCallvkCmdDrawIndexed();
+    PostCallCmdDrawIndexed(device_data, commandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdDrawIndirect(
@@ -1390,7 +1391,7 @@ VKAPI_ATTR void VKAPI_CALL CmdDrawIndirect(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdDrawIndirect();
     device_data->dispatch_table.CmdDrawIndirect(commandBuffer,buffer,offset,drawCount,stride);
-    //PostCallvkCmdDrawIndirect();
+    PostCallCmdDrawIndirect(device_data, commandBuffer, buffer, offset, drawCount, stride);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdDrawIndexedIndirect(
@@ -1403,7 +1404,7 @@ VKAPI_ATTR void VKAPI_CALL CmdDrawIndexedIndirect(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdDrawIndexedIndirect();
     device_data->dispatch_table.CmdDrawIndexedIndirect(commandBuffer,buffer,offset,drawCount,stride);
-    //PostCallvkCmdDrawIndexedIndirect();
+    PostCallCmdDrawIndexedIndirect(device_data, commandBuffer, buffer, offset, drawCount, stride);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdDispatch(
@@ -1415,7 +1416,7 @@ VKAPI_ATTR void VKAPI_CALL CmdDispatch(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdDispatch();
     device_data->dispatch_table.CmdDispatch(commandBuffer,groupCountX,groupCountY,groupCountZ);
-    //PostCallvkCmdDispatch();
+    PostCallCmdDispatch(device_data, commandBuffer, groupCountX, groupCountY, groupCountZ);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdDispatchIndirect(
@@ -1426,7 +1427,7 @@ VKAPI_ATTR void VKAPI_CALL CmdDispatchIndirect(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdDispatchIndirect();
     device_data->dispatch_table.CmdDispatchIndirect(commandBuffer,buffer,offset);
-    //PostCallvkCmdDispatchIndirect();
+    PostCallCmdDispatchIndirect(device_data, commandBuffer, buffer, offset);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdCopyBuffer(
@@ -1439,7 +1440,7 @@ VKAPI_ATTR void VKAPI_CALL CmdCopyBuffer(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdCopyBuffer();
     device_data->dispatch_table.CmdCopyBuffer(commandBuffer,srcBuffer,dstBuffer,regionCount,pRegions);
-    //PostCallvkCmdCopyBuffer();
+    PostCallCmdCopyBuffer(device_data, commandBuffer, srcBuffer, dstBuffer, regionCount, pRegions);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdCopyImage(
@@ -1454,7 +1455,7 @@ VKAPI_ATTR void VKAPI_CALL CmdCopyImage(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdCopyImage();
     device_data->dispatch_table.CmdCopyImage(commandBuffer,srcImage,srcImageLayout,dstImage,dstImageLayout,regionCount,pRegions);
-    //PostCallvkCmdCopyImage();
+    PostCallCmdCopyImage(device_data, commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdBlitImage(
@@ -1470,7 +1471,8 @@ VKAPI_ATTR void VKAPI_CALL CmdBlitImage(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdBlitImage();
     device_data->dispatch_table.CmdBlitImage(commandBuffer,srcImage,srcImageLayout,dstImage,dstImageLayout,regionCount,pRegions,filter);
-    //PostCallvkCmdBlitImage();
+    PostCallCmdBlitImage(device_data, commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions,
+                         filter);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdCopyBufferToImage(
@@ -1484,7 +1486,7 @@ VKAPI_ATTR void VKAPI_CALL CmdCopyBufferToImage(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdCopyBufferToImage();
     device_data->dispatch_table.CmdCopyBufferToImage(commandBuffer,srcBuffer,dstImage,dstImageLayout,regionCount,pRegions);
-    //PostCallvkCmdCopyBufferToImage();
+    PostCallCmdCopyBufferToImage(device_data, commandBuffer, srcBuffer, dstImage, dstImageLayout, regionCount, pRegions);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdCopyImageToBuffer(
@@ -1498,7 +1500,7 @@ VKAPI_ATTR void VKAPI_CALL CmdCopyImageToBuffer(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdCopyImageToBuffer();
     device_data->dispatch_table.CmdCopyImageToBuffer(commandBuffer,srcImage,srcImageLayout,dstBuffer,regionCount,pRegions);
-    //PostCallvkCmdCopyImageToBuffer();
+    PostCallCmdCopyImageToBuffer(device_data, commandBuffer, srcImage, srcImageLayout, dstBuffer, regionCount, pRegions);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdUpdateBuffer(
@@ -1511,7 +1513,7 @@ VKAPI_ATTR void VKAPI_CALL CmdUpdateBuffer(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdUpdateBuffer();
     device_data->dispatch_table.CmdUpdateBuffer(commandBuffer,dstBuffer,dstOffset,dataSize,pData);
-    //PostCallvkCmdUpdateBuffer();
+    PostCallCmdUpdateBuffer(device_data, commandBuffer, dstBuffer, dstOffset, dataSize, pData);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdFillBuffer(
@@ -1524,7 +1526,7 @@ VKAPI_ATTR void VKAPI_CALL CmdFillBuffer(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdFillBuffer();
     device_data->dispatch_table.CmdFillBuffer(commandBuffer,dstBuffer,dstOffset,size,data);
-    //PostCallvkCmdFillBuffer();
+    PostCallCmdFillBuffer(device_data, commandBuffer, dstBuffer, dstOffset, size, data);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdClearColorImage(
@@ -1538,7 +1540,7 @@ VKAPI_ATTR void VKAPI_CALL CmdClearColorImage(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdClearColorImage();
     device_data->dispatch_table.CmdClearColorImage(commandBuffer,image,imageLayout,pColor,rangeCount,pRanges);
-    //PostCallvkCmdClearColorImage();
+    PostCallCmdClearColorImage(device_data, commandBuffer, image, imageLayout, pColor, rangeCount, pRanges);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdClearDepthStencilImage(
@@ -1552,7 +1554,7 @@ VKAPI_ATTR void VKAPI_CALL CmdClearDepthStencilImage(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdClearDepthStencilImage();
     device_data->dispatch_table.CmdClearDepthStencilImage(commandBuffer,image,imageLayout,pDepthStencil,rangeCount,pRanges);
-    //PostCallvkCmdClearDepthStencilImage();
+    PostCallCmdClearDepthStencilImage(device_data, commandBuffer, image, imageLayout, pDepthStencil, rangeCount, pRanges);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdClearAttachments(
@@ -1565,7 +1567,7 @@ VKAPI_ATTR void VKAPI_CALL CmdClearAttachments(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdClearAttachments();
     device_data->dispatch_table.CmdClearAttachments(commandBuffer,attachmentCount,pAttachments,rectCount,pRects);
-    //PostCallvkCmdClearAttachments();
+    PostCallCmdClearAttachments(device_data, commandBuffer, attachmentCount, pAttachments, rectCount, pRects);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdResolveImage(
@@ -1580,7 +1582,7 @@ VKAPI_ATTR void VKAPI_CALL CmdResolveImage(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdResolveImage();
     device_data->dispatch_table.CmdResolveImage(commandBuffer,srcImage,srcImageLayout,dstImage,dstImageLayout,regionCount,pRegions);
-    //PostCallvkCmdResolveImage();
+    PostCallCmdResolveImage(device_data, commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdSetEvent(
@@ -1591,7 +1593,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetEvent(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetEvent();
     device_data->dispatch_table.CmdSetEvent(commandBuffer,event,stageMask);
-    //PostCallvkCmdSetEvent();
+    PostCallCmdSetEvent(device_data, commandBuffer, event, stageMask);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdResetEvent(
@@ -1602,7 +1604,7 @@ VKAPI_ATTR void VKAPI_CALL CmdResetEvent(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdResetEvent();
     device_data->dispatch_table.CmdResetEvent(commandBuffer,event,stageMask);
-    //PostCallvkCmdResetEvent();
+    PostCallCmdResetEvent(device_data, commandBuffer, event, stageMask);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdWaitEvents(
@@ -1621,7 +1623,9 @@ VKAPI_ATTR void VKAPI_CALL CmdWaitEvents(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdWaitEvents();
     device_data->dispatch_table.CmdWaitEvents(commandBuffer,eventCount,pEvents,srcStageMask,dstStageMask,memoryBarrierCount,pMemoryBarriers,bufferMemoryBarrierCount,pBufferMemoryBarriers,imageMemoryBarrierCount,pImageMemoryBarriers);
-    //PostCallvkCmdWaitEvents();
+    PostCallCmdWaitEvents(device_data, commandBuffer, eventCount, pEvents, srcStageMask, dstStageMask, memoryBarrierCount,
+                          pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers, imageMemoryBarrierCount,
+                          pImageMemoryBarriers);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdPipelineBarrier(
@@ -1639,7 +1643,9 @@ VKAPI_ATTR void VKAPI_CALL CmdPipelineBarrier(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdPipelineBarrier();
     device_data->dispatch_table.CmdPipelineBarrier(commandBuffer,srcStageMask,dstStageMask,dependencyFlags,memoryBarrierCount,pMemoryBarriers,bufferMemoryBarrierCount,pBufferMemoryBarriers,imageMemoryBarrierCount,pImageMemoryBarriers);
-    //PostCallvkCmdPipelineBarrier();
+    PostCallCmdPipelineBarrier(device_data, commandBuffer, srcStageMask, dstStageMask, dependencyFlags, memoryBarrierCount,
+                               pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers, imageMemoryBarrierCount,
+                               pImageMemoryBarriers);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdBeginQuery(
@@ -1651,7 +1657,7 @@ VKAPI_ATTR void VKAPI_CALL CmdBeginQuery(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdBeginQuery();
     device_data->dispatch_table.CmdBeginQuery(commandBuffer,queryPool,query,flags);
-    //PostCallvkCmdBeginQuery();
+    PostCallCmdBeginQuery(device_data, commandBuffer, queryPool, query, flags);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdEndQuery(
@@ -1662,7 +1668,7 @@ VKAPI_ATTR void VKAPI_CALL CmdEndQuery(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdEndQuery();
     device_data->dispatch_table.CmdEndQuery(commandBuffer,queryPool,query);
-    //PostCallvkCmdEndQuery();
+    PostCallCmdEndQuery(device_data, commandBuffer, queryPool, query);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdResetQueryPool(
@@ -1674,7 +1680,7 @@ VKAPI_ATTR void VKAPI_CALL CmdResetQueryPool(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdResetQueryPool();
     device_data->dispatch_table.CmdResetQueryPool(commandBuffer,queryPool,firstQuery,queryCount);
-    //PostCallvkCmdResetQueryPool();
+    PostCallCmdResetQueryPool(device_data, commandBuffer, queryPool, firstQuery, queryCount);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdWriteTimestamp(
@@ -1686,7 +1692,7 @@ VKAPI_ATTR void VKAPI_CALL CmdWriteTimestamp(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdWriteTimestamp();
     device_data->dispatch_table.CmdWriteTimestamp(commandBuffer,pipelineStage,queryPool,query);
-    //PostCallvkCmdWriteTimestamp();
+    PostCallCmdWriteTimestamp(device_data, commandBuffer, pipelineStage, queryPool, query);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdCopyQueryPoolResults(
@@ -1702,7 +1708,8 @@ VKAPI_ATTR void VKAPI_CALL CmdCopyQueryPoolResults(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdCopyQueryPoolResults();
     device_data->dispatch_table.CmdCopyQueryPoolResults(commandBuffer,queryPool,firstQuery,queryCount,dstBuffer,dstOffset,stride,flags);
-    //PostCallvkCmdCopyQueryPoolResults();
+    PostCallCmdCopyQueryPoolResults(device_data, commandBuffer, queryPool, firstQuery, queryCount, dstBuffer, dstOffset, stride,
+                                    flags);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdPushConstants(
@@ -1716,7 +1723,7 @@ VKAPI_ATTR void VKAPI_CALL CmdPushConstants(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdPushConstants();
     device_data->dispatch_table.CmdPushConstants(commandBuffer,layout,stageFlags,offset,size,pValues);
-    //PostCallvkCmdPushConstants();
+    PostCallCmdPushConstants(device_data, commandBuffer, layout, stageFlags, offset, size, pValues);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdBeginRenderPass(
@@ -1727,7 +1734,7 @@ VKAPI_ATTR void VKAPI_CALL CmdBeginRenderPass(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdBeginRenderPass();
     device_data->dispatch_table.CmdBeginRenderPass(commandBuffer,pRenderPassBegin,contents);
-    //PostCallvkCmdBeginRenderPass();
+    PostCallCmdBeginRenderPass(device_data, commandBuffer, pRenderPassBegin, contents);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdNextSubpass(
@@ -1737,7 +1744,7 @@ VKAPI_ATTR void VKAPI_CALL CmdNextSubpass(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdNextSubpass();
     device_data->dispatch_table.CmdNextSubpass(commandBuffer,contents);
-    //PostCallvkCmdNextSubpass();
+    PostCallCmdNextSubpass(device_data, commandBuffer, contents);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdEndRenderPass(
@@ -1746,7 +1753,7 @@ VKAPI_ATTR void VKAPI_CALL CmdEndRenderPass(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdEndRenderPass();
     device_data->dispatch_table.CmdEndRenderPass(commandBuffer);
-    //PostCallvkCmdEndRenderPass();
+    PostCallCmdEndRenderPass(device_data, commandBuffer);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdExecuteCommands(
@@ -1757,7 +1764,7 @@ VKAPI_ATTR void VKAPI_CALL CmdExecuteCommands(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdExecuteCommands();
     device_data->dispatch_table.CmdExecuteCommands(commandBuffer,commandBufferCount,pCommandBuffers);
-    //PostCallvkCmdExecuteCommands();
+    PostCallCmdExecuteCommands(device_data, commandBuffer, commandBufferCount, pCommandBuffers);
 }
 
 
@@ -1881,7 +1888,7 @@ VKAPI_ATTR VkResult VKAPI_CALL QueuePresentKHR(
     const VkPresentInfoKHR*                     pPresentInfo)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(queue), device_layer_data_map);
-    //PreCallvkQueuePresentKHR();
+    PreCallQueuePresentKHR(device_data, queue, pPresentInfo);
     VkResult result = device_data->dispatch_table.QueuePresentKHR(queue,pPresentInfo);
     //PostCallvkQueuePresentKHR();
     return result;
@@ -2253,7 +2260,8 @@ VKAPI_ATTR void VKAPI_CALL CmdPushDescriptorSetKHR(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdPushDescriptorSetKHR();
     device_data->dispatch_table.CmdPushDescriptorSetKHR(commandBuffer,pipelineBindPoint,layout,set,descriptorWriteCount,pDescriptorWrites);
-    //PostCallvkCmdPushDescriptorSetKHR();
+    PostCallCmdPushDescriptorSetKHR(device_data, commandBuffer, pipelineBindPoint, layout, set, descriptorWriteCount,
+                                    pDescriptorWrites);
 }
 
 
@@ -2304,7 +2312,7 @@ VKAPI_ATTR void VKAPI_CALL CmdPushDescriptorSetWithTemplateKHR(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdPushDescriptorSetWithTemplateKHR();
     device_data->dispatch_table.CmdPushDescriptorSetWithTemplateKHR(commandBuffer,descriptorUpdateTemplate,layout,set,pData);
-    //PostCallvkCmdPushDescriptorSetWithTemplateKHR();
+    PostCallCmdPushDescriptorSetWithTemplateKHR(device_data, commandBuffer, descriptorUpdateTemplate, layout, set, pData);
 }
 
 
@@ -2411,7 +2419,7 @@ VKAPI_ATTR void VKAPI_CALL CmdDebugMarkerBeginEXT(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdDebugMarkerBeginEXT();
     device_data->dispatch_table.CmdDebugMarkerBeginEXT(commandBuffer,pMarkerInfo);
-    //PostCallvkCmdDebugMarkerBeginEXT();
+    PostCallCmdDebugMarkerBeginEXT(device_data, commandBuffer, pMarkerInfo);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdDebugMarkerEndEXT(
@@ -2420,7 +2428,7 @@ VKAPI_ATTR void VKAPI_CALL CmdDebugMarkerEndEXT(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdDebugMarkerEndEXT();
     device_data->dispatch_table.CmdDebugMarkerEndEXT(commandBuffer);
-    //PostCallvkCmdDebugMarkerEndEXT();
+    PostCallCmdDebugMarkerEndEXT(device_data, commandBuffer);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdDebugMarkerInsertEXT(
@@ -2430,7 +2438,7 @@ VKAPI_ATTR void VKAPI_CALL CmdDebugMarkerInsertEXT(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdDebugMarkerInsertEXT();
     device_data->dispatch_table.CmdDebugMarkerInsertEXT(commandBuffer,pMarkerInfo);
-    //PostCallvkCmdDebugMarkerInsertEXT();
+    PostCallCmdDebugMarkerInsertEXT(device_data, commandBuffer, pMarkerInfo);
 }
 
 
@@ -2448,7 +2456,8 @@ VKAPI_ATTR void VKAPI_CALL CmdDrawIndirectCountAMD(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdDrawIndirectCountAMD();
     device_data->dispatch_table.CmdDrawIndirectCountAMD(commandBuffer,buffer,offset,countBuffer,countBufferOffset,maxDrawCount,stride);
-    //PostCallvkCmdDrawIndirectCountAMD();
+    PostCallCmdDrawIndirectCountAMD(device_data, commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount,
+                                    stride);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdDrawIndexedIndirectCountAMD(
@@ -2463,7 +2472,8 @@ VKAPI_ATTR void VKAPI_CALL CmdDrawIndexedIndirectCountAMD(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdDrawIndexedIndirectCountAMD();
     device_data->dispatch_table.CmdDrawIndexedIndirectCountAMD(commandBuffer,buffer,offset,countBuffer,countBufferOffset,maxDrawCount,stride);
-    //PostCallvkCmdDrawIndexedIndirectCountAMD();
+    PostCallCmdDrawIndexedIndirectCountAMD(device_data, commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount,
+                                           stride);
 }
 
 
@@ -2555,7 +2565,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetDeviceMaskKHX(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetDeviceMaskKHX();
     device_data->dispatch_table.CmdSetDeviceMaskKHX(commandBuffer,deviceMask);
-    //PostCallvkCmdSetDeviceMaskKHX();
+    PostCallCmdSetDeviceMaskKHX(device_data, commandBuffer, deviceMask);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL GetDeviceGroupPresentCapabilitiesKHX(
@@ -2605,7 +2615,8 @@ VKAPI_ATTR void VKAPI_CALL CmdDispatchBaseKHX(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdDispatchBaseKHX();
     device_data->dispatch_table.CmdDispatchBaseKHX(commandBuffer,baseGroupX,baseGroupY,baseGroupZ,groupCountX,groupCountY,groupCountZ);
-    //PostCallvkCmdDispatchBaseKHX();
+    PostCallCmdDispatchBaseKHX(device_data, commandBuffer, baseGroupX, baseGroupY, baseGroupZ, groupCountX, groupCountY,
+                               groupCountZ);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDevicePresentRectanglesKHX(
@@ -2798,7 +2809,7 @@ VKAPI_ATTR void VKAPI_CALL CmdProcessCommandsNVX(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdProcessCommandsNVX();
     device_data->dispatch_table.CmdProcessCommandsNVX(commandBuffer,pProcessCommandsInfo);
-    //PostCallvkCmdProcessCommandsNVX();
+    PostCallCmdProcessCommandsNVX(device_data, commandBuffer, pProcessCommandsInfo);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdReserveSpaceForCommandsNVX(
@@ -2808,7 +2819,7 @@ VKAPI_ATTR void VKAPI_CALL CmdReserveSpaceForCommandsNVX(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdReserveSpaceForCommandsNVX();
     device_data->dispatch_table.CmdReserveSpaceForCommandsNVX(commandBuffer,pReserveSpaceInfo);
-    //PostCallvkCmdReserveSpaceForCommandsNVX();
+    PostCallCmdReserveSpaceForCommandsNVX(device_data, commandBuffer, pReserveSpaceInfo);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateIndirectCommandsLayoutNVX(
@@ -2908,7 +2919,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetViewportWScalingNV(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetViewportWScalingNV();
     device_data->dispatch_table.CmdSetViewportWScalingNV(commandBuffer,firstViewport,viewportCount,pViewportWScalings);
-    //PostCallvkCmdSetViewportWScalingNV();
+    PostCallCmdSetViewportWScalingNV(device_data, commandBuffer, firstViewport, viewportCount, pViewportWScalings);
 }
 
 
@@ -3058,7 +3069,7 @@ VKAPI_ATTR void VKAPI_CALL CmdSetDiscardRectangleEXT(
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
     //PreCallvkCmdSetDiscardRectangleEXT();
     device_data->dispatch_table.CmdSetDiscardRectangleEXT(commandBuffer,firstDiscardRectangle,discardRectangleCount,pDiscardRectangles);
-    //PostCallvkCmdSetDiscardRectangleEXT();
+    PostCallCmdSetDiscardRectangleEXT(device_data, commandBuffer, firstDiscardRectangle, discardRectangleCount, pDiscardRectangles);
 }
 
 

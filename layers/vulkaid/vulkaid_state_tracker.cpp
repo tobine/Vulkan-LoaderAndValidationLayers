@@ -32,6 +32,13 @@ CommandBufferState::CommandBufferState(const VkCommandBufferAllocateInfo* alloc_
     fprintf(stdout, "Created state wrapper for cmd buffer 0x%p", command_buffer);
 }
 
+void CommandBufferState::Add(const Command cmd) { commands.push_back(cmd); }
+
+void CommandBufferState::Display() {
+    fprintf(stdout, "Cmd buffer 0x%p:", command_buffer);
+    // TODO : Print commands in command buffer
+}
+
 namespace state_tracker {
 
 void AllocateCommandBuffers(
@@ -43,6 +50,18 @@ void AllocateCommandBuffers(
     for (uint32_t i=0; i<pAllocateInfo->commandBufferCount; ++i) {
         device_state->command_buffer_map[pCommandBuffers[i]] =
             unique_ptr<CommandBufferState>(new CommandBufferState(&pAllocateInfo[i], pCommandBuffers[i]));
+    }
+}
+
+void AddCommand(device_layer_data* device_data, VkCommandBuffer commandBuffer, COMMAND_TYPE ctype) {
+    device_state_struct* device_state = static_cast<device_state_struct*>(device_data->state_ptr);
+    device_state->command_buffer_map[commandBuffer]->Add(ctype);
+}
+
+void DisplayCommandBuffers(device_layer_data* device_data) {
+    device_state_struct* device_state = static_cast<device_state_struct*>(device_data->state_ptr);
+    for (auto const& cb_state_pair : device_state->command_buffer_map) {
+        device_state->command_buffer_map[cb_state_pair.first]->Display();
     }
 }
 
