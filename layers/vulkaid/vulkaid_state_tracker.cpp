@@ -29,14 +29,17 @@ CommandBufferState::CommandBufferState(const VkCommandBufferAllocateInfo* alloc_
      command_buffer(cmd_buffer), create_info(new safe_VkCommandBufferAllocateInfo(alloc_info))
 {
     // all current work handled via initializers
-    fprintf(stdout, "Created state wrapper for cmd buffer 0x%p", command_buffer);
+    fprintf(stdout, "Created state wrapper for cmd buffer 0x%p\n", command_buffer);
 }
 
 void CommandBufferState::Add(const Command cmd) { commands.push_back(cmd); }
 
 void CommandBufferState::Display() {
-    fprintf(stdout, "Cmd buffer 0x%p:", command_buffer);
-    // TODO : Print commands in command buffer
+    fprintf(stdout, "Cmd buffer 0x%p:\n", command_buffer);
+    // Print commands in command buffer
+    for (uint32_t i = 0; i < commands.size(); ++i) {
+        fprintf(stdout, "   %s\n", command_string[static_cast<uint32_t>(commands[i].GetType())]);
+    }
 }
 
 namespace state_tracker {

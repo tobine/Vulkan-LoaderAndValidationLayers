@@ -74,9 +74,9 @@ VKAPI_ATTR VkResult VKAPI_CALL EnumeratePhysicalDevices(
     VkPhysicalDevice*                           pPhysicalDevices)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkEnumeratePhysicalDevices();
-    VkResult result = instance_data->dispatch_table.EnumeratePhysicalDevices(instance,pPhysicalDeviceCount,pPhysicalDevices);
-    //PostCallvkEnumeratePhysicalDevices();
+    PreCallEnumeratePhysicalDevices(instance_data, instance, pPhysicalDeviceCount, pPhysicalDevices);
+    VkResult result = instance_data->dispatch_table.EnumeratePhysicalDevices(instance, pPhysicalDeviceCount, pPhysicalDevices);
+    PostCallEnumeratePhysicalDevices(instance_data, instance, pPhysicalDeviceCount, pPhysicalDevices);
     return result;
 }
 
@@ -85,9 +85,9 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceFeatures(
     VkPhysicalDeviceFeatures*                   pFeatures)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceFeatures();
-    instance_data->dispatch_table.GetPhysicalDeviceFeatures(physicalDevice,pFeatures);
-    //PostCallvkGetPhysicalDeviceFeatures();
+    PreCallGetPhysicalDeviceFeatures(instance_data, physicalDevice, pFeatures);
+    instance_data->dispatch_table.GetPhysicalDeviceFeatures(physicalDevice, pFeatures);
+    PostCallGetPhysicalDeviceFeatures(instance_data, physicalDevice, pFeatures);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceFormatProperties(
@@ -96,9 +96,9 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceFormatProperties(
     VkFormatProperties*                         pFormatProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceFormatProperties();
-    instance_data->dispatch_table.GetPhysicalDeviceFormatProperties(physicalDevice,format,pFormatProperties);
-    //PostCallvkGetPhysicalDeviceFormatProperties();
+    PreCallGetPhysicalDeviceFormatProperties(instance_data, physicalDevice, format, pFormatProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceFormatProperties(physicalDevice, format, pFormatProperties);
+    PostCallGetPhysicalDeviceFormatProperties(instance_data, physicalDevice, format, pFormatProperties);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceImageFormatProperties(
@@ -111,9 +111,12 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceImageFormatProperties(
     VkImageFormatProperties*                    pImageFormatProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceImageFormatProperties();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceImageFormatProperties(physicalDevice,format,type,tiling,usage,flags,pImageFormatProperties);
-    //PostCallvkGetPhysicalDeviceImageFormatProperties();
+    PreCallGetPhysicalDeviceImageFormatProperties(instance_data, physicalDevice, format, type, tiling, usage, flags,
+                                                  pImageFormatProperties);
+    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceImageFormatProperties(physicalDevice, format, type, tiling,
+                                                                                           usage, flags, pImageFormatProperties);
+    PostCallGetPhysicalDeviceImageFormatProperties(instance_data, physicalDevice, format, type, tiling, usage, flags,
+                                                   pImageFormatProperties);
     return result;
 }
 
@@ -122,9 +125,9 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceProperties(
     VkPhysicalDeviceProperties*                 pProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceProperties();
-    instance_data->dispatch_table.GetPhysicalDeviceProperties(physicalDevice,pProperties);
-    //PostCallvkGetPhysicalDeviceProperties();
+    PreCallGetPhysicalDeviceProperties(instance_data, physicalDevice, pProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceProperties(physicalDevice, pProperties);
+    PostCallGetPhysicalDeviceProperties(instance_data, physicalDevice, pProperties);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceQueueFamilyProperties(
@@ -133,9 +136,11 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceQueueFamilyProperties(
     VkQueueFamilyProperties*                    pQueueFamilyProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceQueueFamilyProperties();
-    instance_data->dispatch_table.GetPhysicalDeviceQueueFamilyProperties(physicalDevice,pQueueFamilyPropertyCount,pQueueFamilyProperties);
-    //PostCallvkGetPhysicalDeviceQueueFamilyProperties();
+    PreCallGetPhysicalDeviceQueueFamilyProperties(instance_data, physicalDevice, pQueueFamilyPropertyCount, pQueueFamilyProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceQueueFamilyProperties(physicalDevice, pQueueFamilyPropertyCount,
+                                                                         pQueueFamilyProperties);
+    PostCallGetPhysicalDeviceQueueFamilyProperties(instance_data, physicalDevice, pQueueFamilyPropertyCount,
+                                                   pQueueFamilyProperties);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceMemoryProperties(
@@ -143,9 +148,9 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceMemoryProperties(
     VkPhysicalDeviceMemoryProperties*           pMemoryProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceMemoryProperties();
-    instance_data->dispatch_table.GetPhysicalDeviceMemoryProperties(physicalDevice,pMemoryProperties);
-    //PostCallvkGetPhysicalDeviceMemoryProperties();
+    PreCallGetPhysicalDeviceMemoryProperties(instance_data, physicalDevice, pMemoryProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceMemoryProperties(physicalDevice, pMemoryProperties);
+    PostCallGetPhysicalDeviceMemoryProperties(instance_data, physicalDevice, pMemoryProperties);
 }
 
 VKAPI_ATTR PFN_vkVoidFunction VKAPI_CALL GetDeviceProcAddr(
@@ -287,9 +292,9 @@ VKAPI_ATTR void VKAPI_CALL GetDeviceQueue(
     VkQueue*                                    pQueue)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetDeviceQueue();
-    device_data->dispatch_table.GetDeviceQueue(device,queueFamilyIndex,queueIndex,pQueue);
-    //PostCallvkGetDeviceQueue();
+    PreCallGetDeviceQueue(device_data, device, queueFamilyIndex, queueIndex, pQueue);
+    device_data->dispatch_table.GetDeviceQueue(device, queueFamilyIndex, queueIndex, pQueue);
+    PostCallGetDeviceQueue(device_data, device, queueFamilyIndex, queueIndex, pQueue);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL QueueSubmit(
@@ -299,9 +304,9 @@ VKAPI_ATTR VkResult VKAPI_CALL QueueSubmit(
     VkFence                                     fence)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(queue), device_layer_data_map);
-    //PreCallvkQueueSubmit();
-    VkResult result = device_data->dispatch_table.QueueSubmit(queue,submitCount,pSubmits,fence);
-    //PostCallvkQueueSubmit();
+    PreCallQueueSubmit(device_data, queue, submitCount, pSubmits, fence);
+    VkResult result = device_data->dispatch_table.QueueSubmit(queue, submitCount, pSubmits, fence);
+    PostCallQueueSubmit(device_data, queue, submitCount, pSubmits, fence);
     return result;
 }
 
@@ -309,9 +314,9 @@ VKAPI_ATTR VkResult VKAPI_CALL QueueWaitIdle(
     VkQueue                                     queue)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(queue), device_layer_data_map);
-    //PreCallvkQueueWaitIdle();
+    PreCallQueueWaitIdle(device_data, queue);
     VkResult result = device_data->dispatch_table.QueueWaitIdle(queue);
-    //PostCallvkQueueWaitIdle();
+    PostCallQueueWaitIdle(device_data, queue);
     return result;
 }
 
@@ -319,9 +324,9 @@ VKAPI_ATTR VkResult VKAPI_CALL DeviceWaitIdle(
     VkDevice                                    device)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDeviceWaitIdle();
+    PreCallDeviceWaitIdle(device_data, device);
     VkResult result = device_data->dispatch_table.DeviceWaitIdle(device);
-    //PostCallvkDeviceWaitIdle();
+    PostCallDeviceWaitIdle(device_data, device);
     return result;
 }
 
@@ -332,9 +337,9 @@ VKAPI_ATTR VkResult VKAPI_CALL AllocateMemory(
     VkDeviceMemory*                             pMemory)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkAllocateMemory();
-    VkResult result = device_data->dispatch_table.AllocateMemory(device,pAllocateInfo,pAllocator,pMemory);
-    //PostCallvkAllocateMemory();
+    PreCallAllocateMemory(device_data, device, pAllocateInfo, pAllocator, pMemory);
+    VkResult result = device_data->dispatch_table.AllocateMemory(device, pAllocateInfo, pAllocator, pMemory);
+    PostCallAllocateMemory(device_data, device, pAllocateInfo, pAllocator, pMemory);
     return result;
 }
 
@@ -344,9 +349,9 @@ VKAPI_ATTR void VKAPI_CALL FreeMemory(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkFreeMemory();
-    device_data->dispatch_table.FreeMemory(device,memory,pAllocator);
-    //PostCallvkFreeMemory();
+    PreCallFreeMemory(device_data, device, memory, pAllocator);
+    device_data->dispatch_table.FreeMemory(device, memory, pAllocator);
+    PostCallFreeMemory(device_data, device, memory, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL MapMemory(
@@ -358,9 +363,9 @@ VKAPI_ATTR VkResult VKAPI_CALL MapMemory(
     void**                                      ppData)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkMapMemory();
-    VkResult result = device_data->dispatch_table.MapMemory(device,memory,offset,size,flags,ppData);
-    //PostCallvkMapMemory();
+    PreCallMapMemory(device_data, device, memory, offset, size, flags, ppData);
+    VkResult result = device_data->dispatch_table.MapMemory(device, memory, offset, size, flags, ppData);
+    PostCallMapMemory(device_data, device, memory, offset, size, flags, ppData);
     return result;
 }
 
@@ -369,9 +374,9 @@ VKAPI_ATTR void VKAPI_CALL UnmapMemory(
     VkDeviceMemory                              memory)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkUnmapMemory();
-    device_data->dispatch_table.UnmapMemory(device,memory);
-    //PostCallvkUnmapMemory();
+    PreCallUnmapMemory(device_data, device, memory);
+    device_data->dispatch_table.UnmapMemory(device, memory);
+    PostCallUnmapMemory(device_data, device, memory);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL FlushMappedMemoryRanges(
@@ -380,9 +385,9 @@ VKAPI_ATTR VkResult VKAPI_CALL FlushMappedMemoryRanges(
     const VkMappedMemoryRange*                  pMemoryRanges)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkFlushMappedMemoryRanges();
-    VkResult result = device_data->dispatch_table.FlushMappedMemoryRanges(device,memoryRangeCount,pMemoryRanges);
-    //PostCallvkFlushMappedMemoryRanges();
+    PreCallFlushMappedMemoryRanges(device_data, device, memoryRangeCount, pMemoryRanges);
+    VkResult result = device_data->dispatch_table.FlushMappedMemoryRanges(device, memoryRangeCount, pMemoryRanges);
+    PostCallFlushMappedMemoryRanges(device_data, device, memoryRangeCount, pMemoryRanges);
     return result;
 }
 
@@ -392,9 +397,9 @@ VKAPI_ATTR VkResult VKAPI_CALL InvalidateMappedMemoryRanges(
     const VkMappedMemoryRange*                  pMemoryRanges)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkInvalidateMappedMemoryRanges();
-    VkResult result = device_data->dispatch_table.InvalidateMappedMemoryRanges(device,memoryRangeCount,pMemoryRanges);
-    //PostCallvkInvalidateMappedMemoryRanges();
+    PreCallInvalidateMappedMemoryRanges(device_data, device, memoryRangeCount, pMemoryRanges);
+    VkResult result = device_data->dispatch_table.InvalidateMappedMemoryRanges(device, memoryRangeCount, pMemoryRanges);
+    PostCallInvalidateMappedMemoryRanges(device_data, device, memoryRangeCount, pMemoryRanges);
     return result;
 }
 
@@ -404,9 +409,9 @@ VKAPI_ATTR void VKAPI_CALL GetDeviceMemoryCommitment(
     VkDeviceSize*                               pCommittedMemoryInBytes)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetDeviceMemoryCommitment();
-    device_data->dispatch_table.GetDeviceMemoryCommitment(device,memory,pCommittedMemoryInBytes);
-    //PostCallvkGetDeviceMemoryCommitment();
+    PreCallGetDeviceMemoryCommitment(device_data, device, memory, pCommittedMemoryInBytes);
+    device_data->dispatch_table.GetDeviceMemoryCommitment(device, memory, pCommittedMemoryInBytes);
+    PostCallGetDeviceMemoryCommitment(device_data, device, memory, pCommittedMemoryInBytes);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL BindBufferMemory(
@@ -416,9 +421,9 @@ VKAPI_ATTR VkResult VKAPI_CALL BindBufferMemory(
     VkDeviceSize                                memoryOffset)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkBindBufferMemory();
-    VkResult result = device_data->dispatch_table.BindBufferMemory(device,buffer,memory,memoryOffset);
-    //PostCallvkBindBufferMemory();
+    PreCallBindBufferMemory(device_data, device, buffer, memory, memoryOffset);
+    VkResult result = device_data->dispatch_table.BindBufferMemory(device, buffer, memory, memoryOffset);
+    PostCallBindBufferMemory(device_data, device, buffer, memory, memoryOffset);
     return result;
 }
 
@@ -429,9 +434,9 @@ VKAPI_ATTR VkResult VKAPI_CALL BindImageMemory(
     VkDeviceSize                                memoryOffset)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkBindImageMemory();
-    VkResult result = device_data->dispatch_table.BindImageMemory(device,image,memory,memoryOffset);
-    //PostCallvkBindImageMemory();
+    PreCallBindImageMemory(device_data, device, image, memory, memoryOffset);
+    VkResult result = device_data->dispatch_table.BindImageMemory(device, image, memory, memoryOffset);
+    PostCallBindImageMemory(device_data, device, image, memory, memoryOffset);
     return result;
 }
 
@@ -441,9 +446,9 @@ VKAPI_ATTR void VKAPI_CALL GetBufferMemoryRequirements(
     VkMemoryRequirements*                       pMemoryRequirements)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetBufferMemoryRequirements();
-    device_data->dispatch_table.GetBufferMemoryRequirements(device,buffer,pMemoryRequirements);
-    //PostCallvkGetBufferMemoryRequirements();
+    PreCallGetBufferMemoryRequirements(device_data, device, buffer, pMemoryRequirements);
+    device_data->dispatch_table.GetBufferMemoryRequirements(device, buffer, pMemoryRequirements);
+    PostCallGetBufferMemoryRequirements(device_data, device, buffer, pMemoryRequirements);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetImageMemoryRequirements(
@@ -452,9 +457,9 @@ VKAPI_ATTR void VKAPI_CALL GetImageMemoryRequirements(
     VkMemoryRequirements*                       pMemoryRequirements)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetImageMemoryRequirements();
-    device_data->dispatch_table.GetImageMemoryRequirements(device,image,pMemoryRequirements);
-    //PostCallvkGetImageMemoryRequirements();
+    PreCallGetImageMemoryRequirements(device_data, device, image, pMemoryRequirements);
+    device_data->dispatch_table.GetImageMemoryRequirements(device, image, pMemoryRequirements);
+    PostCallGetImageMemoryRequirements(device_data, device, image, pMemoryRequirements);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetImageSparseMemoryRequirements(
@@ -464,9 +469,10 @@ VKAPI_ATTR void VKAPI_CALL GetImageSparseMemoryRequirements(
     VkSparseImageMemoryRequirements*            pSparseMemoryRequirements)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetImageSparseMemoryRequirements();
-    device_data->dispatch_table.GetImageSparseMemoryRequirements(device,image,pSparseMemoryRequirementCount,pSparseMemoryRequirements);
-    //PostCallvkGetImageSparseMemoryRequirements();
+    PreCallGetImageSparseMemoryRequirements(device_data, device, image, pSparseMemoryRequirementCount, pSparseMemoryRequirements);
+    device_data->dispatch_table.GetImageSparseMemoryRequirements(device, image, pSparseMemoryRequirementCount,
+                                                                 pSparseMemoryRequirements);
+    PostCallGetImageSparseMemoryRequirements(device_data, device, image, pSparseMemoryRequirementCount, pSparseMemoryRequirements);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceSparseImageFormatProperties(
@@ -480,9 +486,12 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceSparseImageFormatProperties(
     VkSparseImageFormatProperties*              pProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceSparseImageFormatProperties();
-    instance_data->dispatch_table.GetPhysicalDeviceSparseImageFormatProperties(physicalDevice,format,type,samples,usage,tiling,pPropertyCount,pProperties);
-    //PostCallvkGetPhysicalDeviceSparseImageFormatProperties();
+    PreCallGetPhysicalDeviceSparseImageFormatProperties(instance_data, physicalDevice, format, type, samples, usage, tiling,
+                                                        pPropertyCount, pProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceSparseImageFormatProperties(physicalDevice, format, type, samples, usage, tiling,
+                                                                               pPropertyCount, pProperties);
+    PostCallGetPhysicalDeviceSparseImageFormatProperties(instance_data, physicalDevice, format, type, samples, usage, tiling,
+                                                         pPropertyCount, pProperties);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL QueueBindSparse(
@@ -492,9 +501,9 @@ VKAPI_ATTR VkResult VKAPI_CALL QueueBindSparse(
     VkFence                                     fence)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(queue), device_layer_data_map);
-    //PreCallvkQueueBindSparse();
-    VkResult result = device_data->dispatch_table.QueueBindSparse(queue,bindInfoCount,pBindInfo,fence);
-    //PostCallvkQueueBindSparse();
+    PreCallQueueBindSparse(device_data, queue, bindInfoCount, pBindInfo, fence);
+    VkResult result = device_data->dispatch_table.QueueBindSparse(queue, bindInfoCount, pBindInfo, fence);
+    PostCallQueueBindSparse(device_data, queue, bindInfoCount, pBindInfo, fence);
     return result;
 }
 
@@ -505,9 +514,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateFence(
     VkFence*                                    pFence)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateFence();
-    VkResult result = device_data->dispatch_table.CreateFence(device,pCreateInfo,pAllocator,pFence);
-    //PostCallvkCreateFence();
+    PreCallCreateFence(device_data, device, pCreateInfo, pAllocator, pFence);
+    VkResult result = device_data->dispatch_table.CreateFence(device, pCreateInfo, pAllocator, pFence);
+    PostCallCreateFence(device_data, device, pCreateInfo, pAllocator, pFence);
     return result;
 }
 
@@ -517,9 +526,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyFence(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyFence();
-    device_data->dispatch_table.DestroyFence(device,fence,pAllocator);
-    //PostCallvkDestroyFence();
+    PreCallDestroyFence(device_data, device, fence, pAllocator);
+    device_data->dispatch_table.DestroyFence(device, fence, pAllocator);
+    PostCallDestroyFence(device_data, device, fence, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL ResetFences(
@@ -528,9 +537,9 @@ VKAPI_ATTR VkResult VKAPI_CALL ResetFences(
     const VkFence*                              pFences)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkResetFences();
-    VkResult result = device_data->dispatch_table.ResetFences(device,fenceCount,pFences);
-    //PostCallvkResetFences();
+    PreCallResetFences(device_data, device, fenceCount, pFences);
+    VkResult result = device_data->dispatch_table.ResetFences(device, fenceCount, pFences);
+    PostCallResetFences(device_data, device, fenceCount, pFences);
     return result;
 }
 
@@ -539,9 +548,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetFenceStatus(
     VkFence                                     fence)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetFenceStatus();
-    VkResult result = device_data->dispatch_table.GetFenceStatus(device,fence);
-    //PostCallvkGetFenceStatus();
+    PreCallGetFenceStatus(device_data, device, fence);
+    VkResult result = device_data->dispatch_table.GetFenceStatus(device, fence);
+    PostCallGetFenceStatus(device_data, device, fence);
     return result;
 }
 
@@ -553,9 +562,9 @@ VKAPI_ATTR VkResult VKAPI_CALL WaitForFences(
     uint64_t                                    timeout)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkWaitForFences();
-    VkResult result = device_data->dispatch_table.WaitForFences(device,fenceCount,pFences,waitAll,timeout);
-    //PostCallvkWaitForFences();
+    PreCallWaitForFences(device_data, device, fenceCount, pFences, waitAll, timeout);
+    VkResult result = device_data->dispatch_table.WaitForFences(device, fenceCount, pFences, waitAll, timeout);
+    PostCallWaitForFences(device_data, device, fenceCount, pFences, waitAll, timeout);
     return result;
 }
 
@@ -566,9 +575,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateSemaphore(
     VkSemaphore*                                pSemaphore)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateSemaphore();
-    VkResult result = device_data->dispatch_table.CreateSemaphore(device,pCreateInfo,pAllocator,pSemaphore);
-    //PostCallvkCreateSemaphore();
+    PreCallCreateSemaphore(device_data, device, pCreateInfo, pAllocator, pSemaphore);
+    VkResult result = device_data->dispatch_table.CreateSemaphore(device, pCreateInfo, pAllocator, pSemaphore);
+    PostCallCreateSemaphore(device_data, device, pCreateInfo, pAllocator, pSemaphore);
     return result;
 }
 
@@ -578,9 +587,9 @@ VKAPI_ATTR void VKAPI_CALL DestroySemaphore(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroySemaphore();
-    device_data->dispatch_table.DestroySemaphore(device,semaphore,pAllocator);
-    //PostCallvkDestroySemaphore();
+    PreCallDestroySemaphore(device_data, device, semaphore, pAllocator);
+    device_data->dispatch_table.DestroySemaphore(device, semaphore, pAllocator);
+    PostCallDestroySemaphore(device_data, device, semaphore, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateEvent(
@@ -590,9 +599,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateEvent(
     VkEvent*                                    pEvent)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateEvent();
-    VkResult result = device_data->dispatch_table.CreateEvent(device,pCreateInfo,pAllocator,pEvent);
-    //PostCallvkCreateEvent();
+    PreCallCreateEvent(device_data, device, pCreateInfo, pAllocator, pEvent);
+    VkResult result = device_data->dispatch_table.CreateEvent(device, pCreateInfo, pAllocator, pEvent);
+    PostCallCreateEvent(device_data, device, pCreateInfo, pAllocator, pEvent);
     return result;
 }
 
@@ -602,9 +611,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyEvent(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyEvent();
-    device_data->dispatch_table.DestroyEvent(device,event,pAllocator);
-    //PostCallvkDestroyEvent();
+    PreCallDestroyEvent(device_data, device, event, pAllocator);
+    device_data->dispatch_table.DestroyEvent(device, event, pAllocator);
+    PostCallDestroyEvent(device_data, device, event, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL GetEventStatus(
@@ -612,9 +621,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetEventStatus(
     VkEvent                                     event)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetEventStatus();
-    VkResult result = device_data->dispatch_table.GetEventStatus(device,event);
-    //PostCallvkGetEventStatus();
+    PreCallGetEventStatus(device_data, device, event);
+    VkResult result = device_data->dispatch_table.GetEventStatus(device, event);
+    PostCallGetEventStatus(device_data, device, event);
     return result;
 }
 
@@ -623,9 +632,9 @@ VKAPI_ATTR VkResult VKAPI_CALL SetEvent(
     VkEvent                                     event)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkSetEvent();
-    VkResult result = device_data->dispatch_table.SetEvent(device,event);
-    //PostCallvkSetEvent();
+    PreCallSetEvent(device_data, device, event);
+    VkResult result = device_data->dispatch_table.SetEvent(device, event);
+    PostCallSetEvent(device_data, device, event);
     return result;
 }
 
@@ -634,9 +643,9 @@ VKAPI_ATTR VkResult VKAPI_CALL ResetEvent(
     VkEvent                                     event)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkResetEvent();
-    VkResult result = device_data->dispatch_table.ResetEvent(device,event);
-    //PostCallvkResetEvent();
+    PreCallResetEvent(device_data, device, event);
+    VkResult result = device_data->dispatch_table.ResetEvent(device, event);
+    PostCallResetEvent(device_data, device, event);
     return result;
 }
 
@@ -647,9 +656,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateQueryPool(
     VkQueryPool*                                pQueryPool)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateQueryPool();
-    VkResult result = device_data->dispatch_table.CreateQueryPool(device,pCreateInfo,pAllocator,pQueryPool);
-    //PostCallvkCreateQueryPool();
+    PreCallCreateQueryPool(device_data, device, pCreateInfo, pAllocator, pQueryPool);
+    VkResult result = device_data->dispatch_table.CreateQueryPool(device, pCreateInfo, pAllocator, pQueryPool);
+    PostCallCreateQueryPool(device_data, device, pCreateInfo, pAllocator, pQueryPool);
     return result;
 }
 
@@ -659,9 +668,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyQueryPool(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyQueryPool();
-    device_data->dispatch_table.DestroyQueryPool(device,queryPool,pAllocator);
-    //PostCallvkDestroyQueryPool();
+    PreCallDestroyQueryPool(device_data, device, queryPool, pAllocator);
+    device_data->dispatch_table.DestroyQueryPool(device, queryPool, pAllocator);
+    PostCallDestroyQueryPool(device_data, device, queryPool, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL GetQueryPoolResults(
@@ -675,9 +684,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetQueryPoolResults(
     VkQueryResultFlags                          flags)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetQueryPoolResults();
-    VkResult result = device_data->dispatch_table.GetQueryPoolResults(device,queryPool,firstQuery,queryCount,dataSize,pData,stride,flags);
-    //PostCallvkGetQueryPoolResults();
+    PreCallGetQueryPoolResults(device_data, device, queryPool, firstQuery, queryCount, dataSize, pData, stride, flags);
+    VkResult result =
+        device_data->dispatch_table.GetQueryPoolResults(device, queryPool, firstQuery, queryCount, dataSize, pData, stride, flags);
+    PostCallGetQueryPoolResults(device_data, device, queryPool, firstQuery, queryCount, dataSize, pData, stride, flags);
     return result;
 }
 
@@ -688,9 +698,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateBuffer(
     VkBuffer*                                   pBuffer)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateBuffer();
-    VkResult result = device_data->dispatch_table.CreateBuffer(device,pCreateInfo,pAllocator,pBuffer);
-    //PostCallvkCreateBuffer();
+    PreCallCreateBuffer(device_data, device, pCreateInfo, pAllocator, pBuffer);
+    VkResult result = device_data->dispatch_table.CreateBuffer(device, pCreateInfo, pAllocator, pBuffer);
+    PostCallCreateBuffer(device_data, device, pCreateInfo, pAllocator, pBuffer);
     return result;
 }
 
@@ -700,9 +710,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyBuffer(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyBuffer();
-    device_data->dispatch_table.DestroyBuffer(device,buffer,pAllocator);
-    //PostCallvkDestroyBuffer();
+    PreCallDestroyBuffer(device_data, device, buffer, pAllocator);
+    device_data->dispatch_table.DestroyBuffer(device, buffer, pAllocator);
+    PostCallDestroyBuffer(device_data, device, buffer, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateBufferView(
@@ -712,9 +722,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateBufferView(
     VkBufferView*                               pView)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateBufferView();
-    VkResult result = device_data->dispatch_table.CreateBufferView(device,pCreateInfo,pAllocator,pView);
-    //PostCallvkCreateBufferView();
+    PreCallCreateBufferView(device_data, device, pCreateInfo, pAllocator, pView);
+    VkResult result = device_data->dispatch_table.CreateBufferView(device, pCreateInfo, pAllocator, pView);
+    PostCallCreateBufferView(device_data, device, pCreateInfo, pAllocator, pView);
     return result;
 }
 
@@ -724,9 +734,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyBufferView(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyBufferView();
-    device_data->dispatch_table.DestroyBufferView(device,bufferView,pAllocator);
-    //PostCallvkDestroyBufferView();
+    PreCallDestroyBufferView(device_data, device, bufferView, pAllocator);
+    device_data->dispatch_table.DestroyBufferView(device, bufferView, pAllocator);
+    PostCallDestroyBufferView(device_data, device, bufferView, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateImage(
@@ -736,9 +746,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateImage(
     VkImage*                                    pImage)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateImage();
-    VkResult result = device_data->dispatch_table.CreateImage(device,pCreateInfo,pAllocator,pImage);
-    //PostCallvkCreateImage();
+    PreCallCreateImage(device_data, device, pCreateInfo, pAllocator, pImage);
+    VkResult result = device_data->dispatch_table.CreateImage(device, pCreateInfo, pAllocator, pImage);
+    PostCallCreateImage(device_data, device, pCreateInfo, pAllocator, pImage);
     return result;
 }
 
@@ -748,9 +758,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyImage(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyImage();
-    device_data->dispatch_table.DestroyImage(device,image,pAllocator);
-    //PostCallvkDestroyImage();
+    PreCallDestroyImage(device_data, device, image, pAllocator);
+    device_data->dispatch_table.DestroyImage(device, image, pAllocator);
+    PostCallDestroyImage(device_data, device, image, pAllocator);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetImageSubresourceLayout(
@@ -760,9 +770,9 @@ VKAPI_ATTR void VKAPI_CALL GetImageSubresourceLayout(
     VkSubresourceLayout*                        pLayout)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetImageSubresourceLayout();
-    device_data->dispatch_table.GetImageSubresourceLayout(device,image,pSubresource,pLayout);
-    //PostCallvkGetImageSubresourceLayout();
+    PreCallGetImageSubresourceLayout(device_data, device, image, pSubresource, pLayout);
+    device_data->dispatch_table.GetImageSubresourceLayout(device, image, pSubresource, pLayout);
+    PostCallGetImageSubresourceLayout(device_data, device, image, pSubresource, pLayout);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateImageView(
@@ -772,9 +782,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateImageView(
     VkImageView*                                pView)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateImageView();
-    VkResult result = device_data->dispatch_table.CreateImageView(device,pCreateInfo,pAllocator,pView);
-    //PostCallvkCreateImageView();
+    PreCallCreateImageView(device_data, device, pCreateInfo, pAllocator, pView);
+    VkResult result = device_data->dispatch_table.CreateImageView(device, pCreateInfo, pAllocator, pView);
+    PostCallCreateImageView(device_data, device, pCreateInfo, pAllocator, pView);
     return result;
 }
 
@@ -784,9 +794,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyImageView(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyImageView();
-    device_data->dispatch_table.DestroyImageView(device,imageView,pAllocator);
-    //PostCallvkDestroyImageView();
+    PreCallDestroyImageView(device_data, device, imageView, pAllocator);
+    device_data->dispatch_table.DestroyImageView(device, imageView, pAllocator);
+    PostCallDestroyImageView(device_data, device, imageView, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateShaderModule(
@@ -796,9 +806,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateShaderModule(
     VkShaderModule*                             pShaderModule)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateShaderModule();
-    VkResult result = device_data->dispatch_table.CreateShaderModule(device,pCreateInfo,pAllocator,pShaderModule);
-    //PostCallvkCreateShaderModule();
+    PreCallCreateShaderModule(device_data, device, pCreateInfo, pAllocator, pShaderModule);
+    VkResult result = device_data->dispatch_table.CreateShaderModule(device, pCreateInfo, pAllocator, pShaderModule);
+    PostCallCreateShaderModule(device_data, device, pCreateInfo, pAllocator, pShaderModule);
     return result;
 }
 
@@ -808,9 +818,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyShaderModule(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyShaderModule();
-    device_data->dispatch_table.DestroyShaderModule(device,shaderModule,pAllocator);
-    //PostCallvkDestroyShaderModule();
+    PreCallDestroyShaderModule(device_data, device, shaderModule, pAllocator);
+    device_data->dispatch_table.DestroyShaderModule(device, shaderModule, pAllocator);
+    PostCallDestroyShaderModule(device_data, device, shaderModule, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreatePipelineCache(
@@ -820,9 +830,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreatePipelineCache(
     VkPipelineCache*                            pPipelineCache)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreatePipelineCache();
-    VkResult result = device_data->dispatch_table.CreatePipelineCache(device,pCreateInfo,pAllocator,pPipelineCache);
-    //PostCallvkCreatePipelineCache();
+    PreCallCreatePipelineCache(device_data, device, pCreateInfo, pAllocator, pPipelineCache);
+    VkResult result = device_data->dispatch_table.CreatePipelineCache(device, pCreateInfo, pAllocator, pPipelineCache);
+    PostCallCreatePipelineCache(device_data, device, pCreateInfo, pAllocator, pPipelineCache);
     return result;
 }
 
@@ -832,9 +842,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyPipelineCache(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyPipelineCache();
-    device_data->dispatch_table.DestroyPipelineCache(device,pipelineCache,pAllocator);
-    //PostCallvkDestroyPipelineCache();
+    PreCallDestroyPipelineCache(device_data, device, pipelineCache, pAllocator);
+    device_data->dispatch_table.DestroyPipelineCache(device, pipelineCache, pAllocator);
+    PostCallDestroyPipelineCache(device_data, device, pipelineCache, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL GetPipelineCacheData(
@@ -844,9 +854,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPipelineCacheData(
     void*                                       pData)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetPipelineCacheData();
-    VkResult result = device_data->dispatch_table.GetPipelineCacheData(device,pipelineCache,pDataSize,pData);
-    //PostCallvkGetPipelineCacheData();
+    PreCallGetPipelineCacheData(device_data, device, pipelineCache, pDataSize, pData);
+    VkResult result = device_data->dispatch_table.GetPipelineCacheData(device, pipelineCache, pDataSize, pData);
+    PostCallGetPipelineCacheData(device_data, device, pipelineCache, pDataSize, pData);
     return result;
 }
 
@@ -857,9 +867,9 @@ VKAPI_ATTR VkResult VKAPI_CALL MergePipelineCaches(
     const VkPipelineCache*                      pSrcCaches)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkMergePipelineCaches();
-    VkResult result = device_data->dispatch_table.MergePipelineCaches(device,dstCache,srcCacheCount,pSrcCaches);
-    //PostCallvkMergePipelineCaches();
+    PreCallMergePipelineCaches(device_data, device, dstCache, srcCacheCount, pSrcCaches);
+    VkResult result = device_data->dispatch_table.MergePipelineCaches(device, dstCache, srcCacheCount, pSrcCaches);
+    PostCallMergePipelineCaches(device_data, device, dstCache, srcCacheCount, pSrcCaches);
     return result;
 }
 
@@ -872,9 +882,10 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateGraphicsPipelines(
     VkPipeline*                                 pPipelines)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateGraphicsPipelines();
-    VkResult result = device_data->dispatch_table.CreateGraphicsPipelines(device,pipelineCache,createInfoCount,pCreateInfos,pAllocator,pPipelines);
-    //PostCallvkCreateGraphicsPipelines();
+    PreCallCreateGraphicsPipelines(device_data, device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
+    VkResult result = device_data->dispatch_table.CreateGraphicsPipelines(device, pipelineCache, createInfoCount, pCreateInfos,
+                                                                          pAllocator, pPipelines);
+    PostCallCreateGraphicsPipelines(device_data, device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
     return result;
 }
 
@@ -887,9 +898,10 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateComputePipelines(
     VkPipeline*                                 pPipelines)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateComputePipelines();
-    VkResult result = device_data->dispatch_table.CreateComputePipelines(device,pipelineCache,createInfoCount,pCreateInfos,pAllocator,pPipelines);
-    //PostCallvkCreateComputePipelines();
+    PreCallCreateComputePipelines(device_data, device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
+    VkResult result = device_data->dispatch_table.CreateComputePipelines(device, pipelineCache, createInfoCount, pCreateInfos,
+                                                                         pAllocator, pPipelines);
+    PostCallCreateComputePipelines(device_data, device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
     return result;
 }
 
@@ -899,9 +911,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyPipeline(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyPipeline();
-    device_data->dispatch_table.DestroyPipeline(device,pipeline,pAllocator);
-    //PostCallvkDestroyPipeline();
+    PreCallDestroyPipeline(device_data, device, pipeline, pAllocator);
+    device_data->dispatch_table.DestroyPipeline(device, pipeline, pAllocator);
+    PostCallDestroyPipeline(device_data, device, pipeline, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreatePipelineLayout(
@@ -911,9 +923,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreatePipelineLayout(
     VkPipelineLayout*                           pPipelineLayout)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreatePipelineLayout();
-    VkResult result = device_data->dispatch_table.CreatePipelineLayout(device,pCreateInfo,pAllocator,pPipelineLayout);
-    //PostCallvkCreatePipelineLayout();
+    PreCallCreatePipelineLayout(device_data, device, pCreateInfo, pAllocator, pPipelineLayout);
+    VkResult result = device_data->dispatch_table.CreatePipelineLayout(device, pCreateInfo, pAllocator, pPipelineLayout);
+    PostCallCreatePipelineLayout(device_data, device, pCreateInfo, pAllocator, pPipelineLayout);
     return result;
 }
 
@@ -923,9 +935,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyPipelineLayout(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyPipelineLayout();
-    device_data->dispatch_table.DestroyPipelineLayout(device,pipelineLayout,pAllocator);
-    //PostCallvkDestroyPipelineLayout();
+    PreCallDestroyPipelineLayout(device_data, device, pipelineLayout, pAllocator);
+    device_data->dispatch_table.DestroyPipelineLayout(device, pipelineLayout, pAllocator);
+    PostCallDestroyPipelineLayout(device_data, device, pipelineLayout, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateSampler(
@@ -935,9 +947,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateSampler(
     VkSampler*                                  pSampler)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateSampler();
-    VkResult result = device_data->dispatch_table.CreateSampler(device,pCreateInfo,pAllocator,pSampler);
-    //PostCallvkCreateSampler();
+    PreCallCreateSampler(device_data, device, pCreateInfo, pAllocator, pSampler);
+    VkResult result = device_data->dispatch_table.CreateSampler(device, pCreateInfo, pAllocator, pSampler);
+    PostCallCreateSampler(device_data, device, pCreateInfo, pAllocator, pSampler);
     return result;
 }
 
@@ -947,9 +959,9 @@ VKAPI_ATTR void VKAPI_CALL DestroySampler(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroySampler();
-    device_data->dispatch_table.DestroySampler(device,sampler,pAllocator);
-    //PostCallvkDestroySampler();
+    PreCallDestroySampler(device_data, device, sampler, pAllocator);
+    device_data->dispatch_table.DestroySampler(device, sampler, pAllocator);
+    PostCallDestroySampler(device_data, device, sampler, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateDescriptorSetLayout(
@@ -959,9 +971,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateDescriptorSetLayout(
     VkDescriptorSetLayout*                      pSetLayout)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateDescriptorSetLayout();
-    VkResult result = device_data->dispatch_table.CreateDescriptorSetLayout(device,pCreateInfo,pAllocator,pSetLayout);
-    //PostCallvkCreateDescriptorSetLayout();
+    PreCallCreateDescriptorSetLayout(device_data, device, pCreateInfo, pAllocator, pSetLayout);
+    VkResult result = device_data->dispatch_table.CreateDescriptorSetLayout(device, pCreateInfo, pAllocator, pSetLayout);
+    PostCallCreateDescriptorSetLayout(device_data, device, pCreateInfo, pAllocator, pSetLayout);
     return result;
 }
 
@@ -971,9 +983,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyDescriptorSetLayout(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyDescriptorSetLayout();
-    device_data->dispatch_table.DestroyDescriptorSetLayout(device,descriptorSetLayout,pAllocator);
-    //PostCallvkDestroyDescriptorSetLayout();
+    PreCallDestroyDescriptorSetLayout(device_data, device, descriptorSetLayout, pAllocator);
+    device_data->dispatch_table.DestroyDescriptorSetLayout(device, descriptorSetLayout, pAllocator);
+    PostCallDestroyDescriptorSetLayout(device_data, device, descriptorSetLayout, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateDescriptorPool(
@@ -983,9 +995,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateDescriptorPool(
     VkDescriptorPool*                           pDescriptorPool)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateDescriptorPool();
-    VkResult result = device_data->dispatch_table.CreateDescriptorPool(device,pCreateInfo,pAllocator,pDescriptorPool);
-    //PostCallvkCreateDescriptorPool();
+    PreCallCreateDescriptorPool(device_data, device, pCreateInfo, pAllocator, pDescriptorPool);
+    VkResult result = device_data->dispatch_table.CreateDescriptorPool(device, pCreateInfo, pAllocator, pDescriptorPool);
+    PostCallCreateDescriptorPool(device_data, device, pCreateInfo, pAllocator, pDescriptorPool);
     return result;
 }
 
@@ -995,9 +1007,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyDescriptorPool(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyDescriptorPool();
-    device_data->dispatch_table.DestroyDescriptorPool(device,descriptorPool,pAllocator);
-    //PostCallvkDestroyDescriptorPool();
+    PreCallDestroyDescriptorPool(device_data, device, descriptorPool, pAllocator);
+    device_data->dispatch_table.DestroyDescriptorPool(device, descriptorPool, pAllocator);
+    PostCallDestroyDescriptorPool(device_data, device, descriptorPool, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL ResetDescriptorPool(
@@ -1006,9 +1018,9 @@ VKAPI_ATTR VkResult VKAPI_CALL ResetDescriptorPool(
     VkDescriptorPoolResetFlags                  flags)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkResetDescriptorPool();
-    VkResult result = device_data->dispatch_table.ResetDescriptorPool(device,descriptorPool,flags);
-    //PostCallvkResetDescriptorPool();
+    PreCallResetDescriptorPool(device_data, device, descriptorPool, flags);
+    VkResult result = device_data->dispatch_table.ResetDescriptorPool(device, descriptorPool, flags);
+    PostCallResetDescriptorPool(device_data, device, descriptorPool, flags);
     return result;
 }
 
@@ -1018,9 +1030,9 @@ VKAPI_ATTR VkResult VKAPI_CALL AllocateDescriptorSets(
     VkDescriptorSet*                            pDescriptorSets)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkAllocateDescriptorSets();
-    VkResult result = device_data->dispatch_table.AllocateDescriptorSets(device,pAllocateInfo,pDescriptorSets);
-    //PostCallvkAllocateDescriptorSets();
+    PreCallAllocateDescriptorSets(device_data, device, pAllocateInfo, pDescriptorSets);
+    VkResult result = device_data->dispatch_table.AllocateDescriptorSets(device, pAllocateInfo, pDescriptorSets);
+    PostCallAllocateDescriptorSets(device_data, device, pAllocateInfo, pDescriptorSets);
     return result;
 }
 
@@ -1031,9 +1043,9 @@ VKAPI_ATTR VkResult VKAPI_CALL FreeDescriptorSets(
     const VkDescriptorSet*                      pDescriptorSets)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkFreeDescriptorSets();
-    VkResult result = device_data->dispatch_table.FreeDescriptorSets(device,descriptorPool,descriptorSetCount,pDescriptorSets);
-    //PostCallvkFreeDescriptorSets();
+    PreCallFreeDescriptorSets(device_data, device, descriptorPool, descriptorSetCount, pDescriptorSets);
+    VkResult result = device_data->dispatch_table.FreeDescriptorSets(device, descriptorPool, descriptorSetCount, pDescriptorSets);
+    PostCallFreeDescriptorSets(device_data, device, descriptorPool, descriptorSetCount, pDescriptorSets);
     return result;
 }
 
@@ -1045,9 +1057,12 @@ VKAPI_ATTR void VKAPI_CALL UpdateDescriptorSets(
     const VkCopyDescriptorSet*                  pDescriptorCopies)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkUpdateDescriptorSets();
-    device_data->dispatch_table.UpdateDescriptorSets(device,descriptorWriteCount,pDescriptorWrites,descriptorCopyCount,pDescriptorCopies);
-    //PostCallvkUpdateDescriptorSets();
+    PreCallUpdateDescriptorSets(device_data, device, descriptorWriteCount, pDescriptorWrites, descriptorCopyCount,
+                                pDescriptorCopies);
+    device_data->dispatch_table.UpdateDescriptorSets(device, descriptorWriteCount, pDescriptorWrites, descriptorCopyCount,
+                                                     pDescriptorCopies);
+    PostCallUpdateDescriptorSets(device_data, device, descriptorWriteCount, pDescriptorWrites, descriptorCopyCount,
+                                 pDescriptorCopies);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateFramebuffer(
@@ -1057,9 +1072,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateFramebuffer(
     VkFramebuffer*                              pFramebuffer)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateFramebuffer();
-    VkResult result = device_data->dispatch_table.CreateFramebuffer(device,pCreateInfo,pAllocator,pFramebuffer);
-    //PostCallvkCreateFramebuffer();
+    PreCallCreateFramebuffer(device_data, device, pCreateInfo, pAllocator, pFramebuffer);
+    VkResult result = device_data->dispatch_table.CreateFramebuffer(device, pCreateInfo, pAllocator, pFramebuffer);
+    PostCallCreateFramebuffer(device_data, device, pCreateInfo, pAllocator, pFramebuffer);
     return result;
 }
 
@@ -1069,9 +1084,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyFramebuffer(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyFramebuffer();
-    device_data->dispatch_table.DestroyFramebuffer(device,framebuffer,pAllocator);
-    //PostCallvkDestroyFramebuffer();
+    PreCallDestroyFramebuffer(device_data, device, framebuffer, pAllocator);
+    device_data->dispatch_table.DestroyFramebuffer(device, framebuffer, pAllocator);
+    PostCallDestroyFramebuffer(device_data, device, framebuffer, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateRenderPass(
@@ -1081,9 +1096,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateRenderPass(
     VkRenderPass*                               pRenderPass)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateRenderPass();
-    VkResult result = device_data->dispatch_table.CreateRenderPass(device,pCreateInfo,pAllocator,pRenderPass);
-    //PostCallvkCreateRenderPass();
+    PreCallCreateRenderPass(device_data, device, pCreateInfo, pAllocator, pRenderPass);
+    VkResult result = device_data->dispatch_table.CreateRenderPass(device, pCreateInfo, pAllocator, pRenderPass);
+    PostCallCreateRenderPass(device_data, device, pCreateInfo, pAllocator, pRenderPass);
     return result;
 }
 
@@ -1093,9 +1108,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyRenderPass(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyRenderPass();
-    device_data->dispatch_table.DestroyRenderPass(device,renderPass,pAllocator);
-    //PostCallvkDestroyRenderPass();
+    PreCallDestroyRenderPass(device_data, device, renderPass, pAllocator);
+    device_data->dispatch_table.DestroyRenderPass(device, renderPass, pAllocator);
+    PostCallDestroyRenderPass(device_data, device, renderPass, pAllocator);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetRenderAreaGranularity(
@@ -1104,9 +1119,9 @@ VKAPI_ATTR void VKAPI_CALL GetRenderAreaGranularity(
     VkExtent2D*                                 pGranularity)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetRenderAreaGranularity();
-    device_data->dispatch_table.GetRenderAreaGranularity(device,renderPass,pGranularity);
-    //PostCallvkGetRenderAreaGranularity();
+    PreCallGetRenderAreaGranularity(device_data, device, renderPass, pGranularity);
+    device_data->dispatch_table.GetRenderAreaGranularity(device, renderPass, pGranularity);
+    PostCallGetRenderAreaGranularity(device_data, device, renderPass, pGranularity);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateCommandPool(
@@ -1116,9 +1131,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateCommandPool(
     VkCommandPool*                              pCommandPool)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateCommandPool();
-    VkResult result = device_data->dispatch_table.CreateCommandPool(device,pCreateInfo,pAllocator,pCommandPool);
-    //PostCallvkCreateCommandPool();
+    PreCallCreateCommandPool(device_data, device, pCreateInfo, pAllocator, pCommandPool);
+    VkResult result = device_data->dispatch_table.CreateCommandPool(device, pCreateInfo, pAllocator, pCommandPool);
+    PostCallCreateCommandPool(device_data, device, pCreateInfo, pAllocator, pCommandPool);
     return result;
 }
 
@@ -1128,9 +1143,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyCommandPool(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyCommandPool();
-    device_data->dispatch_table.DestroyCommandPool(device,commandPool,pAllocator);
-    //PostCallvkDestroyCommandPool();
+    PreCallDestroyCommandPool(device_data, device, commandPool, pAllocator);
+    device_data->dispatch_table.DestroyCommandPool(device, commandPool, pAllocator);
+    PostCallDestroyCommandPool(device_data, device, commandPool, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL ResetCommandPool(
@@ -1139,9 +1154,9 @@ VKAPI_ATTR VkResult VKAPI_CALL ResetCommandPool(
     VkCommandPoolResetFlags                     flags)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkResetCommandPool();
-    VkResult result = device_data->dispatch_table.ResetCommandPool(device,commandPool,flags);
-    //PostCallvkResetCommandPool();
+    PreCallResetCommandPool(device_data, device, commandPool, flags);
+    VkResult result = device_data->dispatch_table.ResetCommandPool(device, commandPool, flags);
+    PostCallResetCommandPool(device_data, device, commandPool, flags);
     return result;
 }
 
@@ -1151,9 +1166,9 @@ VKAPI_ATTR VkResult VKAPI_CALL AllocateCommandBuffers(
     VkCommandBuffer*                            pCommandBuffers)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkAllocateCommandBuffers();
-    VkResult result = device_data->dispatch_table.AllocateCommandBuffers(device,pAllocateInfo,pCommandBuffers);
-    PostCallAllocateCommandBuffers(device_data, pAllocateInfo, pCommandBuffers);
+    PreCallAllocateCommandBuffers(device_data, device, pAllocateInfo, pCommandBuffers);
+    VkResult result = device_data->dispatch_table.AllocateCommandBuffers(device, pAllocateInfo, pCommandBuffers);
+    PostCallAllocateCommandBuffers(device_data, device, pAllocateInfo, pCommandBuffers);
     return result;
 }
 
@@ -1164,9 +1179,9 @@ VKAPI_ATTR void VKAPI_CALL FreeCommandBuffers(
     const VkCommandBuffer*                      pCommandBuffers)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkFreeCommandBuffers();
-    device_data->dispatch_table.FreeCommandBuffers(device,commandPool,commandBufferCount,pCommandBuffers);
-    //PostCallvkFreeCommandBuffers();
+    PreCallFreeCommandBuffers(device_data, device, commandPool, commandBufferCount, pCommandBuffers);
+    device_data->dispatch_table.FreeCommandBuffers(device, commandPool, commandBufferCount, pCommandBuffers);
+    PostCallFreeCommandBuffers(device_data, device, commandPool, commandBufferCount, pCommandBuffers);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL BeginCommandBuffer(
@@ -1174,9 +1189,9 @@ VKAPI_ATTR VkResult VKAPI_CALL BeginCommandBuffer(
     const VkCommandBufferBeginInfo*             pBeginInfo)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkBeginCommandBuffer();
-    VkResult result = device_data->dispatch_table.BeginCommandBuffer(commandBuffer,pBeginInfo);
-    //PostCallvkBeginCommandBuffer();
+    PreCallBeginCommandBuffer(device_data, commandBuffer, pBeginInfo);
+    VkResult result = device_data->dispatch_table.BeginCommandBuffer(commandBuffer, pBeginInfo);
+    PostCallBeginCommandBuffer(device_data, commandBuffer, pBeginInfo);
     return result;
 }
 
@@ -1184,9 +1199,9 @@ VKAPI_ATTR VkResult VKAPI_CALL EndCommandBuffer(
     VkCommandBuffer                             commandBuffer)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkEndCommandBuffer();
+    PreCallEndCommandBuffer(device_data, commandBuffer);
     VkResult result = device_data->dispatch_table.EndCommandBuffer(commandBuffer);
-    //PostCallvkEndCommandBuffer();
+    PostCallEndCommandBuffer(device_data, commandBuffer);
     return result;
 }
 
@@ -1195,9 +1210,9 @@ VKAPI_ATTR VkResult VKAPI_CALL ResetCommandBuffer(
     VkCommandBufferResetFlags                   flags)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkResetCommandBuffer();
-    VkResult result = device_data->dispatch_table.ResetCommandBuffer(commandBuffer,flags);
-    //PostCallvkResetCommandBuffer();
+    PreCallResetCommandBuffer(device_data, commandBuffer, flags);
+    VkResult result = device_data->dispatch_table.ResetCommandBuffer(commandBuffer, flags);
+    PostCallResetCommandBuffer(device_data, commandBuffer, flags);
     return result;
 }
 
@@ -1207,8 +1222,8 @@ VKAPI_ATTR void VKAPI_CALL CmdBindPipeline(
     VkPipeline                                  pipeline)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdBindPipeline();
-    device_data->dispatch_table.CmdBindPipeline(commandBuffer,pipelineBindPoint,pipeline);
+    PreCallCmdBindPipeline(device_data, commandBuffer, pipelineBindPoint, pipeline);
+    device_data->dispatch_table.CmdBindPipeline(commandBuffer, pipelineBindPoint, pipeline);
     PostCallCmdBindPipeline(device_data, commandBuffer, pipelineBindPoint, pipeline);
 }
 
@@ -1219,8 +1234,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetViewport(
     const VkViewport*                           pViewports)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetViewport();
-    device_data->dispatch_table.CmdSetViewport(commandBuffer,firstViewport,viewportCount,pViewports);
+    PreCallCmdSetViewport(device_data, commandBuffer, firstViewport, viewportCount, pViewports);
+    device_data->dispatch_table.CmdSetViewport(commandBuffer, firstViewport, viewportCount, pViewports);
     PostCallCmdSetViewport(device_data, commandBuffer, firstViewport, viewportCount, pViewports);
 }
 
@@ -1231,8 +1246,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetScissor(
     const VkRect2D*                             pScissors)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetScissor();
-    device_data->dispatch_table.CmdSetScissor(commandBuffer,firstScissor,scissorCount,pScissors);
+    PreCallCmdSetScissor(device_data, commandBuffer, firstScissor, scissorCount, pScissors);
+    device_data->dispatch_table.CmdSetScissor(commandBuffer, firstScissor, scissorCount, pScissors);
     PostCallCmdSetScissor(device_data, commandBuffer, firstScissor, scissorCount, pScissors);
 }
 
@@ -1241,8 +1256,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetLineWidth(
     float                                       lineWidth)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetLineWidth();
-    device_data->dispatch_table.CmdSetLineWidth(commandBuffer,lineWidth);
+    PreCallCmdSetLineWidth(device_data, commandBuffer, lineWidth);
+    device_data->dispatch_table.CmdSetLineWidth(commandBuffer, lineWidth);
     PostCallCmdSetLineWidth(device_data, commandBuffer, lineWidth);
 }
 
@@ -1253,8 +1268,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetDepthBias(
     float                                       depthBiasSlopeFactor)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetDepthBias();
-    device_data->dispatch_table.CmdSetDepthBias(commandBuffer,depthBiasConstantFactor,depthBiasClamp,depthBiasSlopeFactor);
+    PreCallCmdSetDepthBias(device_data, commandBuffer, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
+    device_data->dispatch_table.CmdSetDepthBias(commandBuffer, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
     PostCallCmdSetDepthBias(device_data, commandBuffer, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
 }
 
@@ -1263,8 +1278,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetBlendConstants(
     const float                                 blendConstants[4])
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetBlendConstants();
-    device_data->dispatch_table.CmdSetBlendConstants(commandBuffer,blendConstants);
+    PreCallCmdSetBlendConstants(device_data, commandBuffer, blendConstants);
+    device_data->dispatch_table.CmdSetBlendConstants(commandBuffer, blendConstants);
     PostCallCmdSetBlendConstants(device_data, commandBuffer, blendConstants);
 }
 
@@ -1274,8 +1289,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetDepthBounds(
     float                                       maxDepthBounds)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetDepthBounds();
-    device_data->dispatch_table.CmdSetDepthBounds(commandBuffer,minDepthBounds,maxDepthBounds);
+    PreCallCmdSetDepthBounds(device_data, commandBuffer, minDepthBounds, maxDepthBounds);
+    device_data->dispatch_table.CmdSetDepthBounds(commandBuffer, minDepthBounds, maxDepthBounds);
     PostCallCmdSetDepthBounds(device_data, commandBuffer, minDepthBounds, maxDepthBounds);
 }
 
@@ -1285,8 +1300,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetStencilCompareMask(
     uint32_t                                    compareMask)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetStencilCompareMask();
-    device_data->dispatch_table.CmdSetStencilCompareMask(commandBuffer,faceMask,compareMask);
+    PreCallCmdSetStencilCompareMask(device_data, commandBuffer, faceMask, compareMask);
+    device_data->dispatch_table.CmdSetStencilCompareMask(commandBuffer, faceMask, compareMask);
     PostCallCmdSetStencilCompareMask(device_data, commandBuffer, faceMask, compareMask);
 }
 
@@ -1296,8 +1311,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetStencilWriteMask(
     uint32_t                                    writeMask)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetStencilWriteMask();
-    device_data->dispatch_table.CmdSetStencilWriteMask(commandBuffer,faceMask,writeMask);
+    PreCallCmdSetStencilWriteMask(device_data, commandBuffer, faceMask, writeMask);
+    device_data->dispatch_table.CmdSetStencilWriteMask(commandBuffer, faceMask, writeMask);
     PostCallCmdSetStencilWriteMask(device_data, commandBuffer, faceMask, writeMask);
 }
 
@@ -1307,8 +1322,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetStencilReference(
     uint32_t                                    reference)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetStencilReference();
-    device_data->dispatch_table.CmdSetStencilReference(commandBuffer,faceMask,reference);
+    PreCallCmdSetStencilReference(device_data, commandBuffer, faceMask, reference);
+    device_data->dispatch_table.CmdSetStencilReference(commandBuffer, faceMask, reference);
     PostCallCmdSetStencilReference(device_data, commandBuffer, faceMask, reference);
 }
 
@@ -1323,8 +1338,10 @@ VKAPI_ATTR void VKAPI_CALL CmdBindDescriptorSets(
     const uint32_t*                             pDynamicOffsets)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdBindDescriptorSets();
-    device_data->dispatch_table.CmdBindDescriptorSets(commandBuffer,pipelineBindPoint,layout,firstSet,descriptorSetCount,pDescriptorSets,dynamicOffsetCount,pDynamicOffsets);
+    PreCallCmdBindDescriptorSets(device_data, commandBuffer, pipelineBindPoint, layout, firstSet, descriptorSetCount,
+                                 pDescriptorSets, dynamicOffsetCount, pDynamicOffsets);
+    device_data->dispatch_table.CmdBindDescriptorSets(commandBuffer, pipelineBindPoint, layout, firstSet, descriptorSetCount,
+                                                      pDescriptorSets, dynamicOffsetCount, pDynamicOffsets);
     PostCallCmdBindDescriptorSets(device_data, commandBuffer, pipelineBindPoint, layout, firstSet, descriptorSetCount,
                                   pDescriptorSets, dynamicOffsetCount, pDynamicOffsets);
 }
@@ -1336,8 +1353,8 @@ VKAPI_ATTR void VKAPI_CALL CmdBindIndexBuffer(
     VkIndexType                                 indexType)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdBindIndexBuffer();
-    device_data->dispatch_table.CmdBindIndexBuffer(commandBuffer,buffer,offset,indexType);
+    PreCallCmdBindIndexBuffer(device_data, commandBuffer, buffer, offset, indexType);
+    device_data->dispatch_table.CmdBindIndexBuffer(commandBuffer, buffer, offset, indexType);
     PostCallCmdBindIndexBuffer(device_data, commandBuffer, buffer, offset, indexType);
 }
 
@@ -1349,8 +1366,8 @@ VKAPI_ATTR void VKAPI_CALL CmdBindVertexBuffers(
     const VkDeviceSize*                         pOffsets)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdBindVertexBuffers();
-    device_data->dispatch_table.CmdBindVertexBuffers(commandBuffer,firstBinding,bindingCount,pBuffers,pOffsets);
+    PreCallCmdBindVertexBuffers(device_data, commandBuffer, firstBinding, bindingCount, pBuffers, pOffsets);
+    device_data->dispatch_table.CmdBindVertexBuffers(commandBuffer, firstBinding, bindingCount, pBuffers, pOffsets);
     PostCallCmdBindVertexBuffers(device_data, commandBuffer, firstBinding, bindingCount, pBuffers, pOffsets);
 }
 
@@ -1362,8 +1379,8 @@ VKAPI_ATTR void VKAPI_CALL CmdDraw(
     uint32_t                                    firstInstance)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallCmdDraw(device_data, commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
-    device_data->dispatch_table.CmdDraw(commandBuffer,vertexCount,instanceCount,firstVertex,firstInstance);
+    PreCallCmdDraw(device_data, commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
+    device_data->dispatch_table.CmdDraw(commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
     PostCallCmdDraw(device_data, commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
 }
 
@@ -1376,8 +1393,8 @@ VKAPI_ATTR void VKAPI_CALL CmdDrawIndexed(
     uint32_t                                    firstInstance)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdDrawIndexed();
-    device_data->dispatch_table.CmdDrawIndexed(commandBuffer,indexCount,instanceCount,firstIndex,vertexOffset,firstInstance);
+    PreCallCmdDrawIndexed(device_data, commandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+    device_data->dispatch_table.CmdDrawIndexed(commandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
     PostCallCmdDrawIndexed(device_data, commandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
 }
 
@@ -1389,8 +1406,8 @@ VKAPI_ATTR void VKAPI_CALL CmdDrawIndirect(
     uint32_t                                    stride)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdDrawIndirect();
-    device_data->dispatch_table.CmdDrawIndirect(commandBuffer,buffer,offset,drawCount,stride);
+    PreCallCmdDrawIndirect(device_data, commandBuffer, buffer, offset, drawCount, stride);
+    device_data->dispatch_table.CmdDrawIndirect(commandBuffer, buffer, offset, drawCount, stride);
     PostCallCmdDrawIndirect(device_data, commandBuffer, buffer, offset, drawCount, stride);
 }
 
@@ -1402,8 +1419,8 @@ VKAPI_ATTR void VKAPI_CALL CmdDrawIndexedIndirect(
     uint32_t                                    stride)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdDrawIndexedIndirect();
-    device_data->dispatch_table.CmdDrawIndexedIndirect(commandBuffer,buffer,offset,drawCount,stride);
+    PreCallCmdDrawIndexedIndirect(device_data, commandBuffer, buffer, offset, drawCount, stride);
+    device_data->dispatch_table.CmdDrawIndexedIndirect(commandBuffer, buffer, offset, drawCount, stride);
     PostCallCmdDrawIndexedIndirect(device_data, commandBuffer, buffer, offset, drawCount, stride);
 }
 
@@ -1414,8 +1431,8 @@ VKAPI_ATTR void VKAPI_CALL CmdDispatch(
     uint32_t                                    groupCountZ)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdDispatch();
-    device_data->dispatch_table.CmdDispatch(commandBuffer,groupCountX,groupCountY,groupCountZ);
+    PreCallCmdDispatch(device_data, commandBuffer, groupCountX, groupCountY, groupCountZ);
+    device_data->dispatch_table.CmdDispatch(commandBuffer, groupCountX, groupCountY, groupCountZ);
     PostCallCmdDispatch(device_data, commandBuffer, groupCountX, groupCountY, groupCountZ);
 }
 
@@ -1425,8 +1442,8 @@ VKAPI_ATTR void VKAPI_CALL CmdDispatchIndirect(
     VkDeviceSize                                offset)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdDispatchIndirect();
-    device_data->dispatch_table.CmdDispatchIndirect(commandBuffer,buffer,offset);
+    PreCallCmdDispatchIndirect(device_data, commandBuffer, buffer, offset);
+    device_data->dispatch_table.CmdDispatchIndirect(commandBuffer, buffer, offset);
     PostCallCmdDispatchIndirect(device_data, commandBuffer, buffer, offset);
 }
 
@@ -1438,8 +1455,8 @@ VKAPI_ATTR void VKAPI_CALL CmdCopyBuffer(
     const VkBufferCopy*                         pRegions)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdCopyBuffer();
-    device_data->dispatch_table.CmdCopyBuffer(commandBuffer,srcBuffer,dstBuffer,regionCount,pRegions);
+    PreCallCmdCopyBuffer(device_data, commandBuffer, srcBuffer, dstBuffer, regionCount, pRegions);
+    device_data->dispatch_table.CmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, regionCount, pRegions);
     PostCallCmdCopyBuffer(device_data, commandBuffer, srcBuffer, dstBuffer, regionCount, pRegions);
 }
 
@@ -1453,8 +1470,9 @@ VKAPI_ATTR void VKAPI_CALL CmdCopyImage(
     const VkImageCopy*                          pRegions)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdCopyImage();
-    device_data->dispatch_table.CmdCopyImage(commandBuffer,srcImage,srcImageLayout,dstImage,dstImageLayout,regionCount,pRegions);
+    PreCallCmdCopyImage(device_data, commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions);
+    device_data->dispatch_table.CmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount,
+                                             pRegions);
     PostCallCmdCopyImage(device_data, commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions);
 }
 
@@ -1469,8 +1487,10 @@ VKAPI_ATTR void VKAPI_CALL CmdBlitImage(
     VkFilter                                    filter)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdBlitImage();
-    device_data->dispatch_table.CmdBlitImage(commandBuffer,srcImage,srcImageLayout,dstImage,dstImageLayout,regionCount,pRegions,filter);
+    PreCallCmdBlitImage(device_data, commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions,
+                        filter);
+    device_data->dispatch_table.CmdBlitImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount,
+                                             pRegions, filter);
     PostCallCmdBlitImage(device_data, commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions,
                          filter);
 }
@@ -1484,8 +1504,8 @@ VKAPI_ATTR void VKAPI_CALL CmdCopyBufferToImage(
     const VkBufferImageCopy*                    pRegions)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdCopyBufferToImage();
-    device_data->dispatch_table.CmdCopyBufferToImage(commandBuffer,srcBuffer,dstImage,dstImageLayout,regionCount,pRegions);
+    PreCallCmdCopyBufferToImage(device_data, commandBuffer, srcBuffer, dstImage, dstImageLayout, regionCount, pRegions);
+    device_data->dispatch_table.CmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, regionCount, pRegions);
     PostCallCmdCopyBufferToImage(device_data, commandBuffer, srcBuffer, dstImage, dstImageLayout, regionCount, pRegions);
 }
 
@@ -1498,8 +1518,8 @@ VKAPI_ATTR void VKAPI_CALL CmdCopyImageToBuffer(
     const VkBufferImageCopy*                    pRegions)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdCopyImageToBuffer();
-    device_data->dispatch_table.CmdCopyImageToBuffer(commandBuffer,srcImage,srcImageLayout,dstBuffer,regionCount,pRegions);
+    PreCallCmdCopyImageToBuffer(device_data, commandBuffer, srcImage, srcImageLayout, dstBuffer, regionCount, pRegions);
+    device_data->dispatch_table.CmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, regionCount, pRegions);
     PostCallCmdCopyImageToBuffer(device_data, commandBuffer, srcImage, srcImageLayout, dstBuffer, regionCount, pRegions);
 }
 
@@ -1511,8 +1531,8 @@ VKAPI_ATTR void VKAPI_CALL CmdUpdateBuffer(
     const void*                                 pData)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdUpdateBuffer();
-    device_data->dispatch_table.CmdUpdateBuffer(commandBuffer,dstBuffer,dstOffset,dataSize,pData);
+    PreCallCmdUpdateBuffer(device_data, commandBuffer, dstBuffer, dstOffset, dataSize, pData);
+    device_data->dispatch_table.CmdUpdateBuffer(commandBuffer, dstBuffer, dstOffset, dataSize, pData);
     PostCallCmdUpdateBuffer(device_data, commandBuffer, dstBuffer, dstOffset, dataSize, pData);
 }
 
@@ -1524,8 +1544,8 @@ VKAPI_ATTR void VKAPI_CALL CmdFillBuffer(
     uint32_t                                    data)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdFillBuffer();
-    device_data->dispatch_table.CmdFillBuffer(commandBuffer,dstBuffer,dstOffset,size,data);
+    PreCallCmdFillBuffer(device_data, commandBuffer, dstBuffer, dstOffset, size, data);
+    device_data->dispatch_table.CmdFillBuffer(commandBuffer, dstBuffer, dstOffset, size, data);
     PostCallCmdFillBuffer(device_data, commandBuffer, dstBuffer, dstOffset, size, data);
 }
 
@@ -1538,8 +1558,8 @@ VKAPI_ATTR void VKAPI_CALL CmdClearColorImage(
     const VkImageSubresourceRange*              pRanges)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdClearColorImage();
-    device_data->dispatch_table.CmdClearColorImage(commandBuffer,image,imageLayout,pColor,rangeCount,pRanges);
+    PreCallCmdClearColorImage(device_data, commandBuffer, image, imageLayout, pColor, rangeCount, pRanges);
+    device_data->dispatch_table.CmdClearColorImage(commandBuffer, image, imageLayout, pColor, rangeCount, pRanges);
     PostCallCmdClearColorImage(device_data, commandBuffer, image, imageLayout, pColor, rangeCount, pRanges);
 }
 
@@ -1552,8 +1572,8 @@ VKAPI_ATTR void VKAPI_CALL CmdClearDepthStencilImage(
     const VkImageSubresourceRange*              pRanges)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdClearDepthStencilImage();
-    device_data->dispatch_table.CmdClearDepthStencilImage(commandBuffer,image,imageLayout,pDepthStencil,rangeCount,pRanges);
+    PreCallCmdClearDepthStencilImage(device_data, commandBuffer, image, imageLayout, pDepthStencil, rangeCount, pRanges);
+    device_data->dispatch_table.CmdClearDepthStencilImage(commandBuffer, image, imageLayout, pDepthStencil, rangeCount, pRanges);
     PostCallCmdClearDepthStencilImage(device_data, commandBuffer, image, imageLayout, pDepthStencil, rangeCount, pRanges);
 }
 
@@ -1565,8 +1585,8 @@ VKAPI_ATTR void VKAPI_CALL CmdClearAttachments(
     const VkClearRect*                          pRects)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdClearAttachments();
-    device_data->dispatch_table.CmdClearAttachments(commandBuffer,attachmentCount,pAttachments,rectCount,pRects);
+    PreCallCmdClearAttachments(device_data, commandBuffer, attachmentCount, pAttachments, rectCount, pRects);
+    device_data->dispatch_table.CmdClearAttachments(commandBuffer, attachmentCount, pAttachments, rectCount, pRects);
     PostCallCmdClearAttachments(device_data, commandBuffer, attachmentCount, pAttachments, rectCount, pRects);
 }
 
@@ -1580,8 +1600,9 @@ VKAPI_ATTR void VKAPI_CALL CmdResolveImage(
     const VkImageResolve*                       pRegions)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdResolveImage();
-    device_data->dispatch_table.CmdResolveImage(commandBuffer,srcImage,srcImageLayout,dstImage,dstImageLayout,regionCount,pRegions);
+    PreCallCmdResolveImage(device_data, commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions);
+    device_data->dispatch_table.CmdResolveImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount,
+                                                pRegions);
     PostCallCmdResolveImage(device_data, commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions);
 }
 
@@ -1591,8 +1612,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetEvent(
     VkPipelineStageFlags                        stageMask)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetEvent();
-    device_data->dispatch_table.CmdSetEvent(commandBuffer,event,stageMask);
+    PreCallCmdSetEvent(device_data, commandBuffer, event, stageMask);
+    device_data->dispatch_table.CmdSetEvent(commandBuffer, event, stageMask);
     PostCallCmdSetEvent(device_data, commandBuffer, event, stageMask);
 }
 
@@ -1602,8 +1623,8 @@ VKAPI_ATTR void VKAPI_CALL CmdResetEvent(
     VkPipelineStageFlags                        stageMask)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdResetEvent();
-    device_data->dispatch_table.CmdResetEvent(commandBuffer,event,stageMask);
+    PreCallCmdResetEvent(device_data, commandBuffer, event, stageMask);
+    device_data->dispatch_table.CmdResetEvent(commandBuffer, event, stageMask);
     PostCallCmdResetEvent(device_data, commandBuffer, event, stageMask);
 }
 
@@ -1621,8 +1642,12 @@ VKAPI_ATTR void VKAPI_CALL CmdWaitEvents(
     const VkImageMemoryBarrier*                 pImageMemoryBarriers)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdWaitEvents();
-    device_data->dispatch_table.CmdWaitEvents(commandBuffer,eventCount,pEvents,srcStageMask,dstStageMask,memoryBarrierCount,pMemoryBarriers,bufferMemoryBarrierCount,pBufferMemoryBarriers,imageMemoryBarrierCount,pImageMemoryBarriers);
+    PreCallCmdWaitEvents(device_data, commandBuffer, eventCount, pEvents, srcStageMask, dstStageMask, memoryBarrierCount,
+                         pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers, imageMemoryBarrierCount,
+                         pImageMemoryBarriers);
+    device_data->dispatch_table.CmdWaitEvents(commandBuffer, eventCount, pEvents, srcStageMask, dstStageMask, memoryBarrierCount,
+                                              pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers,
+                                              imageMemoryBarrierCount, pImageMemoryBarriers);
     PostCallCmdWaitEvents(device_data, commandBuffer, eventCount, pEvents, srcStageMask, dstStageMask, memoryBarrierCount,
                           pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers, imageMemoryBarrierCount,
                           pImageMemoryBarriers);
@@ -1641,8 +1666,12 @@ VKAPI_ATTR void VKAPI_CALL CmdPipelineBarrier(
     const VkImageMemoryBarrier*                 pImageMemoryBarriers)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdPipelineBarrier();
-    device_data->dispatch_table.CmdPipelineBarrier(commandBuffer,srcStageMask,dstStageMask,dependencyFlags,memoryBarrierCount,pMemoryBarriers,bufferMemoryBarrierCount,pBufferMemoryBarriers,imageMemoryBarrierCount,pImageMemoryBarriers);
+    PreCallCmdPipelineBarrier(device_data, commandBuffer, srcStageMask, dstStageMask, dependencyFlags, memoryBarrierCount,
+                              pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers, imageMemoryBarrierCount,
+                              pImageMemoryBarriers);
+    device_data->dispatch_table.CmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, memoryBarrierCount,
+                                                   pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers,
+                                                   imageMemoryBarrierCount, pImageMemoryBarriers);
     PostCallCmdPipelineBarrier(device_data, commandBuffer, srcStageMask, dstStageMask, dependencyFlags, memoryBarrierCount,
                                pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers, imageMemoryBarrierCount,
                                pImageMemoryBarriers);
@@ -1655,8 +1684,8 @@ VKAPI_ATTR void VKAPI_CALL CmdBeginQuery(
     VkQueryControlFlags                         flags)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdBeginQuery();
-    device_data->dispatch_table.CmdBeginQuery(commandBuffer,queryPool,query,flags);
+    PreCallCmdBeginQuery(device_data, commandBuffer, queryPool, query, flags);
+    device_data->dispatch_table.CmdBeginQuery(commandBuffer, queryPool, query, flags);
     PostCallCmdBeginQuery(device_data, commandBuffer, queryPool, query, flags);
 }
 
@@ -1666,8 +1695,8 @@ VKAPI_ATTR void VKAPI_CALL CmdEndQuery(
     uint32_t                                    query)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdEndQuery();
-    device_data->dispatch_table.CmdEndQuery(commandBuffer,queryPool,query);
+    PreCallCmdEndQuery(device_data, commandBuffer, queryPool, query);
+    device_data->dispatch_table.CmdEndQuery(commandBuffer, queryPool, query);
     PostCallCmdEndQuery(device_data, commandBuffer, queryPool, query);
 }
 
@@ -1678,8 +1707,8 @@ VKAPI_ATTR void VKAPI_CALL CmdResetQueryPool(
     uint32_t                                    queryCount)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdResetQueryPool();
-    device_data->dispatch_table.CmdResetQueryPool(commandBuffer,queryPool,firstQuery,queryCount);
+    PreCallCmdResetQueryPool(device_data, commandBuffer, queryPool, firstQuery, queryCount);
+    device_data->dispatch_table.CmdResetQueryPool(commandBuffer, queryPool, firstQuery, queryCount);
     PostCallCmdResetQueryPool(device_data, commandBuffer, queryPool, firstQuery, queryCount);
 }
 
@@ -1690,8 +1719,8 @@ VKAPI_ATTR void VKAPI_CALL CmdWriteTimestamp(
     uint32_t                                    query)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdWriteTimestamp();
-    device_data->dispatch_table.CmdWriteTimestamp(commandBuffer,pipelineStage,queryPool,query);
+    PreCallCmdWriteTimestamp(device_data, commandBuffer, pipelineStage, queryPool, query);
+    device_data->dispatch_table.CmdWriteTimestamp(commandBuffer, pipelineStage, queryPool, query);
     PostCallCmdWriteTimestamp(device_data, commandBuffer, pipelineStage, queryPool, query);
 }
 
@@ -1706,8 +1735,10 @@ VKAPI_ATTR void VKAPI_CALL CmdCopyQueryPoolResults(
     VkQueryResultFlags                          flags)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdCopyQueryPoolResults();
-    device_data->dispatch_table.CmdCopyQueryPoolResults(commandBuffer,queryPool,firstQuery,queryCount,dstBuffer,dstOffset,stride,flags);
+    PreCallCmdCopyQueryPoolResults(device_data, commandBuffer, queryPool, firstQuery, queryCount, dstBuffer, dstOffset, stride,
+                                   flags);
+    device_data->dispatch_table.CmdCopyQueryPoolResults(commandBuffer, queryPool, firstQuery, queryCount, dstBuffer, dstOffset,
+                                                        stride, flags);
     PostCallCmdCopyQueryPoolResults(device_data, commandBuffer, queryPool, firstQuery, queryCount, dstBuffer, dstOffset, stride,
                                     flags);
 }
@@ -1721,8 +1752,8 @@ VKAPI_ATTR void VKAPI_CALL CmdPushConstants(
     const void*                                 pValues)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdPushConstants();
-    device_data->dispatch_table.CmdPushConstants(commandBuffer,layout,stageFlags,offset,size,pValues);
+    PreCallCmdPushConstants(device_data, commandBuffer, layout, stageFlags, offset, size, pValues);
+    device_data->dispatch_table.CmdPushConstants(commandBuffer, layout, stageFlags, offset, size, pValues);
     PostCallCmdPushConstants(device_data, commandBuffer, layout, stageFlags, offset, size, pValues);
 }
 
@@ -1732,8 +1763,8 @@ VKAPI_ATTR void VKAPI_CALL CmdBeginRenderPass(
     VkSubpassContents                           contents)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdBeginRenderPass();
-    device_data->dispatch_table.CmdBeginRenderPass(commandBuffer,pRenderPassBegin,contents);
+    PreCallCmdBeginRenderPass(device_data, commandBuffer, pRenderPassBegin, contents);
+    device_data->dispatch_table.CmdBeginRenderPass(commandBuffer, pRenderPassBegin, contents);
     PostCallCmdBeginRenderPass(device_data, commandBuffer, pRenderPassBegin, contents);
 }
 
@@ -1742,8 +1773,8 @@ VKAPI_ATTR void VKAPI_CALL CmdNextSubpass(
     VkSubpassContents                           contents)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdNextSubpass();
-    device_data->dispatch_table.CmdNextSubpass(commandBuffer,contents);
+    PreCallCmdNextSubpass(device_data, commandBuffer, contents);
+    device_data->dispatch_table.CmdNextSubpass(commandBuffer, contents);
     PostCallCmdNextSubpass(device_data, commandBuffer, contents);
 }
 
@@ -1751,7 +1782,7 @@ VKAPI_ATTR void VKAPI_CALL CmdEndRenderPass(
     VkCommandBuffer                             commandBuffer)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdEndRenderPass();
+    PreCallCmdEndRenderPass(device_data, commandBuffer);
     device_data->dispatch_table.CmdEndRenderPass(commandBuffer);
     PostCallCmdEndRenderPass(device_data, commandBuffer);
 }
@@ -1762,8 +1793,8 @@ VKAPI_ATTR void VKAPI_CALL CmdExecuteCommands(
     const VkCommandBuffer*                      pCommandBuffers)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdExecuteCommands();
-    device_data->dispatch_table.CmdExecuteCommands(commandBuffer,commandBufferCount,pCommandBuffers);
+    PreCallCmdExecuteCommands(device_data, commandBuffer, commandBufferCount, pCommandBuffers);
+    device_data->dispatch_table.CmdExecuteCommands(commandBuffer, commandBufferCount, pCommandBuffers);
     PostCallCmdExecuteCommands(device_data, commandBuffer, commandBufferCount, pCommandBuffers);
 }
 
@@ -1774,9 +1805,9 @@ VKAPI_ATTR void VKAPI_CALL DestroySurfaceKHR(
     const VkAllocationCallbacks*                pAllocator)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkDestroySurfaceKHR();
-    instance_data->dispatch_table.DestroySurfaceKHR(instance,surface,pAllocator);
-    //PostCallvkDestroySurfaceKHR();
+    PreCallDestroySurfaceKHR(instance_data, instance, surface, pAllocator);
+    instance_data->dispatch_table.DestroySurfaceKHR(instance, surface, pAllocator);
+    PostCallDestroySurfaceKHR(instance_data, instance, surface, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceSurfaceSupportKHR(
@@ -1786,9 +1817,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceSurfaceSupportKHR(
     VkBool32*                                   pSupported)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceSurfaceSupportKHR();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceSurfaceSupportKHR(physicalDevice,queueFamilyIndex,surface,pSupported);
-    //PostCallvkGetPhysicalDeviceSurfaceSupportKHR();
+    PreCallGetPhysicalDeviceSurfaceSupportKHR(instance_data, physicalDevice, queueFamilyIndex, surface, pSupported);
+    VkResult result =
+        instance_data->dispatch_table.GetPhysicalDeviceSurfaceSupportKHR(physicalDevice, queueFamilyIndex, surface, pSupported);
+    PostCallGetPhysicalDeviceSurfaceSupportKHR(instance_data, physicalDevice, queueFamilyIndex, surface, pSupported);
     return result;
 }
 
@@ -1798,9 +1830,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceSurfaceCapabilitiesKHR(
     VkSurfaceCapabilitiesKHR*                   pSurfaceCapabilities)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceSurfaceCapabilitiesKHR();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice,surface,pSurfaceCapabilities);
-    //PostCallvkGetPhysicalDeviceSurfaceCapabilitiesKHR();
+    PreCallGetPhysicalDeviceSurfaceCapabilitiesKHR(instance_data, physicalDevice, surface, pSurfaceCapabilities);
+    VkResult result =
+        instance_data->dispatch_table.GetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, pSurfaceCapabilities);
+    PostCallGetPhysicalDeviceSurfaceCapabilitiesKHR(instance_data, physicalDevice, surface, pSurfaceCapabilities);
     return result;
 }
 
@@ -1811,9 +1844,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceSurfaceFormatsKHR(
     VkSurfaceFormatKHR*                         pSurfaceFormats)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceSurfaceFormatsKHR();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceSurfaceFormatsKHR(physicalDevice,surface,pSurfaceFormatCount,pSurfaceFormats);
-    //PostCallvkGetPhysicalDeviceSurfaceFormatsKHR();
+    PreCallGetPhysicalDeviceSurfaceFormatsKHR(instance_data, physicalDevice, surface, pSurfaceFormatCount, pSurfaceFormats);
+    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface, pSurfaceFormatCount,
+                                                                                       pSurfaceFormats);
+    PostCallGetPhysicalDeviceSurfaceFormatsKHR(instance_data, physicalDevice, surface, pSurfaceFormatCount, pSurfaceFormats);
     return result;
 }
 
@@ -1824,9 +1858,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceSurfacePresentModesKHR(
     VkPresentModeKHR*                           pPresentModes)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceSurfacePresentModesKHR();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceSurfacePresentModesKHR(physicalDevice,surface,pPresentModeCount,pPresentModes);
-    //PostCallvkGetPhysicalDeviceSurfacePresentModesKHR();
+    PreCallGetPhysicalDeviceSurfacePresentModesKHR(instance_data, physicalDevice, surface, pPresentModeCount, pPresentModes);
+    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface,
+                                                                                            pPresentModeCount, pPresentModes);
+    PostCallGetPhysicalDeviceSurfacePresentModesKHR(instance_data, physicalDevice, surface, pPresentModeCount, pPresentModes);
     return result;
 }
 
@@ -1838,9 +1873,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateSwapchainKHR(
     VkSwapchainKHR*                             pSwapchain)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateSwapchainKHR();
-    VkResult result = device_data->dispatch_table.CreateSwapchainKHR(device,pCreateInfo,pAllocator,pSwapchain);
-    //PostCallvkCreateSwapchainKHR();
+    PreCallCreateSwapchainKHR(device_data, device, pCreateInfo, pAllocator, pSwapchain);
+    VkResult result = device_data->dispatch_table.CreateSwapchainKHR(device, pCreateInfo, pAllocator, pSwapchain);
+    PostCallCreateSwapchainKHR(device_data, device, pCreateInfo, pAllocator, pSwapchain);
     return result;
 }
 
@@ -1850,9 +1885,9 @@ VKAPI_ATTR void VKAPI_CALL DestroySwapchainKHR(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroySwapchainKHR();
-    device_data->dispatch_table.DestroySwapchainKHR(device,swapchain,pAllocator);
-    //PostCallvkDestroySwapchainKHR();
+    PreCallDestroySwapchainKHR(device_data, device, swapchain, pAllocator);
+    device_data->dispatch_table.DestroySwapchainKHR(device, swapchain, pAllocator);
+    PostCallDestroySwapchainKHR(device_data, device, swapchain, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL GetSwapchainImagesKHR(
@@ -1862,9 +1897,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetSwapchainImagesKHR(
     VkImage*                                    pSwapchainImages)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetSwapchainImagesKHR();
-    VkResult result = device_data->dispatch_table.GetSwapchainImagesKHR(device,swapchain,pSwapchainImageCount,pSwapchainImages);
-    //PostCallvkGetSwapchainImagesKHR();
+    PreCallGetSwapchainImagesKHR(device_data, device, swapchain, pSwapchainImageCount, pSwapchainImages);
+    VkResult result = device_data->dispatch_table.GetSwapchainImagesKHR(device, swapchain, pSwapchainImageCount, pSwapchainImages);
+    PostCallGetSwapchainImagesKHR(device_data, device, swapchain, pSwapchainImageCount, pSwapchainImages);
     return result;
 }
 
@@ -1877,9 +1912,9 @@ VKAPI_ATTR VkResult VKAPI_CALL AcquireNextImageKHR(
     uint32_t*                                   pImageIndex)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkAcquireNextImageKHR();
-    VkResult result = device_data->dispatch_table.AcquireNextImageKHR(device,swapchain,timeout,semaphore,fence,pImageIndex);
-    //PostCallvkAcquireNextImageKHR();
+    PreCallAcquireNextImageKHR(device_data, device, swapchain, timeout, semaphore, fence, pImageIndex);
+    VkResult result = device_data->dispatch_table.AcquireNextImageKHR(device, swapchain, timeout, semaphore, fence, pImageIndex);
+    PostCallAcquireNextImageKHR(device_data, device, swapchain, timeout, semaphore, fence, pImageIndex);
     return result;
 }
 
@@ -1889,8 +1924,8 @@ VKAPI_ATTR VkResult VKAPI_CALL QueuePresentKHR(
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(queue), device_layer_data_map);
     PreCallQueuePresentKHR(device_data, queue, pPresentInfo);
-    VkResult result = device_data->dispatch_table.QueuePresentKHR(queue,pPresentInfo);
-    //PostCallvkQueuePresentKHR();
+    VkResult result = device_data->dispatch_table.QueuePresentKHR(queue, pPresentInfo);
+    PostCallQueuePresentKHR(device_data, queue, pPresentInfo);
     return result;
 }
 
@@ -1901,9 +1936,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceDisplayPropertiesKHR(
     VkDisplayPropertiesKHR*                     pProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceDisplayPropertiesKHR();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceDisplayPropertiesKHR(physicalDevice,pPropertyCount,pProperties);
-    //PostCallvkGetPhysicalDeviceDisplayPropertiesKHR();
+    PreCallGetPhysicalDeviceDisplayPropertiesKHR(instance_data, physicalDevice, pPropertyCount, pProperties);
+    VkResult result =
+        instance_data->dispatch_table.GetPhysicalDeviceDisplayPropertiesKHR(physicalDevice, pPropertyCount, pProperties);
+    PostCallGetPhysicalDeviceDisplayPropertiesKHR(instance_data, physicalDevice, pPropertyCount, pProperties);
     return result;
 }
 
@@ -1913,9 +1949,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceDisplayPlanePropertiesKHR(
     VkDisplayPlanePropertiesKHR*                pProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceDisplayPlanePropertiesKHR();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice,pPropertyCount,pProperties);
-    //PostCallvkGetPhysicalDeviceDisplayPlanePropertiesKHR();
+    PreCallGetPhysicalDeviceDisplayPlanePropertiesKHR(instance_data, physicalDevice, pPropertyCount, pProperties);
+    VkResult result =
+        instance_data->dispatch_table.GetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice, pPropertyCount, pProperties);
+    PostCallGetPhysicalDeviceDisplayPlanePropertiesKHR(instance_data, physicalDevice, pPropertyCount, pProperties);
     return result;
 }
 
@@ -1926,9 +1963,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetDisplayPlaneSupportedDisplaysKHR(
     VkDisplayKHR*                               pDisplays)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetDisplayPlaneSupportedDisplaysKHR();
-    VkResult result = instance_data->dispatch_table.GetDisplayPlaneSupportedDisplaysKHR(physicalDevice,planeIndex,pDisplayCount,pDisplays);
-    //PostCallvkGetDisplayPlaneSupportedDisplaysKHR();
+    PreCallGetDisplayPlaneSupportedDisplaysKHR(instance_data, physicalDevice, planeIndex, pDisplayCount, pDisplays);
+    VkResult result =
+        instance_data->dispatch_table.GetDisplayPlaneSupportedDisplaysKHR(physicalDevice, planeIndex, pDisplayCount, pDisplays);
+    PostCallGetDisplayPlaneSupportedDisplaysKHR(instance_data, physicalDevice, planeIndex, pDisplayCount, pDisplays);
     return result;
 }
 
@@ -1939,9 +1977,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetDisplayModePropertiesKHR(
     VkDisplayModePropertiesKHR*                 pProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetDisplayModePropertiesKHR();
-    VkResult result = instance_data->dispatch_table.GetDisplayModePropertiesKHR(physicalDevice,display,pPropertyCount,pProperties);
-    //PostCallvkGetDisplayModePropertiesKHR();
+    PreCallGetDisplayModePropertiesKHR(instance_data, physicalDevice, display, pPropertyCount, pProperties);
+    VkResult result =
+        instance_data->dispatch_table.GetDisplayModePropertiesKHR(physicalDevice, display, pPropertyCount, pProperties);
+    PostCallGetDisplayModePropertiesKHR(instance_data, physicalDevice, display, pPropertyCount, pProperties);
     return result;
 }
 
@@ -1953,9 +1992,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateDisplayModeKHR(
     VkDisplayModeKHR*                           pMode)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkCreateDisplayModeKHR();
-    VkResult result = instance_data->dispatch_table.CreateDisplayModeKHR(physicalDevice,display,pCreateInfo,pAllocator,pMode);
-    //PostCallvkCreateDisplayModeKHR();
+    PreCallCreateDisplayModeKHR(instance_data, physicalDevice, display, pCreateInfo, pAllocator, pMode);
+    VkResult result = instance_data->dispatch_table.CreateDisplayModeKHR(physicalDevice, display, pCreateInfo, pAllocator, pMode);
+    PostCallCreateDisplayModeKHR(instance_data, physicalDevice, display, pCreateInfo, pAllocator, pMode);
     return result;
 }
 
@@ -1966,9 +2005,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetDisplayPlaneCapabilitiesKHR(
     VkDisplayPlaneCapabilitiesKHR*              pCapabilities)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetDisplayPlaneCapabilitiesKHR();
-    VkResult result = instance_data->dispatch_table.GetDisplayPlaneCapabilitiesKHR(physicalDevice,mode,planeIndex,pCapabilities);
-    //PostCallvkGetDisplayPlaneCapabilitiesKHR();
+    PreCallGetDisplayPlaneCapabilitiesKHR(instance_data, physicalDevice, mode, planeIndex, pCapabilities);
+    VkResult result = instance_data->dispatch_table.GetDisplayPlaneCapabilitiesKHR(physicalDevice, mode, planeIndex, pCapabilities);
+    PostCallGetDisplayPlaneCapabilitiesKHR(instance_data, physicalDevice, mode, planeIndex, pCapabilities);
     return result;
 }
 
@@ -1979,9 +2018,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateDisplayPlaneSurfaceKHR(
     VkSurfaceKHR*                               pSurface)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkCreateDisplayPlaneSurfaceKHR();
-    VkResult result = instance_data->dispatch_table.CreateDisplayPlaneSurfaceKHR(instance,pCreateInfo,pAllocator,pSurface);
-    //PostCallvkCreateDisplayPlaneSurfaceKHR();
+    PreCallCreateDisplayPlaneSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
+    VkResult result = instance_data->dispatch_table.CreateDisplayPlaneSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
+    PostCallCreateDisplayPlaneSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
     return result;
 }
 
@@ -1994,9 +2033,10 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateSharedSwapchainsKHR(
     VkSwapchainKHR*                             pSwapchains)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateSharedSwapchainsKHR();
-    VkResult result = device_data->dispatch_table.CreateSharedSwapchainsKHR(device,swapchainCount,pCreateInfos,pAllocator,pSwapchains);
-    //PostCallvkCreateSharedSwapchainsKHR();
+    PreCallCreateSharedSwapchainsKHR(device_data, device, swapchainCount, pCreateInfos, pAllocator, pSwapchains);
+    VkResult result =
+        device_data->dispatch_table.CreateSharedSwapchainsKHR(device, swapchainCount, pCreateInfos, pAllocator, pSwapchains);
+    PostCallCreateSharedSwapchainsKHR(device_data, device, swapchainCount, pCreateInfos, pAllocator, pSwapchains);
     return result;
 }
 
@@ -2009,9 +2049,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateXlibSurfaceKHR(
     VkSurfaceKHR*                               pSurface)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkCreateXlibSurfaceKHR();
-    VkResult result = instance_data->dispatch_table.CreateXlibSurfaceKHR(instance,pCreateInfo,pAllocator,pSurface);
-    //PostCallvkCreateXlibSurfaceKHR();
+    PreCallCreateXlibSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
+    VkResult result = instance_data->dispatch_table.CreateXlibSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
+    PostCallCreateXlibSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
     return result;
 }
 
@@ -2022,9 +2062,10 @@ VKAPI_ATTR VkBool32 VKAPI_CALL GetPhysicalDeviceXlibPresentationSupportKHR(
     VisualID                                    visualID)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceXlibPresentationSupportKHR();
-    VkBool32 result = instance_data->dispatch_table.GetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice,queueFamilyIndex,dpy,visualID);
-    //PostCallvkGetPhysicalDeviceXlibPresentationSupportKHR();
+    PreCallGetPhysicalDeviceXlibPresentationSupportKHR(instance_data, physicalDevice, queueFamilyIndex, dpy, visualID);
+    VkBool32 result =
+        instance_data->dispatch_table.GetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice, queueFamilyIndex, dpy, visualID);
+    PostCallGetPhysicalDeviceXlibPresentationSupportKHR(instance_data, physicalDevice, queueFamilyIndex, dpy, visualID);
     return result;
 }
 #endif /* VK_USE_PLATFORM_XLIB_KHR */
@@ -2038,9 +2079,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateXcbSurfaceKHR(
     VkSurfaceKHR*                               pSurface)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkCreateXcbSurfaceKHR();
-    VkResult result = instance_data->dispatch_table.CreateXcbSurfaceKHR(instance,pCreateInfo,pAllocator,pSurface);
-    //PostCallvkCreateXcbSurfaceKHR();
+    PreCallCreateXcbSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
+    VkResult result = instance_data->dispatch_table.CreateXcbSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
+    PostCallCreateXcbSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
     return result;
 }
 
@@ -2051,9 +2092,10 @@ VKAPI_ATTR VkBool32 VKAPI_CALL GetPhysicalDeviceXcbPresentationSupportKHR(
     xcb_visualid_t                              visual_id)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceXcbPresentationSupportKHR();
-    VkBool32 result = instance_data->dispatch_table.GetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice,queueFamilyIndex,connection,visual_id);
-    //PostCallvkGetPhysicalDeviceXcbPresentationSupportKHR();
+    PreCallGetPhysicalDeviceXcbPresentationSupportKHR(instance_data, physicalDevice, queueFamilyIndex, connection, visual_id);
+    VkBool32 result = instance_data->dispatch_table.GetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice, queueFamilyIndex,
+                                                                                               connection, visual_id);
+    PostCallGetPhysicalDeviceXcbPresentationSupportKHR(instance_data, physicalDevice, queueFamilyIndex, connection, visual_id);
     return result;
 }
 #endif /* VK_USE_PLATFORM_XCB_KHR */
@@ -2067,9 +2109,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateWaylandSurfaceKHR(
     VkSurfaceKHR*                               pSurface)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkCreateWaylandSurfaceKHR();
-    VkResult result = instance_data->dispatch_table.CreateWaylandSurfaceKHR(instance,pCreateInfo,pAllocator,pSurface);
-    //PostCallvkCreateWaylandSurfaceKHR();
+    PreCallCreateWaylandSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
+    VkResult result = instance_data->dispatch_table.CreateWaylandSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
+    PostCallCreateWaylandSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
     return result;
 }
 
@@ -2079,9 +2121,10 @@ VKAPI_ATTR VkBool32 VKAPI_CALL GetPhysicalDeviceWaylandPresentationSupportKHR(
     struct wl_display*                          display)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceWaylandPresentationSupportKHR();
-    VkBool32 result = instance_data->dispatch_table.GetPhysicalDeviceWaylandPresentationSupportKHR(physicalDevice,queueFamilyIndex,display);
-    //PostCallvkGetPhysicalDeviceWaylandPresentationSupportKHR();
+    PreCallGetPhysicalDeviceWaylandPresentationSupportKHR(instance_data, physicalDevice, queueFamilyIndex, display);
+    VkBool32 result =
+        instance_data->dispatch_table.GetPhysicalDeviceWaylandPresentationSupportKHR(physicalDevice, queueFamilyIndex, display);
+    PostCallGetPhysicalDeviceWaylandPresentationSupportKHR(instance_data, physicalDevice, queueFamilyIndex, display);
     return result;
 }
 #endif /* VK_USE_PLATFORM_WAYLAND_KHR */
@@ -2095,9 +2138,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateMirSurfaceKHR(
     VkSurfaceKHR*                               pSurface)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkCreateMirSurfaceKHR();
-    VkResult result = instance_data->dispatch_table.CreateMirSurfaceKHR(instance,pCreateInfo,pAllocator,pSurface);
-    //PostCallvkCreateMirSurfaceKHR();
+    PreCallCreateMirSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
+    VkResult result = instance_data->dispatch_table.CreateMirSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
+    PostCallCreateMirSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
     return result;
 }
 
@@ -2107,9 +2150,10 @@ VKAPI_ATTR VkBool32 VKAPI_CALL GetPhysicalDeviceMirPresentationSupportKHR(
     MirConnection*                              connection)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceMirPresentationSupportKHR();
-    VkBool32 result = instance_data->dispatch_table.GetPhysicalDeviceMirPresentationSupportKHR(physicalDevice,queueFamilyIndex,connection);
-    //PostCallvkGetPhysicalDeviceMirPresentationSupportKHR();
+    PreCallGetPhysicalDeviceMirPresentationSupportKHR(instance_data, physicalDevice, queueFamilyIndex, connection);
+    VkBool32 result =
+        instance_data->dispatch_table.GetPhysicalDeviceMirPresentationSupportKHR(physicalDevice, queueFamilyIndex, connection);
+    PostCallGetPhysicalDeviceMirPresentationSupportKHR(instance_data, physicalDevice, queueFamilyIndex, connection);
     return result;
 }
 #endif /* VK_USE_PLATFORM_MIR_KHR */
@@ -2123,9 +2167,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateAndroidSurfaceKHR(
     VkSurfaceKHR*                               pSurface)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkCreateAndroidSurfaceKHR();
-    VkResult result = instance_data->dispatch_table.CreateAndroidSurfaceKHR(instance,pCreateInfo,pAllocator,pSurface);
-    //PostCallvkCreateAndroidSurfaceKHR();
+    PreCallCreateAndroidSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
+    VkResult result = instance_data->dispatch_table.CreateAndroidSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
+    PostCallCreateAndroidSurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
     return result;
 }
 #endif /* VK_USE_PLATFORM_ANDROID_KHR */
@@ -2139,9 +2183,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateWin32SurfaceKHR(
     VkSurfaceKHR*                               pSurface)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkCreateWin32SurfaceKHR();
-    VkResult result = instance_data->dispatch_table.CreateWin32SurfaceKHR(instance,pCreateInfo,pAllocator,pSurface);
-    //PostCallvkCreateWin32SurfaceKHR();
+    PreCallCreateWin32SurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
+    VkResult result = instance_data->dispatch_table.CreateWin32SurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
+    PostCallCreateWin32SurfaceKHR(instance_data, instance, pCreateInfo, pAllocator, pSurface);
     return result;
 }
 
@@ -2150,9 +2194,9 @@ VKAPI_ATTR VkBool32 VKAPI_CALL GetPhysicalDeviceWin32PresentationSupportKHR(
     uint32_t                                    queueFamilyIndex)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceWin32PresentationSupportKHR();
-    VkBool32 result = instance_data->dispatch_table.GetPhysicalDeviceWin32PresentationSupportKHR(physicalDevice,queueFamilyIndex);
-    //PostCallvkGetPhysicalDeviceWin32PresentationSupportKHR();
+    PreCallGetPhysicalDeviceWin32PresentationSupportKHR(instance_data, physicalDevice, queueFamilyIndex);
+    VkBool32 result = instance_data->dispatch_table.GetPhysicalDeviceWin32PresentationSupportKHR(physicalDevice, queueFamilyIndex);
+    PostCallGetPhysicalDeviceWin32PresentationSupportKHR(instance_data, physicalDevice, queueFamilyIndex);
     return result;
 }
 #endif /* VK_USE_PLATFORM_WIN32_KHR */
@@ -2164,9 +2208,9 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceFeatures2KHR(
     VkPhysicalDeviceFeatures2KHR*               pFeatures)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceFeatures2KHR();
-    instance_data->dispatch_table.GetPhysicalDeviceFeatures2KHR(physicalDevice,pFeatures);
-    //PostCallvkGetPhysicalDeviceFeatures2KHR();
+    PreCallGetPhysicalDeviceFeatures2KHR(instance_data, physicalDevice, pFeatures);
+    instance_data->dispatch_table.GetPhysicalDeviceFeatures2KHR(physicalDevice, pFeatures);
+    PostCallGetPhysicalDeviceFeatures2KHR(instance_data, physicalDevice, pFeatures);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceProperties2KHR(
@@ -2174,9 +2218,9 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceProperties2KHR(
     VkPhysicalDeviceProperties2KHR*             pProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceProperties2KHR();
-    instance_data->dispatch_table.GetPhysicalDeviceProperties2KHR(physicalDevice,pProperties);
-    //PostCallvkGetPhysicalDeviceProperties2KHR();
+    PreCallGetPhysicalDeviceProperties2KHR(instance_data, physicalDevice, pProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceProperties2KHR(physicalDevice, pProperties);
+    PostCallGetPhysicalDeviceProperties2KHR(instance_data, physicalDevice, pProperties);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceFormatProperties2KHR(
@@ -2185,9 +2229,9 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceFormatProperties2KHR(
     VkFormatProperties2KHR*                     pFormatProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceFormatProperties2KHR();
-    instance_data->dispatch_table.GetPhysicalDeviceFormatProperties2KHR(physicalDevice,format,pFormatProperties);
-    //PostCallvkGetPhysicalDeviceFormatProperties2KHR();
+    PreCallGetPhysicalDeviceFormatProperties2KHR(instance_data, physicalDevice, format, pFormatProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceFormatProperties2KHR(physicalDevice, format, pFormatProperties);
+    PostCallGetPhysicalDeviceFormatProperties2KHR(instance_data, physicalDevice, format, pFormatProperties);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceImageFormatProperties2KHR(
@@ -2196,9 +2240,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceImageFormatProperties2KHR(
     VkImageFormatProperties2KHR*                pImageFormatProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceImageFormatProperties2KHR();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceImageFormatProperties2KHR(physicalDevice,pImageFormatInfo,pImageFormatProperties);
-    //PostCallvkGetPhysicalDeviceImageFormatProperties2KHR();
+    PreCallGetPhysicalDeviceImageFormatProperties2KHR(instance_data, physicalDevice, pImageFormatInfo, pImageFormatProperties);
+    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceImageFormatProperties2KHR(physicalDevice, pImageFormatInfo,
+                                                                                               pImageFormatProperties);
+    PostCallGetPhysicalDeviceImageFormatProperties2KHR(instance_data, physicalDevice, pImageFormatInfo, pImageFormatProperties);
     return result;
 }
 
@@ -2208,9 +2253,12 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceQueueFamilyProperties2KHR(
     VkQueueFamilyProperties2KHR*                pQueueFamilyProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceQueueFamilyProperties2KHR();
-    instance_data->dispatch_table.GetPhysicalDeviceQueueFamilyProperties2KHR(physicalDevice,pQueueFamilyPropertyCount,pQueueFamilyProperties);
-    //PostCallvkGetPhysicalDeviceQueueFamilyProperties2KHR();
+    PreCallGetPhysicalDeviceQueueFamilyProperties2KHR(instance_data, physicalDevice, pQueueFamilyPropertyCount,
+                                                      pQueueFamilyProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceQueueFamilyProperties2KHR(physicalDevice, pQueueFamilyPropertyCount,
+                                                                             pQueueFamilyProperties);
+    PostCallGetPhysicalDeviceQueueFamilyProperties2KHR(instance_data, physicalDevice, pQueueFamilyPropertyCount,
+                                                       pQueueFamilyProperties);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceMemoryProperties2KHR(
@@ -2218,9 +2266,9 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceMemoryProperties2KHR(
     VkPhysicalDeviceMemoryProperties2KHR*       pMemoryProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceMemoryProperties2KHR();
-    instance_data->dispatch_table.GetPhysicalDeviceMemoryProperties2KHR(physicalDevice,pMemoryProperties);
-    //PostCallvkGetPhysicalDeviceMemoryProperties2KHR();
+    PreCallGetPhysicalDeviceMemoryProperties2KHR(instance_data, physicalDevice, pMemoryProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceMemoryProperties2KHR(physicalDevice, pMemoryProperties);
+    PostCallGetPhysicalDeviceMemoryProperties2KHR(instance_data, physicalDevice, pMemoryProperties);
 }
 
 VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceSparseImageFormatProperties2KHR(
@@ -2230,9 +2278,12 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceSparseImageFormatProperties2KHR(
     VkSparseImageFormatProperties2KHR*          pProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceSparseImageFormatProperties2KHR();
-    instance_data->dispatch_table.GetPhysicalDeviceSparseImageFormatProperties2KHR(physicalDevice,pFormatInfo,pPropertyCount,pProperties);
-    //PostCallvkGetPhysicalDeviceSparseImageFormatProperties2KHR();
+    PreCallGetPhysicalDeviceSparseImageFormatProperties2KHR(instance_data, physicalDevice, pFormatInfo, pPropertyCount,
+                                                            pProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceSparseImageFormatProperties2KHR(physicalDevice, pFormatInfo, pPropertyCount,
+                                                                                   pProperties);
+    PostCallGetPhysicalDeviceSparseImageFormatProperties2KHR(instance_data, physicalDevice, pFormatInfo, pPropertyCount,
+                                                             pProperties);
 }
 
 
@@ -2243,9 +2294,9 @@ VKAPI_ATTR void VKAPI_CALL TrimCommandPoolKHR(
     VkCommandPoolTrimFlagsKHR                   flags)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkTrimCommandPoolKHR();
-    device_data->dispatch_table.TrimCommandPoolKHR(device,commandPool,flags);
-    //PostCallvkTrimCommandPoolKHR();
+    PreCallTrimCommandPoolKHR(device_data, device, commandPool, flags);
+    device_data->dispatch_table.TrimCommandPoolKHR(device, commandPool, flags);
+    PostCallTrimCommandPoolKHR(device_data, device, commandPool, flags);
 }
 
 
@@ -2258,8 +2309,10 @@ VKAPI_ATTR void VKAPI_CALL CmdPushDescriptorSetKHR(
     const VkWriteDescriptorSet*                 pDescriptorWrites)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdPushDescriptorSetKHR();
-    device_data->dispatch_table.CmdPushDescriptorSetKHR(commandBuffer,pipelineBindPoint,layout,set,descriptorWriteCount,pDescriptorWrites);
+    PreCallCmdPushDescriptorSetKHR(device_data, commandBuffer, pipelineBindPoint, layout, set, descriptorWriteCount,
+                                   pDescriptorWrites);
+    device_data->dispatch_table.CmdPushDescriptorSetKHR(commandBuffer, pipelineBindPoint, layout, set, descriptorWriteCount,
+                                                        pDescriptorWrites);
     PostCallCmdPushDescriptorSetKHR(device_data, commandBuffer, pipelineBindPoint, layout, set, descriptorWriteCount,
                                     pDescriptorWrites);
 }
@@ -2273,9 +2326,10 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateDescriptorUpdateTemplateKHR(
     VkDescriptorUpdateTemplateKHR*              pDescriptorUpdateTemplate)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateDescriptorUpdateTemplateKHR();
-    VkResult result = device_data->dispatch_table.CreateDescriptorUpdateTemplateKHR(device,pCreateInfo,pAllocator,pDescriptorUpdateTemplate);
-    //PostCallvkCreateDescriptorUpdateTemplateKHR();
+    PreCallCreateDescriptorUpdateTemplateKHR(device_data, device, pCreateInfo, pAllocator, pDescriptorUpdateTemplate);
+    VkResult result =
+        device_data->dispatch_table.CreateDescriptorUpdateTemplateKHR(device, pCreateInfo, pAllocator, pDescriptorUpdateTemplate);
+    PostCallCreateDescriptorUpdateTemplateKHR(device_data, device, pCreateInfo, pAllocator, pDescriptorUpdateTemplate);
     return result;
 }
 
@@ -2285,9 +2339,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyDescriptorUpdateTemplateKHR(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyDescriptorUpdateTemplateKHR();
-    device_data->dispatch_table.DestroyDescriptorUpdateTemplateKHR(device,descriptorUpdateTemplate,pAllocator);
-    //PostCallvkDestroyDescriptorUpdateTemplateKHR();
+    PreCallDestroyDescriptorUpdateTemplateKHR(device_data, device, descriptorUpdateTemplate, pAllocator);
+    device_data->dispatch_table.DestroyDescriptorUpdateTemplateKHR(device, descriptorUpdateTemplate, pAllocator);
+    PostCallDestroyDescriptorUpdateTemplateKHR(device_data, device, descriptorUpdateTemplate, pAllocator);
 }
 
 VKAPI_ATTR void VKAPI_CALL UpdateDescriptorSetWithTemplateKHR(
@@ -2297,9 +2351,9 @@ VKAPI_ATTR void VKAPI_CALL UpdateDescriptorSetWithTemplateKHR(
     const void*                                 pData)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkUpdateDescriptorSetWithTemplateKHR();
-    device_data->dispatch_table.UpdateDescriptorSetWithTemplateKHR(device,descriptorSet,descriptorUpdateTemplate,pData);
-    //PostCallvkUpdateDescriptorSetWithTemplateKHR();
+    PreCallUpdateDescriptorSetWithTemplateKHR(device_data, device, descriptorSet, descriptorUpdateTemplate, pData);
+    device_data->dispatch_table.UpdateDescriptorSetWithTemplateKHR(device, descriptorSet, descriptorUpdateTemplate, pData);
+    PostCallUpdateDescriptorSetWithTemplateKHR(device_data, device, descriptorSet, descriptorUpdateTemplate, pData);
 }
 
 VKAPI_ATTR void VKAPI_CALL CmdPushDescriptorSetWithTemplateKHR(
@@ -2310,8 +2364,8 @@ VKAPI_ATTR void VKAPI_CALL CmdPushDescriptorSetWithTemplateKHR(
     const void*                                 pData)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdPushDescriptorSetWithTemplateKHR();
-    device_data->dispatch_table.CmdPushDescriptorSetWithTemplateKHR(commandBuffer,descriptorUpdateTemplate,layout,set,pData);
+    PreCallCmdPushDescriptorSetWithTemplateKHR(device_data, commandBuffer, descriptorUpdateTemplate, layout, set, pData);
+    device_data->dispatch_table.CmdPushDescriptorSetWithTemplateKHR(commandBuffer, descriptorUpdateTemplate, layout, set, pData);
     PostCallCmdPushDescriptorSetWithTemplateKHR(device_data, commandBuffer, descriptorUpdateTemplate, layout, set, pData);
 }
 
@@ -2321,9 +2375,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetSwapchainStatusKHR(
     VkSwapchainKHR                              swapchain)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetSwapchainStatusKHR();
-    VkResult result = device_data->dispatch_table.GetSwapchainStatusKHR(device,swapchain);
-    //PostCallvkGetSwapchainStatusKHR();
+    PreCallGetSwapchainStatusKHR(device_data, device, swapchain);
+    VkResult result = device_data->dispatch_table.GetSwapchainStatusKHR(device, swapchain);
+    PostCallGetSwapchainStatusKHR(device_data, device, swapchain);
     return result;
 }
 
@@ -2334,9 +2388,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceSurfaceCapabilities2KHR(
     VkSurfaceCapabilities2KHR*                  pSurfaceCapabilities)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceSurfaceCapabilities2KHR();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceSurfaceCapabilities2KHR(physicalDevice,pSurfaceInfo,pSurfaceCapabilities);
-    //PostCallvkGetPhysicalDeviceSurfaceCapabilities2KHR();
+    PreCallGetPhysicalDeviceSurfaceCapabilities2KHR(instance_data, physicalDevice, pSurfaceInfo, pSurfaceCapabilities);
+    VkResult result =
+        instance_data->dispatch_table.GetPhysicalDeviceSurfaceCapabilities2KHR(physicalDevice, pSurfaceInfo, pSurfaceCapabilities);
+    PostCallGetPhysicalDeviceSurfaceCapabilities2KHR(instance_data, physicalDevice, pSurfaceInfo, pSurfaceCapabilities);
     return result;
 }
 
@@ -2347,9 +2402,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceSurfaceFormats2KHR(
     VkSurfaceFormat2KHR*                        pSurfaceFormats)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceSurfaceFormats2KHR();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceSurfaceFormats2KHR(physicalDevice,pSurfaceInfo,pSurfaceFormatCount,pSurfaceFormats);
-    //PostCallvkGetPhysicalDeviceSurfaceFormats2KHR();
+    PreCallGetPhysicalDeviceSurfaceFormats2KHR(instance_data, physicalDevice, pSurfaceInfo, pSurfaceFormatCount, pSurfaceFormats);
+    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceSurfaceFormats2KHR(physicalDevice, pSurfaceInfo,
+                                                                                        pSurfaceFormatCount, pSurfaceFormats);
+    PostCallGetPhysicalDeviceSurfaceFormats2KHR(instance_data, physicalDevice, pSurfaceInfo, pSurfaceFormatCount, pSurfaceFormats);
     return result;
 }
 
@@ -2379,9 +2435,11 @@ VKAPI_ATTR void VKAPI_CALL DebugReportMessageEXT(
     const char*                                 pMessage)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkDebugReportMessageEXT();
-    instance_data->dispatch_table.DebugReportMessageEXT(instance,flags,objectType,object,location,messageCode,pLayerPrefix,pMessage);
-    //PostCallvkDebugReportMessageEXT();
+    PreCallDebugReportMessageEXT(instance_data, instance, flags, objectType, object, location, messageCode, pLayerPrefix, pMessage);
+    instance_data->dispatch_table.DebugReportMessageEXT(instance, flags, objectType, object, location, messageCode, pLayerPrefix,
+                                                        pMessage);
+    PostCallDebugReportMessageEXT(instance_data, instance, flags, objectType, object, location, messageCode, pLayerPrefix,
+                                  pMessage);
 }
 
 
@@ -2395,9 +2453,9 @@ VKAPI_ATTR VkResult VKAPI_CALL DebugMarkerSetObjectTagEXT(
     VkDebugMarkerObjectTagInfoEXT*              pTagInfo)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDebugMarkerSetObjectTagEXT();
-    VkResult result = device_data->dispatch_table.DebugMarkerSetObjectTagEXT(device,pTagInfo);
-    //PostCallvkDebugMarkerSetObjectTagEXT();
+    PreCallDebugMarkerSetObjectTagEXT(device_data, device, pTagInfo);
+    VkResult result = device_data->dispatch_table.DebugMarkerSetObjectTagEXT(device, pTagInfo);
+    PostCallDebugMarkerSetObjectTagEXT(device_data, device, pTagInfo);
     return result;
 }
 
@@ -2406,9 +2464,9 @@ VKAPI_ATTR VkResult VKAPI_CALL DebugMarkerSetObjectNameEXT(
     VkDebugMarkerObjectNameInfoEXT*             pNameInfo)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDebugMarkerSetObjectNameEXT();
-    VkResult result = device_data->dispatch_table.DebugMarkerSetObjectNameEXT(device,pNameInfo);
-    //PostCallvkDebugMarkerSetObjectNameEXT();
+    PreCallDebugMarkerSetObjectNameEXT(device_data, device, pNameInfo);
+    VkResult result = device_data->dispatch_table.DebugMarkerSetObjectNameEXT(device, pNameInfo);
+    PostCallDebugMarkerSetObjectNameEXT(device_data, device, pNameInfo);
     return result;
 }
 
@@ -2417,8 +2475,8 @@ VKAPI_ATTR void VKAPI_CALL CmdDebugMarkerBeginEXT(
     VkDebugMarkerMarkerInfoEXT*                 pMarkerInfo)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdDebugMarkerBeginEXT();
-    device_data->dispatch_table.CmdDebugMarkerBeginEXT(commandBuffer,pMarkerInfo);
+    PreCallCmdDebugMarkerBeginEXT(device_data, commandBuffer, pMarkerInfo);
+    device_data->dispatch_table.CmdDebugMarkerBeginEXT(commandBuffer, pMarkerInfo);
     PostCallCmdDebugMarkerBeginEXT(device_data, commandBuffer, pMarkerInfo);
 }
 
@@ -2426,7 +2484,7 @@ VKAPI_ATTR void VKAPI_CALL CmdDebugMarkerEndEXT(
     VkCommandBuffer                             commandBuffer)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdDebugMarkerEndEXT();
+    PreCallCmdDebugMarkerEndEXT(device_data, commandBuffer);
     device_data->dispatch_table.CmdDebugMarkerEndEXT(commandBuffer);
     PostCallCmdDebugMarkerEndEXT(device_data, commandBuffer);
 }
@@ -2436,8 +2494,8 @@ VKAPI_ATTR void VKAPI_CALL CmdDebugMarkerInsertEXT(
     VkDebugMarkerMarkerInfoEXT*                 pMarkerInfo)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdDebugMarkerInsertEXT();
-    device_data->dispatch_table.CmdDebugMarkerInsertEXT(commandBuffer,pMarkerInfo);
+    PreCallCmdDebugMarkerInsertEXT(device_data, commandBuffer, pMarkerInfo);
+    device_data->dispatch_table.CmdDebugMarkerInsertEXT(commandBuffer, pMarkerInfo);
     PostCallCmdDebugMarkerInsertEXT(device_data, commandBuffer, pMarkerInfo);
 }
 
@@ -2454,8 +2512,10 @@ VKAPI_ATTR void VKAPI_CALL CmdDrawIndirectCountAMD(
     uint32_t                                    stride)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdDrawIndirectCountAMD();
-    device_data->dispatch_table.CmdDrawIndirectCountAMD(commandBuffer,buffer,offset,countBuffer,countBufferOffset,maxDrawCount,stride);
+    PreCallCmdDrawIndirectCountAMD(device_data, commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount,
+                                   stride);
+    device_data->dispatch_table.CmdDrawIndirectCountAMD(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount,
+                                                        stride);
     PostCallCmdDrawIndirectCountAMD(device_data, commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount,
                                     stride);
 }
@@ -2470,8 +2530,10 @@ VKAPI_ATTR void VKAPI_CALL CmdDrawIndexedIndirectCountAMD(
     uint32_t                                    stride)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdDrawIndexedIndirectCountAMD();
-    device_data->dispatch_table.CmdDrawIndexedIndirectCountAMD(commandBuffer,buffer,offset,countBuffer,countBufferOffset,maxDrawCount,stride);
+    PreCallCmdDrawIndexedIndirectCountAMD(device_data, commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount,
+                                          stride);
+    device_data->dispatch_table.CmdDrawIndexedIndirectCountAMD(commandBuffer, buffer, offset, countBuffer, countBufferOffset,
+                                                               maxDrawCount, stride);
     PostCallCmdDrawIndexedIndirectCountAMD(device_data, commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount,
                                            stride);
 }
@@ -2494,9 +2556,12 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceExternalImageFormatPropertiesNV(
     VkExternalImageFormatPropertiesNV*          pExternalImageFormatProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceExternalImageFormatPropertiesNV();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceExternalImageFormatPropertiesNV(physicalDevice,format,type,tiling,usage,flags,externalHandleType,pExternalImageFormatProperties);
-    //PostCallvkGetPhysicalDeviceExternalImageFormatPropertiesNV();
+    PreCallGetPhysicalDeviceExternalImageFormatPropertiesNV(instance_data, physicalDevice, format, type, tiling, usage, flags,
+                                                            externalHandleType, pExternalImageFormatProperties);
+    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceExternalImageFormatPropertiesNV(
+        physicalDevice, format, type, tiling, usage, flags, externalHandleType, pExternalImageFormatProperties);
+    PostCallGetPhysicalDeviceExternalImageFormatPropertiesNV(instance_data, physicalDevice, format, type, tiling, usage, flags,
+                                                             externalHandleType, pExternalImageFormatProperties);
     return result;
 }
 
@@ -2510,9 +2575,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetMemoryWin32HandleNV(
     HANDLE*                                     pHandle)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetMemoryWin32HandleNV();
-    VkResult result = device_data->dispatch_table.GetMemoryWin32HandleNV(device,memory,handleType,pHandle);
-    //PostCallvkGetMemoryWin32HandleNV();
+    PreCallGetMemoryWin32HandleNV(device_data, device, memory, handleType, pHandle);
+    VkResult result = device_data->dispatch_table.GetMemoryWin32HandleNV(device, memory, handleType, pHandle);
+    PostCallGetMemoryWin32HandleNV(device_data, device, memory, handleType, pHandle);
     return result;
 }
 #endif /* VK_USE_PLATFORM_WIN32_KHR */
@@ -2529,9 +2594,12 @@ VKAPI_ATTR void VKAPI_CALL GetDeviceGroupPeerMemoryFeaturesKHX(
     VkPeerMemoryFeatureFlagsKHX*                pPeerMemoryFeatures)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetDeviceGroupPeerMemoryFeaturesKHX();
-    device_data->dispatch_table.GetDeviceGroupPeerMemoryFeaturesKHX(device,heapIndex,localDeviceIndex,remoteDeviceIndex,pPeerMemoryFeatures);
-    //PostCallvkGetDeviceGroupPeerMemoryFeaturesKHX();
+    PreCallGetDeviceGroupPeerMemoryFeaturesKHX(device_data, device, heapIndex, localDeviceIndex, remoteDeviceIndex,
+                                               pPeerMemoryFeatures);
+    device_data->dispatch_table.GetDeviceGroupPeerMemoryFeaturesKHX(device, heapIndex, localDeviceIndex, remoteDeviceIndex,
+                                                                    pPeerMemoryFeatures);
+    PostCallGetDeviceGroupPeerMemoryFeaturesKHX(device_data, device, heapIndex, localDeviceIndex, remoteDeviceIndex,
+                                                pPeerMemoryFeatures);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL BindBufferMemory2KHX(
@@ -2540,9 +2608,9 @@ VKAPI_ATTR VkResult VKAPI_CALL BindBufferMemory2KHX(
     const VkBindBufferMemoryInfoKHX*            pBindInfos)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkBindBufferMemory2KHX();
-    VkResult result = device_data->dispatch_table.BindBufferMemory2KHX(device,bindInfoCount,pBindInfos);
-    //PostCallvkBindBufferMemory2KHX();
+    PreCallBindBufferMemory2KHX(device_data, device, bindInfoCount, pBindInfos);
+    VkResult result = device_data->dispatch_table.BindBufferMemory2KHX(device, bindInfoCount, pBindInfos);
+    PostCallBindBufferMemory2KHX(device_data, device, bindInfoCount, pBindInfos);
     return result;
 }
 
@@ -2552,9 +2620,9 @@ VKAPI_ATTR VkResult VKAPI_CALL BindImageMemory2KHX(
     const VkBindImageMemoryInfoKHX*             pBindInfos)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkBindImageMemory2KHX();
-    VkResult result = device_data->dispatch_table.BindImageMemory2KHX(device,bindInfoCount,pBindInfos);
-    //PostCallvkBindImageMemory2KHX();
+    PreCallBindImageMemory2KHX(device_data, device, bindInfoCount, pBindInfos);
+    VkResult result = device_data->dispatch_table.BindImageMemory2KHX(device, bindInfoCount, pBindInfos);
+    PostCallBindImageMemory2KHX(device_data, device, bindInfoCount, pBindInfos);
     return result;
 }
 
@@ -2563,8 +2631,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetDeviceMaskKHX(
     uint32_t                                    deviceMask)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetDeviceMaskKHX();
-    device_data->dispatch_table.CmdSetDeviceMaskKHX(commandBuffer,deviceMask);
+    PreCallCmdSetDeviceMaskKHX(device_data, commandBuffer, deviceMask);
+    device_data->dispatch_table.CmdSetDeviceMaskKHX(commandBuffer, deviceMask);
     PostCallCmdSetDeviceMaskKHX(device_data, commandBuffer, deviceMask);
 }
 
@@ -2573,9 +2641,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetDeviceGroupPresentCapabilitiesKHX(
     VkDeviceGroupPresentCapabilitiesKHX*        pDeviceGroupPresentCapabilities)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetDeviceGroupPresentCapabilitiesKHX();
-    VkResult result = device_data->dispatch_table.GetDeviceGroupPresentCapabilitiesKHX(device,pDeviceGroupPresentCapabilities);
-    //PostCallvkGetDeviceGroupPresentCapabilitiesKHX();
+    PreCallGetDeviceGroupPresentCapabilitiesKHX(device_data, device, pDeviceGroupPresentCapabilities);
+    VkResult result = device_data->dispatch_table.GetDeviceGroupPresentCapabilitiesKHX(device, pDeviceGroupPresentCapabilities);
+    PostCallGetDeviceGroupPresentCapabilitiesKHX(device_data, device, pDeviceGroupPresentCapabilities);
     return result;
 }
 
@@ -2585,9 +2653,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetDeviceGroupSurfacePresentModesKHX(
     VkDeviceGroupPresentModeFlagsKHX*           pModes)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetDeviceGroupSurfacePresentModesKHX();
-    VkResult result = device_data->dispatch_table.GetDeviceGroupSurfacePresentModesKHX(device,surface,pModes);
-    //PostCallvkGetDeviceGroupSurfacePresentModesKHX();
+    PreCallGetDeviceGroupSurfacePresentModesKHX(device_data, device, surface, pModes);
+    VkResult result = device_data->dispatch_table.GetDeviceGroupSurfacePresentModesKHX(device, surface, pModes);
+    PostCallGetDeviceGroupSurfacePresentModesKHX(device_data, device, surface, pModes);
     return result;
 }
 
@@ -2597,9 +2665,9 @@ VKAPI_ATTR VkResult VKAPI_CALL AcquireNextImage2KHX(
     uint32_t*                                   pImageIndex)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkAcquireNextImage2KHX();
-    VkResult result = device_data->dispatch_table.AcquireNextImage2KHX(device,pAcquireInfo,pImageIndex);
-    //PostCallvkAcquireNextImage2KHX();
+    PreCallAcquireNextImage2KHX(device_data, device, pAcquireInfo, pImageIndex);
+    VkResult result = device_data->dispatch_table.AcquireNextImage2KHX(device, pAcquireInfo, pImageIndex);
+    PostCallAcquireNextImage2KHX(device_data, device, pAcquireInfo, pImageIndex);
     return result;
 }
 
@@ -2613,8 +2681,10 @@ VKAPI_ATTR void VKAPI_CALL CmdDispatchBaseKHX(
     uint32_t                                    groupCountZ)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdDispatchBaseKHX();
-    device_data->dispatch_table.CmdDispatchBaseKHX(commandBuffer,baseGroupX,baseGroupY,baseGroupZ,groupCountX,groupCountY,groupCountZ);
+    PreCallCmdDispatchBaseKHX(device_data, commandBuffer, baseGroupX, baseGroupY, baseGroupZ, groupCountX, groupCountY,
+                              groupCountZ);
+    device_data->dispatch_table.CmdDispatchBaseKHX(commandBuffer, baseGroupX, baseGroupY, baseGroupZ, groupCountX, groupCountY,
+                                                   groupCountZ);
     PostCallCmdDispatchBaseKHX(device_data, commandBuffer, baseGroupX, baseGroupY, baseGroupZ, groupCountX, groupCountY,
                                groupCountZ);
 }
@@ -2626,9 +2696,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDevicePresentRectanglesKHX(
     VkRect2D*                                   pRects)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDevicePresentRectanglesKHX();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDevicePresentRectanglesKHX(physicalDevice,surface,pRectCount,pRects);
-    //PostCallvkGetPhysicalDevicePresentRectanglesKHX();
+    PreCallGetPhysicalDevicePresentRectanglesKHX(instance_data, physicalDevice, surface, pRectCount, pRects);
+    VkResult result =
+        instance_data->dispatch_table.GetPhysicalDevicePresentRectanglesKHX(physicalDevice, surface, pRectCount, pRects);
+    PostCallGetPhysicalDevicePresentRectanglesKHX(instance_data, physicalDevice, surface, pRectCount, pRects);
     return result;
 }
 
@@ -2642,9 +2713,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateViSurfaceNN(
     VkSurfaceKHR*                               pSurface)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkCreateViSurfaceNN();
-    VkResult result = instance_data->dispatch_table.CreateViSurfaceNN(instance,pCreateInfo,pAllocator,pSurface);
-    //PostCallvkCreateViSurfaceNN();
+    PreCallCreateViSurfaceNN(instance_data, instance, pCreateInfo, pAllocator, pSurface);
+    VkResult result = instance_data->dispatch_table.CreateViSurfaceNN(instance, pCreateInfo, pAllocator, pSurface);
+    PostCallCreateViSurfaceNN(instance_data, instance, pCreateInfo, pAllocator, pSurface);
     return result;
 }
 #endif /* VK_USE_PLATFORM_VI_NN */
@@ -2658,9 +2729,10 @@ VKAPI_ATTR VkResult VKAPI_CALL EnumeratePhysicalDeviceGroupsKHX(
     VkPhysicalDeviceGroupPropertiesKHX*         pPhysicalDeviceGroupProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkEnumeratePhysicalDeviceGroupsKHX();
-    VkResult result = instance_data->dispatch_table.EnumeratePhysicalDeviceGroupsKHX(instance,pPhysicalDeviceGroupCount,pPhysicalDeviceGroupProperties);
-    //PostCallvkEnumeratePhysicalDeviceGroupsKHX();
+    PreCallEnumeratePhysicalDeviceGroupsKHX(instance_data, instance, pPhysicalDeviceGroupCount, pPhysicalDeviceGroupProperties);
+    VkResult result = instance_data->dispatch_table.EnumeratePhysicalDeviceGroupsKHX(instance, pPhysicalDeviceGroupCount,
+                                                                                     pPhysicalDeviceGroupProperties);
+    PostCallEnumeratePhysicalDeviceGroupsKHX(instance_data, instance, pPhysicalDeviceGroupCount, pPhysicalDeviceGroupProperties);
     return result;
 }
 
@@ -2671,9 +2743,12 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceExternalBufferPropertiesKHX(
     VkExternalBufferPropertiesKHX*              pExternalBufferProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceExternalBufferPropertiesKHX();
-    instance_data->dispatch_table.GetPhysicalDeviceExternalBufferPropertiesKHX(physicalDevice,pExternalBufferInfo,pExternalBufferProperties);
-    //PostCallvkGetPhysicalDeviceExternalBufferPropertiesKHX();
+    PreCallGetPhysicalDeviceExternalBufferPropertiesKHX(instance_data, physicalDevice, pExternalBufferInfo,
+                                                        pExternalBufferProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceExternalBufferPropertiesKHX(physicalDevice, pExternalBufferInfo,
+                                                                               pExternalBufferProperties);
+    PostCallGetPhysicalDeviceExternalBufferPropertiesKHX(instance_data, physicalDevice, pExternalBufferInfo,
+                                                         pExternalBufferProperties);
 }
 
 
@@ -2686,9 +2761,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetMemoryWin32HandleKHX(
     HANDLE*                                     pHandle)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetMemoryWin32HandleKHX();
-    VkResult result = device_data->dispatch_table.GetMemoryWin32HandleKHX(device,memory,handleType,pHandle);
-    //PostCallvkGetMemoryWin32HandleKHX();
+    PreCallGetMemoryWin32HandleKHX(device_data, device, memory, handleType, pHandle);
+    VkResult result = device_data->dispatch_table.GetMemoryWin32HandleKHX(device, memory, handleType, pHandle);
+    PostCallGetMemoryWin32HandleKHX(device_data, device, memory, handleType, pHandle);
     return result;
 }
 
@@ -2699,9 +2774,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetMemoryWin32HandlePropertiesKHX(
     VkMemoryWin32HandlePropertiesKHX*           pMemoryWin32HandleProperties)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetMemoryWin32HandlePropertiesKHX();
-    VkResult result = device_data->dispatch_table.GetMemoryWin32HandlePropertiesKHX(device,handleType,handle,pMemoryWin32HandleProperties);
-    //PostCallvkGetMemoryWin32HandlePropertiesKHX();
+    PreCallGetMemoryWin32HandlePropertiesKHX(device_data, device, handleType, handle, pMemoryWin32HandleProperties);
+    VkResult result =
+        device_data->dispatch_table.GetMemoryWin32HandlePropertiesKHX(device, handleType, handle, pMemoryWin32HandleProperties);
+    PostCallGetMemoryWin32HandlePropertiesKHX(device_data, device, handleType, handle, pMemoryWin32HandleProperties);
     return result;
 }
 #endif /* VK_USE_PLATFORM_WIN32_KHX */
@@ -2714,9 +2790,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetMemoryFdKHX(
     int*                                        pFd)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetMemoryFdKHX();
-    VkResult result = device_data->dispatch_table.GetMemoryFdKHX(device,memory,handleType,pFd);
-    //PostCallvkGetMemoryFdKHX();
+    PreCallGetMemoryFdKHX(device_data, device, memory, handleType, pFd);
+    VkResult result = device_data->dispatch_table.GetMemoryFdKHX(device, memory, handleType, pFd);
+    PostCallGetMemoryFdKHX(device_data, device, memory, handleType, pFd);
     return result;
 }
 
@@ -2727,9 +2803,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetMemoryFdPropertiesKHX(
     VkMemoryFdPropertiesKHX*                    pMemoryFdProperties)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetMemoryFdPropertiesKHX();
-    VkResult result = device_data->dispatch_table.GetMemoryFdPropertiesKHX(device,handleType,fd,pMemoryFdProperties);
-    //PostCallvkGetMemoryFdPropertiesKHX();
+    PreCallGetMemoryFdPropertiesKHX(device_data, device, handleType, fd, pMemoryFdProperties);
+    VkResult result = device_data->dispatch_table.GetMemoryFdPropertiesKHX(device, handleType, fd, pMemoryFdProperties);
+    PostCallGetMemoryFdPropertiesKHX(device_data, device, handleType, fd, pMemoryFdProperties);
     return result;
 }
 
@@ -2743,11 +2819,13 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceExternalSemaphorePropertiesKHX(
     VkExternalSemaphorePropertiesKHX*           pExternalSemaphoreProperties)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceExternalSemaphorePropertiesKHX();
-    instance_data->dispatch_table.GetPhysicalDeviceExternalSemaphorePropertiesKHX(physicalDevice,pExternalSemaphoreInfo,pExternalSemaphoreProperties);
-    //PostCallvkGetPhysicalDeviceExternalSemaphorePropertiesKHX();
+    PreCallGetPhysicalDeviceExternalSemaphorePropertiesKHX(instance_data, physicalDevice, pExternalSemaphoreInfo,
+                                                           pExternalSemaphoreProperties);
+    instance_data->dispatch_table.GetPhysicalDeviceExternalSemaphorePropertiesKHX(physicalDevice, pExternalSemaphoreInfo,
+                                                                                  pExternalSemaphoreProperties);
+    PostCallGetPhysicalDeviceExternalSemaphorePropertiesKHX(instance_data, physicalDevice, pExternalSemaphoreInfo,
+                                                            pExternalSemaphoreProperties);
 }
-
 
 #ifdef VK_USE_PLATFORM_WIN32_KHX
 
@@ -2756,9 +2834,9 @@ VKAPI_ATTR VkResult VKAPI_CALL ImportSemaphoreWin32HandleKHX(
     const VkImportSemaphoreWin32HandleInfoKHX*  pImportSemaphoreWin32HandleInfo)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkImportSemaphoreWin32HandleKHX();
-    VkResult result = device_data->dispatch_table.ImportSemaphoreWin32HandleKHX(device,pImportSemaphoreWin32HandleInfo);
-    //PostCallvkImportSemaphoreWin32HandleKHX();
+    PreCallImportSemaphoreWin32HandleKHX(device_data, device, pImportSemaphoreWin32HandleInfo);
+    VkResult result = device_data->dispatch_table.ImportSemaphoreWin32HandleKHX(device, pImportSemaphoreWin32HandleInfo);
+    PostCallImportSemaphoreWin32HandleKHX(device_data, device, pImportSemaphoreWin32HandleInfo);
     return result;
 }
 
@@ -2769,22 +2847,21 @@ VKAPI_ATTR VkResult VKAPI_CALL GetSemaphoreWin32HandleKHX(
     HANDLE*                                     pHandle)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetSemaphoreWin32HandleKHX();
-    VkResult result = device_data->dispatch_table.GetSemaphoreWin32HandleKHX(device,semaphore,handleType,pHandle);
-    //PostCallvkGetSemaphoreWin32HandleKHX();
+    PreCallGetSemaphoreWin32HandleKHX(device_data, device, semaphore, handleType, pHandle);
+    VkResult result = device_data->dispatch_table.GetSemaphoreWin32HandleKHX(device, semaphore, handleType, pHandle);
+    PostCallGetSemaphoreWin32HandleKHX(device_data, device, semaphore, handleType, pHandle);
     return result;
 }
 #endif /* VK_USE_PLATFORM_WIN32_KHX */
-
 
 VKAPI_ATTR VkResult VKAPI_CALL ImportSemaphoreFdKHX(
     VkDevice                                    device,
     const VkImportSemaphoreFdInfoKHX*           pImportSemaphoreFdInfo)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkImportSemaphoreFdKHX();
-    VkResult result = device_data->dispatch_table.ImportSemaphoreFdKHX(device,pImportSemaphoreFdInfo);
-    //PostCallvkImportSemaphoreFdKHX();
+    PreCallImportSemaphoreFdKHX(device_data, device, pImportSemaphoreFdInfo);
+    VkResult result = device_data->dispatch_table.ImportSemaphoreFdKHX(device, pImportSemaphoreFdInfo);
+    PostCallImportSemaphoreFdKHX(device_data, device, pImportSemaphoreFdInfo);
     return result;
 }
 
@@ -2795,9 +2872,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetSemaphoreFdKHX(
     int*                                        pFd)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetSemaphoreFdKHX();
-    VkResult result = device_data->dispatch_table.GetSemaphoreFdKHX(device,semaphore,handleType,pFd);
-    //PostCallvkGetSemaphoreFdKHX();
+    PreCallGetSemaphoreFdKHX(device_data, device, semaphore, handleType, pFd);
+    VkResult result = device_data->dispatch_table.GetSemaphoreFdKHX(device, semaphore, handleType, pFd);
+    PostCallGetSemaphoreFdKHX(device_data, device, semaphore, handleType, pFd);
     return result;
 }
 
@@ -2807,8 +2884,8 @@ VKAPI_ATTR void VKAPI_CALL CmdProcessCommandsNVX(
     const VkCmdProcessCommandsInfoNVX*          pProcessCommandsInfo)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdProcessCommandsNVX();
-    device_data->dispatch_table.CmdProcessCommandsNVX(commandBuffer,pProcessCommandsInfo);
+    PreCallCmdProcessCommandsNVX(device_data, commandBuffer, pProcessCommandsInfo);
+    device_data->dispatch_table.CmdProcessCommandsNVX(commandBuffer, pProcessCommandsInfo);
     PostCallCmdProcessCommandsNVX(device_data, commandBuffer, pProcessCommandsInfo);
 }
 
@@ -2817,8 +2894,8 @@ VKAPI_ATTR void VKAPI_CALL CmdReserveSpaceForCommandsNVX(
     const VkCmdReserveSpaceForCommandsInfoNVX*  pReserveSpaceInfo)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdReserveSpaceForCommandsNVX();
-    device_data->dispatch_table.CmdReserveSpaceForCommandsNVX(commandBuffer,pReserveSpaceInfo);
+    PreCallCmdReserveSpaceForCommandsNVX(device_data, commandBuffer, pReserveSpaceInfo);
+    device_data->dispatch_table.CmdReserveSpaceForCommandsNVX(commandBuffer, pReserveSpaceInfo);
     PostCallCmdReserveSpaceForCommandsNVX(device_data, commandBuffer, pReserveSpaceInfo);
 }
 
@@ -2829,9 +2906,10 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateIndirectCommandsLayoutNVX(
     VkIndirectCommandsLayoutNVX*                pIndirectCommandsLayout)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateIndirectCommandsLayoutNVX();
-    VkResult result = device_data->dispatch_table.CreateIndirectCommandsLayoutNVX(device,pCreateInfo,pAllocator,pIndirectCommandsLayout);
-    //PostCallvkCreateIndirectCommandsLayoutNVX();
+    PreCallCreateIndirectCommandsLayoutNVX(device_data, device, pCreateInfo, pAllocator, pIndirectCommandsLayout);
+    VkResult result =
+        device_data->dispatch_table.CreateIndirectCommandsLayoutNVX(device, pCreateInfo, pAllocator, pIndirectCommandsLayout);
+    PostCallCreateIndirectCommandsLayoutNVX(device_data, device, pCreateInfo, pAllocator, pIndirectCommandsLayout);
     return result;
 }
 
@@ -2841,9 +2919,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyIndirectCommandsLayoutNVX(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyIndirectCommandsLayoutNVX();
-    device_data->dispatch_table.DestroyIndirectCommandsLayoutNVX(device,indirectCommandsLayout,pAllocator);
-    //PostCallvkDestroyIndirectCommandsLayoutNVX();
+    PreCallDestroyIndirectCommandsLayoutNVX(device_data, device, indirectCommandsLayout, pAllocator);
+    device_data->dispatch_table.DestroyIndirectCommandsLayoutNVX(device, indirectCommandsLayout, pAllocator);
+    PostCallDestroyIndirectCommandsLayoutNVX(device_data, device, indirectCommandsLayout, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL CreateObjectTableNVX(
@@ -2853,9 +2931,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateObjectTableNVX(
     VkObjectTableNVX*                           pObjectTable)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkCreateObjectTableNVX();
-    VkResult result = device_data->dispatch_table.CreateObjectTableNVX(device,pCreateInfo,pAllocator,pObjectTable);
-    //PostCallvkCreateObjectTableNVX();
+    PreCallCreateObjectTableNVX(device_data, device, pCreateInfo, pAllocator, pObjectTable);
+    VkResult result = device_data->dispatch_table.CreateObjectTableNVX(device, pCreateInfo, pAllocator, pObjectTable);
+    PostCallCreateObjectTableNVX(device_data, device, pCreateInfo, pAllocator, pObjectTable);
     return result;
 }
 
@@ -2865,9 +2943,9 @@ VKAPI_ATTR void VKAPI_CALL DestroyObjectTableNVX(
     const VkAllocationCallbacks*                pAllocator)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDestroyObjectTableNVX();
-    device_data->dispatch_table.DestroyObjectTableNVX(device,objectTable,pAllocator);
-    //PostCallvkDestroyObjectTableNVX();
+    PreCallDestroyObjectTableNVX(device_data, device, objectTable, pAllocator);
+    device_data->dispatch_table.DestroyObjectTableNVX(device, objectTable, pAllocator);
+    PostCallDestroyObjectTableNVX(device_data, device, objectTable, pAllocator);
 }
 
 VKAPI_ATTR VkResult VKAPI_CALL RegisterObjectsNVX(
@@ -2878,9 +2956,10 @@ VKAPI_ATTR VkResult VKAPI_CALL RegisterObjectsNVX(
     const uint32_t*                             pObjectIndices)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkRegisterObjectsNVX();
-    VkResult result = device_data->dispatch_table.RegisterObjectsNVX(device,objectTable,objectCount,ppObjectTableEntries,pObjectIndices);
-    //PostCallvkRegisterObjectsNVX();
+    PreCallRegisterObjectsNVX(device_data, device, objectTable, objectCount, ppObjectTableEntries, pObjectIndices);
+    VkResult result =
+        device_data->dispatch_table.RegisterObjectsNVX(device, objectTable, objectCount, ppObjectTableEntries, pObjectIndices);
+    PostCallRegisterObjectsNVX(device_data, device, objectTable, objectCount, ppObjectTableEntries, pObjectIndices);
     return result;
 }
 
@@ -2892,9 +2971,10 @@ VKAPI_ATTR VkResult VKAPI_CALL UnregisterObjectsNVX(
     const uint32_t*                             pObjectIndices)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkUnregisterObjectsNVX();
-    VkResult result = device_data->dispatch_table.UnregisterObjectsNVX(device,objectTable,objectCount,pObjectEntryTypes,pObjectIndices);
-    //PostCallvkUnregisterObjectsNVX();
+    PreCallUnregisterObjectsNVX(device_data, device, objectTable, objectCount, pObjectEntryTypes, pObjectIndices);
+    VkResult result =
+        device_data->dispatch_table.UnregisterObjectsNVX(device, objectTable, objectCount, pObjectEntryTypes, pObjectIndices);
+    PostCallUnregisterObjectsNVX(device_data, device, objectTable, objectCount, pObjectEntryTypes, pObjectIndices);
     return result;
 }
 
@@ -2904,9 +2984,9 @@ VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceGeneratedCommandsPropertiesNVX(
     VkDeviceGeneratedCommandsLimitsNVX*         pLimits)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceGeneratedCommandsPropertiesNVX();
-    instance_data->dispatch_table.GetPhysicalDeviceGeneratedCommandsPropertiesNVX(physicalDevice,pFeatures,pLimits);
-    //PostCallvkGetPhysicalDeviceGeneratedCommandsPropertiesNVX();
+    PreCallGetPhysicalDeviceGeneratedCommandsPropertiesNVX(instance_data, physicalDevice, pFeatures, pLimits);
+    instance_data->dispatch_table.GetPhysicalDeviceGeneratedCommandsPropertiesNVX(physicalDevice, pFeatures, pLimits);
+    PostCallGetPhysicalDeviceGeneratedCommandsPropertiesNVX(instance_data, physicalDevice, pFeatures, pLimits);
 }
 
 
@@ -2917,8 +2997,8 @@ VKAPI_ATTR void VKAPI_CALL CmdSetViewportWScalingNV(
     const VkViewportWScalingNV*                 pViewportWScalings)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetViewportWScalingNV();
-    device_data->dispatch_table.CmdSetViewportWScalingNV(commandBuffer,firstViewport,viewportCount,pViewportWScalings);
+    PreCallCmdSetViewportWScalingNV(device_data, commandBuffer, firstViewport, viewportCount, pViewportWScalings);
+    device_data->dispatch_table.CmdSetViewportWScalingNV(commandBuffer, firstViewport, viewportCount, pViewportWScalings);
     PostCallCmdSetViewportWScalingNV(device_data, commandBuffer, firstViewport, viewportCount, pViewportWScalings);
 }
 
@@ -2928,9 +3008,9 @@ VKAPI_ATTR VkResult VKAPI_CALL ReleaseDisplayEXT(
     VkDisplayKHR                                display)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkReleaseDisplayEXT();
-    VkResult result = instance_data->dispatch_table.ReleaseDisplayEXT(physicalDevice,display);
-    //PostCallvkReleaseDisplayEXT();
+    PreCallReleaseDisplayEXT(instance_data, physicalDevice, display);
+    VkResult result = instance_data->dispatch_table.ReleaseDisplayEXT(physicalDevice, display);
+    PostCallReleaseDisplayEXT(instance_data, physicalDevice, display);
     return result;
 }
 
@@ -2942,9 +3022,9 @@ VKAPI_ATTR VkResult VKAPI_CALL AcquireXlibDisplayEXT(
     VkDisplayKHR                                display)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkAcquireXlibDisplayEXT();
-    VkResult result = instance_data->dispatch_table.AcquireXlibDisplayEXT(physicalDevice,dpy,display);
-    //PostCallvkAcquireXlibDisplayEXT();
+    PreCallAcquireXlibDisplayEXT(instance_data, physicalDevice, dpy, display);
+    VkResult result = instance_data->dispatch_table.AcquireXlibDisplayEXT(physicalDevice, dpy, display);
+    PostCallAcquireXlibDisplayEXT(instance_data, physicalDevice, dpy, display);
     return result;
 }
 
@@ -2955,9 +3035,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetRandROutputDisplayEXT(
     VkDisplayKHR*                               pDisplay)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetRandROutputDisplayEXT();
-    VkResult result = instance_data->dispatch_table.GetRandROutputDisplayEXT(physicalDevice,dpy,rrOutput,pDisplay);
-    //PostCallvkGetRandROutputDisplayEXT();
+    PreCallGetRandROutputDisplayEXT(instance_data, physicalDevice, dpy, rrOutput, pDisplay);
+    VkResult result = instance_data->dispatch_table.GetRandROutputDisplayEXT(physicalDevice, dpy, rrOutput, pDisplay);
+    PostCallGetRandROutputDisplayEXT(instance_data, physicalDevice, dpy, rrOutput, pDisplay);
     return result;
 }
 #endif /* VK_USE_PLATFORM_XLIB_XRANDR_EXT */
@@ -2969,9 +3049,10 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceSurfaceCapabilities2EXT(
     VkSurfaceCapabilities2EXT*                  pSurfaceCapabilities)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(physicalDevice), instance_layer_data_map);
-    //PreCallvkGetPhysicalDeviceSurfaceCapabilities2EXT();
-    VkResult result = instance_data->dispatch_table.GetPhysicalDeviceSurfaceCapabilities2EXT(physicalDevice,surface,pSurfaceCapabilities);
-    //PostCallvkGetPhysicalDeviceSurfaceCapabilities2EXT();
+    PreCallGetPhysicalDeviceSurfaceCapabilities2EXT(instance_data, physicalDevice, surface, pSurfaceCapabilities);
+    VkResult result =
+        instance_data->dispatch_table.GetPhysicalDeviceSurfaceCapabilities2EXT(physicalDevice, surface, pSurfaceCapabilities);
+    PostCallGetPhysicalDeviceSurfaceCapabilities2EXT(instance_data, physicalDevice, surface, pSurfaceCapabilities);
     return result;
 }
 
@@ -2982,9 +3063,9 @@ VKAPI_ATTR VkResult VKAPI_CALL DisplayPowerControlEXT(
     const VkDisplayPowerInfoEXT*                pDisplayPowerInfo)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkDisplayPowerControlEXT();
-    VkResult result = device_data->dispatch_table.DisplayPowerControlEXT(device,display,pDisplayPowerInfo);
-    //PostCallvkDisplayPowerControlEXT();
+    PreCallDisplayPowerControlEXT(device_data, device, display, pDisplayPowerInfo);
+    VkResult result = device_data->dispatch_table.DisplayPowerControlEXT(device, display, pDisplayPowerInfo);
+    PostCallDisplayPowerControlEXT(device_data, device, display, pDisplayPowerInfo);
     return result;
 }
 
@@ -2995,9 +3076,9 @@ VKAPI_ATTR VkResult VKAPI_CALL RegisterDeviceEventEXT(
     VkFence*                                    pFence)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkRegisterDeviceEventEXT();
-    VkResult result = device_data->dispatch_table.RegisterDeviceEventEXT(device,pDeviceEventInfo,pAllocator,pFence);
-    //PostCallvkRegisterDeviceEventEXT();
+    PreCallRegisterDeviceEventEXT(device_data, device, pDeviceEventInfo, pAllocator, pFence);
+    VkResult result = device_data->dispatch_table.RegisterDeviceEventEXT(device, pDeviceEventInfo, pAllocator, pFence);
+    PostCallRegisterDeviceEventEXT(device_data, device, pDeviceEventInfo, pAllocator, pFence);
     return result;
 }
 
@@ -3009,9 +3090,9 @@ VKAPI_ATTR VkResult VKAPI_CALL RegisterDisplayEventEXT(
     VkFence*                                    pFence)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkRegisterDisplayEventEXT();
-    VkResult result = device_data->dispatch_table.RegisterDisplayEventEXT(device,display,pDisplayEventInfo,pAllocator,pFence);
-    //PostCallvkRegisterDisplayEventEXT();
+    PreCallRegisterDisplayEventEXT(device_data, device, display, pDisplayEventInfo, pAllocator, pFence);
+    VkResult result = device_data->dispatch_table.RegisterDisplayEventEXT(device, display, pDisplayEventInfo, pAllocator, pFence);
+    PostCallRegisterDisplayEventEXT(device_data, device, display, pDisplayEventInfo, pAllocator, pFence);
     return result;
 }
 
@@ -3022,12 +3103,11 @@ VKAPI_ATTR VkResult VKAPI_CALL GetSwapchainCounterEXT(
     uint64_t*                                   pCounterValue)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetSwapchainCounterEXT();
-    VkResult result = device_data->dispatch_table.GetSwapchainCounterEXT(device,swapchain,counter,pCounterValue);
-    //PostCallvkGetSwapchainCounterEXT();
+    PreCallGetSwapchainCounterEXT(device_data, device, swapchain, counter, pCounterValue);
+    VkResult result = device_data->dispatch_table.GetSwapchainCounterEXT(device, swapchain, counter, pCounterValue);
+    PostCallGetSwapchainCounterEXT(device_data, device, swapchain, counter, pCounterValue);
     return result;
 }
-
 
 VKAPI_ATTR VkResult VKAPI_CALL GetRefreshCycleDurationGOOGLE(
     VkDevice                                    device,
@@ -3035,9 +3115,9 @@ VKAPI_ATTR VkResult VKAPI_CALL GetRefreshCycleDurationGOOGLE(
     VkRefreshCycleDurationGOOGLE*               pDisplayTimingProperties)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetRefreshCycleDurationGOOGLE();
-    VkResult result = device_data->dispatch_table.GetRefreshCycleDurationGOOGLE(device,swapchain,pDisplayTimingProperties);
-    //PostCallvkGetRefreshCycleDurationGOOGLE();
+    PreCallGetRefreshCycleDurationGOOGLE(device_data, device, swapchain, pDisplayTimingProperties);
+    VkResult result = device_data->dispatch_table.GetRefreshCycleDurationGOOGLE(device, swapchain, pDisplayTimingProperties);
+    PostCallGetRefreshCycleDurationGOOGLE(device_data, device, swapchain, pDisplayTimingProperties);
     return result;
 }
 
@@ -3048,17 +3128,12 @@ VKAPI_ATTR VkResult VKAPI_CALL GetPastPresentationTimingGOOGLE(
     VkPastPresentationTimingGOOGLE*             pPresentationTimings)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkGetPastPresentationTimingGOOGLE();
-    VkResult result = device_data->dispatch_table.GetPastPresentationTimingGOOGLE(device,swapchain,pPresentationTimingCount,pPresentationTimings);
-    //PostCallvkGetPastPresentationTimingGOOGLE();
+    PreCallGetPastPresentationTimingGOOGLE(device_data, device, swapchain, pPresentationTimingCount, pPresentationTimings);
+    VkResult result = device_data->dispatch_table.GetPastPresentationTimingGOOGLE(device, swapchain, pPresentationTimingCount,
+                                                                                  pPresentationTimings);
+    PostCallGetPastPresentationTimingGOOGLE(device_data, device, swapchain, pPresentationTimingCount, pPresentationTimings);
     return result;
 }
-
-
-
-
-
-
 
 VKAPI_ATTR void VKAPI_CALL CmdSetDiscardRectangleEXT(
     VkCommandBuffer                             commandBuffer,
@@ -3067,12 +3142,11 @@ VKAPI_ATTR void VKAPI_CALL CmdSetDiscardRectangleEXT(
     const VkRect2D*                             pDiscardRectangles)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(commandBuffer), device_layer_data_map);
-    //PreCallvkCmdSetDiscardRectangleEXT();
-    device_data->dispatch_table.CmdSetDiscardRectangleEXT(commandBuffer,firstDiscardRectangle,discardRectangleCount,pDiscardRectangles);
+    PreCallCmdSetDiscardRectangleEXT(device_data, commandBuffer, firstDiscardRectangle, discardRectangleCount, pDiscardRectangles);
+    device_data->dispatch_table.CmdSetDiscardRectangleEXT(commandBuffer, firstDiscardRectangle, discardRectangleCount,
+                                                          pDiscardRectangles);
     PostCallCmdSetDiscardRectangleEXT(device_data, commandBuffer, firstDiscardRectangle, discardRectangleCount, pDiscardRectangles);
 }
-
-
 
 VKAPI_ATTR void VKAPI_CALL SetHdrMetadataEXT(
     VkDevice                                    device,
@@ -3081,9 +3155,9 @@ VKAPI_ATTR void VKAPI_CALL SetHdrMetadataEXT(
     const VkHdrMetadataEXT*                     pMetadata)
 {
     device_layer_data *device_data = GetLayerDataPtr(get_dispatch_key(device), device_layer_data_map);
-    //PreCallvkSetHdrMetadataEXT();
-    device_data->dispatch_table.SetHdrMetadataEXT(device,swapchainCount,pSwapchains,pMetadata);
-    //PostCallvkSetHdrMetadataEXT();
+    PreCallSetHdrMetadataEXT(device_data, device, swapchainCount, pSwapchains, pMetadata);
+    device_data->dispatch_table.SetHdrMetadataEXT(device, swapchainCount, pSwapchains, pMetadata);
+    PostCallSetHdrMetadataEXT(device_data, device, swapchainCount, pSwapchains, pMetadata);
 }
 
 #ifdef VK_USE_PLATFORM_IOS_MVK
@@ -3095,9 +3169,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateIOSSurfaceMVK(
     VkSurfaceKHR*                               pSurface)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkCreateIOSSurfaceMVK();
-    VkResult result = instance_data->dispatch_table.CreateIOSSurfaceMVK(instance,pCreateInfo,pAllocator,pSurface);
-    //PostCallvkCreateIOSSurfaceMVK();
+    PreCallCreateIOSSurfaceMVK(instance_data, instance, pCreateInfo, pAllocator, pSurface);
+    VkResult result = instance_data->dispatch_table.CreateIOSSurfaceMVK(instance, pCreateInfo, pAllocator, pSurface);
+    PostCallCreateIOSSurfaceMVK(instance_data, instance, pCreateInfo, pAllocator, pSurface);
     return result;
 }
 #endif /* VK_USE_PLATFORM_IOS_MVK */
@@ -3111,9 +3185,9 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateMacOSSurfaceMVK(
     VkSurfaceKHR*                               pSurface)
 {
     instance_layer_data *instance_data = GetLayerDataPtr(get_dispatch_key(instance), instance_layer_data_map);
-    //PreCallvkCreateMacOSSurfaceMVK();
-    VkResult result = instance_data->dispatch_table.CreateMacOSSurfaceMVK(instance,pCreateInfo,pAllocator,pSurface);
-    //PostCallvkCreateMacOSSurfaceMVK();
+    PreCallCreateMacOSSurfaceMVK(instance_data, instance, pCreateInfo, pAllocator, pSurface);
+    VkResult result = instance_data->dispatch_table.CreateMacOSSurfaceMVK(instance, pCreateInfo, pAllocator, pSurface);
+    PostCallCreateMacOSSurfaceMVK(instance_data, instance, pCreateInfo, pAllocator, pSurface);
     return result;
 }
 #endif /* VK_USE_PLATFORM_MACOS_MVK */
