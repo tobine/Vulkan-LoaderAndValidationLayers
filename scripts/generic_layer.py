@@ -358,7 +358,10 @@ class GenericOutputGenerator(OutputGenerator):
             dispatch_table_name = 'VkLayerInstanceDispatchTable'
         self.appendSection('command', '    %s_layer_data *%s_data = GetLayerDataPtr(get_dispatch_key(%s), %s_layer_data_map);' % (device_or_instance, device_or_instance, dispatchable_name, device_or_instance))
         api_function_name = cmdinfo.elem.attrib.get('name')
-        self.appendSection('command', '    //PreCall%s();' % api_function_name)
+        params = cmdinfo.elem.findall('param/name')
+        paramstext = ', '.join([str(param.text) for param in params])
+        API = api_function_name.replace('vk','%s_data->dispatch_table.' % (device_or_instance),1)
+        self.appendSection('command', '    PreCall%s(%s_data, %s);' % (api_function_name[2:], device_or_instance, paramstext))
         # Declare result variable, if any.
         resulttype = cmdinfo.elem.find('proto/type')
         if (resulttype != None and resulttype.text == 'void'):
@@ -368,11 +371,8 @@ class GenericOutputGenerator(OutputGenerator):
         else:
             assignresult = ''
 
-        params = cmdinfo.elem.findall('param/name')
-        paramstext = ','.join([str(param.text) for param in params])
-        API = api_function_name.replace('vk','%s_data->dispatch_table.' % (device_or_instance),1)
         self.appendSection('command', '    ' + assignresult + API + '(' + paramstext + ');')
-        self.appendSection('command', '    //PostCall%s();' % api_function_name)
+        self.appendSection('command', '    PostCall%s(%s_data, %s);' % (api_function_name[2:], device_or_instance, paramstext))
         # Return result variable, if any.
         if (resulttype != None):
             self.appendSection('command', '    return result;')
