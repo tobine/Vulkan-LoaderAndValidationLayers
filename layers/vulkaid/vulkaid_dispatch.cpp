@@ -20,9 +20,15 @@
 #include "vulkaid_dispatch.h"
 // Include vulkaid modules here
 #include "vulkaid_state_tracker.h"
+#include "vulkaid_state_view.h"
+#include "vulkaid_state_controller.h"
 #include <memory>
 
 namespace vkaid {
+
+// TODO : Where should these guys live?
+static unique_ptr<StateController> state_controller;
+static unique_ptr<StateView> state_view;
 
 void PreCallCreateInstance(instance_layer_data* instance_data, const VkInstanceCreateInfo* pCreateInfo,
                            const VkAllocationCallbacks* pAllocator, VkInstance* pInstance) {}
@@ -76,7 +82,12 @@ void PreCallCreateDevice(instance_layer_data* instance_data, VkPhysicalDevice ph
                          const VkAllocationCallbacks* pAllocator, VkDevice* pDevice) {}
 void PostCallCreateDevice(device_layer_data* device_data, const VkDeviceCreateInfo* pCreateInfo,
                           const VkAllocationCallbacks* pAllocator, VkDevice* pDevice) {
-    device_data->state_ptr = static_cast<void*>(new device_state_struct());
+    // Initialize device state
+    auto device_state = new device_state_struct();
+    device_data->state_ptr = static_cast<void*>(device_state);
+    // Initialize view and controller
+    state_view = std::unique_ptr<StateView>(new StateView(device_state));
+    state_controller = std::unique_ptr<StateController>(new StateController(device_state, state_view.get()));
 }
 
 void PreCallDestroyDevice(device_layer_data* device_data, VkDevice device, const VkAllocationCallbacks* pAllocator) {}
@@ -906,8 +917,8 @@ void PostCallAcquireNextImageKHR(device_layer_data* device_data, VkDevice device
                                  VkSemaphore semaphore, VkFence fence, uint32_t* pImageIndex) {}
 
 void PreCallQueuePresentKHR(device_layer_data* device_data, VkQueue queue, const VkPresentInfoKHR* pPresentInfo) {
-    // TODO : Ideally this will be in a separate module/namespace that is decoupled from state_tracker
-    state_tracker::DisplayCommandBuffers(device_data);
+    // Demo case to show how controller triggers display of state
+    state_controller->HandlePresent();
 }
 void PostCallQueuePresentKHR(device_layer_data* device_data, VkQueue queue, const VkPresentInfoKHR* pPresentInfo) {}
 

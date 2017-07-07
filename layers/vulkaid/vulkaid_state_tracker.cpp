@@ -34,14 +34,6 @@ CommandBufferState::CommandBufferState(const VkCommandBufferAllocateInfo* alloc_
 
 void CommandBufferState::Add(const Command cmd) { commands.push_back(cmd); }
 
-void CommandBufferState::Display() {
-    fprintf(stdout, "Cmd buffer 0x%p:\n", command_buffer);
-    // Print commands in command buffer
-    for (uint32_t i = 0; i < commands.size(); ++i) {
-        fprintf(stdout, "   %s\n", command_string[static_cast<uint32_t>(commands[i].GetType())]);
-    }
-}
-
 namespace state_tracker {
 
 void AllocateCommandBuffers(
@@ -59,13 +51,6 @@ void AllocateCommandBuffers(
 void AddCommand(device_layer_data* device_data, VkCommandBuffer commandBuffer, COMMAND_TYPE ctype) {
     device_state_struct* device_state = static_cast<device_state_struct*>(device_data->state_ptr);
     device_state->command_buffer_map[commandBuffer]->Add(ctype);
-}
-
-void DisplayCommandBuffers(device_layer_data* device_data) {
-    device_state_struct* device_state = static_cast<device_state_struct*>(device_data->state_ptr);
-    for (auto const& cb_state_pair : device_state->command_buffer_map) {
-        device_state->command_buffer_map[cb_state_pair.first]->Display();
-    }
 }
 
 } // namespace vkaid

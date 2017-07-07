@@ -177,8 +177,7 @@ public:
     CommandBufferState(const VkCommandBufferAllocateInfo*, VkCommandBuffer);
     // Add command to command buffer
     void Add(const Command);
-    // Display this comand buffer
-    void Display();
+    const vector<Command>& Get() { return commands; };
 
    private:
     VkCommandBuffer command_buffer;
